@@ -1,0 +1,76 @@
+/**
+* Template Name: NiceAdmin
+* Updated: Mar 09 2023 with Bootstrap v5.2.3
+* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+* Author: BootstrapMade.com
+* License: https://bootstrapmade.com/license/
+*/
+
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+:root {
+  scroll-behavior: smooth;
+  --main_color: rgb(61, 199, 56);
+  --white: #ffffff;
+}
+body {
+  font-family: Poppins;
+  color: #2a2a2b;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+}
+
+.login_form>img{
+  display: flex;
+  margin: 5% auto;
+align-items: center;
+}
+.login_form{
+
+}
+.login_form{
+  margin:  auto ;
+  background-color: rgb(255, 255, 255);
+  width: 40vw;
+  border-radius: 16px;
+  border: 1px solid var(--main_color);
+  background-repeat: no-repeat;
+  
+  padding: 1% 5%;
+}
+.login_form>a{
+  width: 100% !important;
+}
+.login_form>h3,.login_form>h5,.login_form>a{
+  text-align: center !important;
+}
+.login_form>*{
+  margin: .5vh 0%;
+}
+.login_form>button{
+  position: relative;
+  margin: 4% 0%;
+  background-color:var(--main_color);
+  border-radius: 8px;
+  width: 100%;
+  border: none;
+  color: white;
+  padding: 1%;
+  transition: 300ms;
+}
+.login_form>button:hover{
+  transition: 500ms;
+  background-color: white;
+  color:var(--main_color);
+}
+.login_form>#btn_signup{
+  border: 1px solid var(--main_color);
+  transition: 300ms;
+}
+.login_form>#btn_signup:hover{
+  transition: 500ms;
+  color:var(--main_color);
+}

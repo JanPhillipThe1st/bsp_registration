@@ -1,0 +1,16 @@
+:root {
+    scroll-behavior: smooth;
+    --main_color: rgb(61, 199, 56);
+    --white: #ffffff;
+  }
+nav{
+    background-color: #726C1E;
+}
+.side-button{
+    transition: 600ms;
+}
+.side-button:hover{
+    transition: 600ms;
+    background-color: var(--main_color);
+    color: var(--white);
+}
