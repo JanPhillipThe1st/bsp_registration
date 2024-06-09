@@ -8,28 +8,25 @@ if($action == 'login'){
     $username = filter_input(INPUT_POST,"username");
     $password = filter_input(INPUT_POST,"password");
     // $result=$conn->query("SELECT * FROM `users` WHERE `username` = '".$username."' AND `password` = '".md5(hash("sha256",($password)))."' AND `type` = '".$type."' ;");
-    $result=$conn->query("SELECT * FROM `users` WHERE `username` = '".$username."' AND `password` = '$password';");
+    $result=$conn->query("SELECT * FROM `user` WHERE `username` = '".$username."' AND `password` = '$password';");
     $row = $result->fetch_assoc();
     if($row > 0){
         $resultObject->username = $row["username"];
-        $resultObject->access = $row["access"];
+        $resultObject->access = $row["access_type"];
         $_SESSION["username"] = $row["username"];
         $_SESSION["full_name"] = $row["full_name"];
-        $_SESSION["access"] = $row["access"];
+        $_SESSION["access"] = $row["access_type"];
     }
     echo json_encode($resultObject);
 }
-if($action == 'get_rooms'){
-    $rooms_query=$conn->query("SELECT * FROM `room`;");
+if($action == 'get_school_years'){
+    $rooms_query=$conn->query("SELECT * FROM `school_years`;");
     $row = $rooms_query->fetch_assoc();
     $resultObject = array();
     if($row > 0){
         $room_object = new stdClass();
         $room_object->ID = $row["ID"];
-        $room_object->room_floor = $row["floor"];
-        $room_object->room_number = $row["room_number"];
-        $room_object->seating_capacity = $row["seating_capacity"];
-        array_push($resultObject,$room_object);
+        $room_object->room_floor = $row["school_year"];
     }
     echo json_encode($resultObject);
 }

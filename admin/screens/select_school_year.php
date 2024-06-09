@@ -1,11 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION["username"])) {
-    if (!isset($_SESSION["school_year"])) {
-        header("location: ./select_school_year.php");
-    }else{
-        header("location: ../index.php");
-    }
+    header("location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -54,53 +50,7 @@ if (!isset($_SESSION["username"])) {
         <div class="col-8">
         </div>
     </div>
-    <div class="row" style="height:75vh !important; display:flex; align-items:center; align-content:center;">
-        <div class="col-2 ">
-            <div class="row my-1">
-            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_school_years">
-                <h4>
-                School Years
-                </h4>
-            </button>
-            </div>
-            <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded " id="district">
-                <h4>
-                    District
-                </h4>
-            </button>
-            </div>
-            <div class="row my-3 dropdown">
-                    <button class="btn btn-btn-success side-button border border-success rounded  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            About Us
-                        </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" id="" href="#">BSP OFFICERS</a>
-                        <a class="dropdown-item" href="#">VISIONS & MISSION</a>
-                        <a class="dropdown-item" href="#">OATH & LAW</a>
-                        <a class="dropdown-item" href="#">HISTORY</a>
-                    </div>
-            </div>
-            <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_user_account">
-                <h4>
-                    User Account
-                </h4>
-            </button>
-            </div>  
-            <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded ">
-                <h4>
-                    Account Settings
-                </h4>
-            </button>
-            </div>
-        </div>
-        
-        <div class="col-10" id="content">
-        <img src="../assets/img/BSPLogo.png" class="m-auto" alt="" srcset="" height="400px">
-        </div>
-    </div>
+ 
 </div>
 </body>
 <script src="../assets/js/jquery-3.6.1.min.js"></script>

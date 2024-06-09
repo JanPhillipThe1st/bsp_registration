@@ -44,17 +44,17 @@
         <div class="modal-content">
                 <div class="modal-header">
                         <h5 class="modal-title">Login</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                     </div>
             <div class="modal-body">
-                <div class="container-fluid">
+                <div class="container-fluid" id="loginStatusMessage">
                     You have successfully logged in!
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="loginSuccess">OK</button>
             </div>
         </div>
@@ -74,6 +74,7 @@
                 if (login_response.username != undefined && login_response.username != undefined) {
                     switch (login_response.access) {
                         case "admin":
+                            $("#loginStatusMessage").text(" You have successfully logged in!");
                             $("#loginStatus").modal("toggle");
                             $("#loginSuccess").click(()=>{
                             window.location = "admin/index.php";});
@@ -83,7 +84,10 @@
                     }
                 }
                 else{
-                    alert("Login Failed. Incorrect username and password.");
+                            $("#loginStatusMessage").text("Login Failed. Incorrect username/password.");
+                            $("#loginStatus").modal("toggle");
+                            $("#loginSuccess").click(()=>{
+                                $("#loginStatus").modal("toggle");});
                 }
             });
         });
