@@ -74,10 +74,16 @@
                 if (login_response.username != undefined && login_response.username != undefined) {
                     switch (login_response.access) {
                         case "admin":
-                            $("#loginStatusMessage").text(" You have successfully logged in!");
+                            $("#loginStatusMessage").text(" You have successfully logged in as Admin!");
                             $("#loginStatus").modal("toggle");
                             $("#loginSuccess").click(()=>{
                             window.location = "admin/index.php";});
+                            break;
+                            case "teacher":
+                            $("#loginStatusMessage").text(" You have successfully logged in Teacher!");
+                            $("#loginStatus").modal("toggle");
+                            $("#loginSuccess").click(()=>{
+                            window.location = "teacher/index.php";});
                             break;
                         default:
                             break;

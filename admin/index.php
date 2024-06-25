@@ -1,11 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION["username"])) {
-    if (!isset($_SESSION["school_year"])) {
-        header("location: ./select_school_year.php");
-    }else{
-        header("location: ../index.php");
+if (isset($_SESSION["username"])) {
+            if (!isset($_SESSION["school_year"])) {
+                header("location: ./screens/select_school_year.php");
+            }else{
+            }
     }
+    else{
+    
+    header("location: ../index.php");
 }
 ?>
 <!DOCTYPE html>
@@ -51,7 +54,10 @@ if (!isset($_SESSION["username"])) {
             <button class="btn text-secondary" id="btn_logout">Log out</button>
         </div>
         
-        <div class="col-8">
+        <div class="col-8 ">
+            <div class="center">
+                <h4>School year: <?= $_SESSION["school_year_string"]?></h4>
+            </div>
         </div>
     </div>
     <div class="row" style="height:75vh !important; display:flex; align-items:center; align-content:center;">

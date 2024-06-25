@@ -13,6 +13,7 @@ if($action == 'login'){
     if($row > 0){
         $resultObject->username = $row["username"];
         $resultObject->access = $row["access_type"];
+        $_SESSION["userID"] = $row["userID"];
         $_SESSION["username"] = $row["username"];
         $_SESSION["full_name"] = $row["full_name"];
         $_SESSION["access"] = $row["access_type"];
@@ -20,20 +21,56 @@ if($action == 'login'){
     echo json_encode($resultObject);
 }
 if($action == 'get_school_years'){
-    $rooms_query=$conn->query("SELECT * FROM `school_years`;");
-    $row = $rooms_query->fetch_assoc();
+    $rooms_query=$conn->query("SELECT * FROM `school_year`;");
     $resultObject = array();
-    if($row > 0){
+    while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
-        $room_object->ID = $row["ID"];
-        $room_object->room_floor = $row["school_year"];
+        $room_object->ID = $row["syID"];
+        $room_object->school_year_start = $row["school_year_start"];
+        $room_object->school_year_end = $row["school_year_end"];
+        $room_object->semester = $row["semester"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'get_students'){
+    $rooms_query=$conn->query("SELECT * FROM `student`;");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->studentID = $row["studentID"];
+        $room_object->schoolID = $row["schoolID"];
+        $room_object->student_first_name = $row["student_first_name"];
+        $room_object->student_middle_name = $row["student_middle_name"];
+        $room_object->student_last_name = $row["student_last_name"];
+        $room_object->student_grade = $row["student_grade"];
+        $room_object->student_section = $row["student_section"];
+        $room_object->student_rank = $row["student_rank"];
+        $room_object->student_photo = $row["student_photo"];
+        $room_object->student_barangay = $row["student_barangay"];
+        $room_object->student_city = $row["student_city"];
+        $room_object->student_province = $row["student_province"];
+        $room_object->student_email = $row["student_email"];
+        $room_object->student_phone = $row["student_phone"];
+        $room_object->student_emergency_guardian = $row["student_emergency_guardian"];
+        $room_object->student_emergency_phone = $row["student_emergency_phone"];
+        $room_object->student_emergency_address = $row["student_emergency_address"];
+        $room_object->date_registered = $row["date_registered"];
+        array_push($resultObject,$room_object);
     }
     echo json_encode($resultObject);
 }
 if($action == 'log_out'){
     session_destroy();
 }
-if($action == 'get_teachers'){
+if($action == 'confirm_school_year'){
+    $school_year_id = filter_input(INPUT_POST,"school_year_id");
+    $school_year_string = filter_input(INPUT_POST,"school_year_string");
+    $_SESSION["school_year"] = $school_year_id;
+    $_SESSION["school_year_string"] = $school_year_string;
+}
+if($action == 'get_current_teacher'){
+    $current_userID = $_SESSION["userID"];
     $rooms_query=$conn->query("SELECT * FROM `teacher`;");
     $row = $rooms_query->fetch_assoc();
     $resultObject = array();
@@ -64,12 +101,61 @@ if($action == 'get_schedules'){
     }
     echo json_encode($resultObject);
 }
-if($action == 'add_room'){
-    $room_number = filter_input(INPUT_POST,"room_number");
-    $room_floor =  filter_input(INPUT_POST,"room_floor");
-    $seating_capacity =  filter_input(INPUT_POST,"seating_capacity");
-    $rooms_query=$conn->query(" INSERT INTO `room`( `room_number`, `floor`, `seating_capacity`) 
-    VALUES ('$room_number','$room_floor','$seating_capacity');");
+if($action == 'add_student'){
+    $student_first_name = filter_input(INPUT_POST,"student_first_name");
+    $student_middle_name = filter_input(INPUT_POST,"student_middle_name");
+    $student_last_name = filter_input(INPUT_POST,"student_last_name");
+    $student_grade = filter_input(INPUT_POST,"student_grade");
+    $student_photo = filter_input(INPUT_POST,"student_photo");
+    $student_section = filter_input(INPUT_POST,"student_section");
+    $student_barangay = filter_input(INPUT_POST,"student_barangay");
+    $student_city = filter_input(INPUT_POST,"student_city");
+    $student_province = filter_input(INPUT_POST,"student_province");
+    $student_email = filter_input(INPUT_POST,"student_email");
+    $student_phone = filter_input(INPUT_POST,"student_phone");
+    $student_emergency_guardian = filter_input(INPUT_POST,"student_emergency_guardian");
+    $student_emergency_phone = filter_input(INPUT_POST,"student_emergency_phone");
+    $student_emergency_address = filter_input(INPUT_POST,"student_emergency_address");
+
+    $add_students_query=$conn->query("INSERT INTO `student`(`schoolID`, `student_first_name`, `student_middle_name`, 
+    `student_last_name`, `student_grade`, `student_section`, `student_rank`, `student_photo`, `student_barangay`, `student_city`,
+     `student_province`, `student_email`, `student_phone`, `student_emergency_guardian`, `student_emergency_phone`, 
+     `student_emergency_address`) 
+    VALUES ( '1', '$student_first_name', '$student_middle_name', 
+    '$student_last_name', '$student_grade', '$student_section', 'Growing Usa', '$student_photo', '$student_barangay', '$student_city', '$student_province',
+     '$student_email', '$student_phone', '$student_emergency_guardian', '$student_emergency_phone', '$student_emergency_address') ;");
+  
+}
+if($action == 'update_student'){
+    $studentID = filter_input(INPUT_POST,"studentID");
+    $student_first_name = filter_input(INPUT_POST,"student_first_name");
+    $student_middle_name = filter_input(INPUT_POST,"student_middle_name");
+    $student_last_name = filter_input(INPUT_POST,"student_last_name");
+    $student_grade = filter_input(INPUT_POST,"student_grade");
+    $student_photo = filter_input(INPUT_POST,"student_photo");
+    $student_section = filter_input(INPUT_POST,"student_section");
+    $student_barangay = filter_input(INPUT_POST,"student_barangay");
+    $student_city = filter_input(INPUT_POST,"student_city");
+    $student_province = filter_input(INPUT_POST,"student_province");
+    $student_email = filter_input(INPUT_POST,"student_email");
+    $student_phone = filter_input(INPUT_POST,"student_phone");
+    $student_emergency_guardian = filter_input(INPUT_POST,"student_emergency_guardian");
+    $student_emergency_phone = filter_input(INPUT_POST,"student_emergency_phone");
+    $student_emergency_address = filter_input(INPUT_POST,"student_emergency_address");
+
+    $add_students_query=$conn->query("UPDATE `student` SET
+    `student_first_name`='$student_first_name',`student_middle_name`='$student_middle_name',
+    `student_last_name`='$student_last_name',`student_grade`='$student_grade',
+    `student_section`='$student_section',`student_rank`='Growing Usa',`student_photo`='$student_photo',
+    `student_barangay`='$student_barangay',`student_city`='$student_city',`student_province`='$student_province',
+    `student_email`='$student_email',`student_phone`='$student_phone',`student_emergency_guardian`='$student_emergency_guardian',
+    `student_emergency_phone`='$student_emergency_phone',`student_emergency_address`='$student_emergency_address' WHERE `studentID`='$studentID';");
+  
+}
+if($action == 'delete_student'){
+    $studentID = filter_input(INPUT_POST,"studentID");
+
+    $add_students_query=$conn->query("DELETE FROM `student` WHERE `studentID`='$studentID';");
   
 }
 if($action == 'add_schedule'){
