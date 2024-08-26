@@ -80,7 +80,7 @@
                             window.location = "admin/index.php";});
                             break;
                             case "teacher":
-                            $("#loginStatusMessage").text(" You have successfully logged in Teacher!");
+                            $("#loginStatusMessage").text(" You have successfully logged in as Teacher!");
                             $("#loginStatus").modal("toggle");
                             $("#loginSuccess").click(()=>{
                             window.location = "teacher/index.php";});

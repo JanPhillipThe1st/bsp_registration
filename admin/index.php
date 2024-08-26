@@ -62,17 +62,17 @@ if (isset($_SESSION["username"])) {
     </div>
     <div class="row" style="height:75vh !important; display:flex; align-items:center; align-content:center;">
         <div class="col-2 ">
-            <div class="row my-1">
-            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_school_years">
-                <h4>
-                School Years
-                </h4>
-            </button>
-            </div>
             <div class="row my-3">
             <button class="btn btn-btn-success side-button border border-success rounded " id="district">
                 <h4>
                     District
+                </h4>
+            </button>
+            </div>
+            <div class="row my-3">
+            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_contact_us">
+                <h4>
+                    Contact Us
                 </h4>
             </button>
             </div>
@@ -81,10 +81,10 @@ if (isset($_SESSION["username"])) {
                             About Us
                         </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" id="" href="#">BSP OFFICERS</a>
-                        <a class="dropdown-item" href="#">VISIONS & MISSION</a>
-                        <a class="dropdown-item" href="#">OATH & LAW</a>
-                        <a class="dropdown-item" href="#">HISTORY</a>
+                        <a class="dropdown-item" id="btn_bsp_officers" href="#">BSP OFFICERS</a>
+                        <a class="dropdown-item"   id="btn_vision_mission" href="#">VISIONS & MISSION</a>
+                        <a class="dropdown-item" id="btn_oath_law" href="#">OATH & LAW</a>
+                        <a class="dropdown-item" id="btn_history" href="#">HISTORY</a>
                     </div>
             </div>
             <div class="row my-3">
@@ -114,18 +114,29 @@ if (isset($_SESSION["username"])) {
 <script>
     $(document).ready(()=>{
         var content = $("#content");
-        content.load("screens/school_years.php");
-        $("#btn_school_years").click(()=>{
-            content.load("screens/school_years.php");
-        });
         $("#district").click(()=>{
             content.load("screens/district.php");
         });
         $("#btn_user_account").click(()=>{
             content.load("screens/user_accounts.php");
         });
+        $("#btn_bsp_officers").click(()=>{
+            content.load("screens/bsp_officers.php");
+        });
+        $("#btn_vision_mission").click(()=>{
+            content.load("screens/vision_mission.php");
+        });
+        $("#btn_oath_law").click(()=>{
+            content.load("screens/oath_law.php");
+        });
+        $("#btn_history").click(()=>{
+            content.load("screens/history.php");
+        });
+        $("#btn_contact_us").click(()=>{
+            content.load("screens/contact_us.php");
+        });
         $("#btn_logout").click(()=>{
-            if (window.confirm("Are you sure ypu want to log out?")) {
+            if (window.confirm("Are you sure you want to log out?")) {
                 $.post("../ajax.php",{action:"log_out"},(data)=>{
                     window.location = "../index.php";
                 });

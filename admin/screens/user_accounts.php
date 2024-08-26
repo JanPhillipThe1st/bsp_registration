@@ -23,25 +23,13 @@ if (!isset($_SESSION["username"])) {
         <div class="col-4">
             <h3 class="m-auto text-center">LIST OF USER ACCOUNTS</h3>
             <br>
-                <h6 class="m-auto text-center">S.Y.  2022-2023</h6>
+                <h6 class="m-auto text-center">S.Y. <?= $_SESSION["school_year_string"]?></h6>
         </div>
         <div class="col-4"></div>
     </div>
     <br>
-    <div class="row my-3">
-        <div class="col-2">
-        </div>
-        <div class="col-2">
-            <h4 class="text-end">Search by:</h4>
-        </div>
-        <div class="col-4">
-        <select class="form-control" name="select_account_filter" id="select_account_filter">
-                <option value="display_all_filter">ALL</option>
-            </select>
-        </div>
-        <div class="col-4"></div>
-    </div>
-    <table class="table m-auto w-75 table-bordered table-rounded">
+ 
+    <table class="table m-auto w-75 table-bordered table-rounded" id="students_table">
         <thead class="bg-success text-white">
             <tr>
                 <th>#</th>
@@ -52,59 +40,522 @@ if (!isset($_SESSION["username"])) {
                 <th>Address</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody id="table_data">
         </tbody>
-        <tfoot>
+        <tfoot class="bg-success text-white">
             <tr>
-                <td colspan="3"> <button class="btn btn-success">Print</button></td>
+                <th>#</th>
+                <th>Date of Registration</th>
+                <th>User ID</th>
+                <th>User Type</th>
+                <th>User Account</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Action</th>
             </tr>
         </tfoot>
     </table>
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col-1">
+                    <button class="btn btn-success">Print</button>
+                </div>
+                <div class="col-2">
+                    <button class="btn rounded border border-success" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>   
+                </div>
+            </div>
+        </div>
+        <div class="col-8"></div>
+    </div>
+</div>
+
+<div class="modal fade " id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+                <div class="modal-header">
+                        <h5 class="modal-title text-success">USER INFORMATION FORM</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+            <div class="modal-body">
+                <input type="hidden" name="editStudentID" id="editStudentID">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Photo column -->
+                        <div class="col-2">
+                            <div class="row my-4">
+                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="Student Photo Thumbnail" id="edit_student_photo_preview" >
+                                <form action="screens/upload_student_photo.php" method="post" enctype="multipart/form-data" >    
+                                    <div class="form-group">
+                                        <label for="edit_student_photo">Select Photo</label>
+                                        <input type="hidden" name="edit_student_photo_name" id="edit_student_photo_name">
+                                        <input type="file" class="form-control-file" name="edit_student_photo" id="edit_student_photo" placeholder="Select Photo" aria-describedby="fileHelpId">
+                                        <button type="submit" name="submit" class="form-control">Upload</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="row">
+                                <h4>Student ID:</h4>
+                            </div>
+                            <div class="row p-1 rounded border border-secondary text-center">
+                                <h5 id="student_id">000-0001</h5>
+                            </div>
+                        </div>
+                        <!-- Spacing -->
+                        <div class="col-1"></div>
+                        <!-- Information Column -->
+                        <div class="col-9">
+                            <div class="row ">
+                                <p class="text-end">
+                                    Date of registration:
+                                    <strong id="edit_student_date_of_registration">09-06-2024</strong>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="row">
+                                        <h5>Full Name:</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="First name" id="edit_student_first_name">
+                                    </div>
+                                    <div class="row">
+                                        <h5>Address:</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="edit_student_barangay">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Middle name" id="edit_student_middle_name">
+                                    </div>
+                                    <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Municipality / City" id="edit_student_city">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                <div class="row">
+                                <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Last name" id="edit_student_last_name">
+                                    </div>
+                                    <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Province" id="edit_student_province" >
+                                    </div>
+                                </div>
+                                <div class="col-2 mx-2">
+                                <div class="row">
+                                    <h5>Contact:</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="email" class="form-control" placeholder="Email" id="edit_student_email">
+                                    </div>
+                                    <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="number" class="form-control" placeholder="Phone" id="edit_student_phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">
+                                <div class="row pt-5">
+                                        <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row py-3 text-end">
+                                        <p>Guardian:</p>
+                                    </div>
+                                    <div class="row py-3 text-end">
+                                        <p>Guardian's Phone #:</p>
+                                    </div>
+                                    <div class="row py-3 text-end">
+                                        <p>Permanent Address:</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row pt-5">
+                                        <h5>In case of emergency:</h5>
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="email" class="form-control" placeholder="Enter guardian name here..." id="edit_student_emergency_guardian">
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="email" class="form-control" placeholder="Enter guardian phone here..." id="edit_student_emergency_guardian_phone">
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="email" class="form-control" placeholder="Enter guardian address here..." id="edit_student_emergency_guardian_address">
+                                    </div>
+                                </div>
+                                <div class="col-2 mx-2">
+                                    <div class="row pt-5  w-100">
+                                        <h5>Grade:</h5>
+                                    </div>
+                                    <div class="row  w-100">
+                                        <select class="form-control" id="edit_student_grade">
+                                            <option value="1">Grade 1</option>
+                                            <option value="2">Grade 2</option>
+                                            <option value="3">Grade 3</option>
+                                            <option value="4">Grade 4</option>
+                                            <option value="5">Grade 5</option>
+                                            <option value="6">Grade 6</option>
+                                        </select>
+                                    </div>
+                                    <div class="row  w-100"  >
+                                        <h5>Section:</h5>
+                                    </div>
+                                    <div class="row w-100">
+                                        <input type="text" class="form-control" placeholder="Enter section here..." id="edit_student_section">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirm_edit_student" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+                <div class="modal-header">
+                        <h5 class="modal-title text-success">USER INFORMATION FORM</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Photo column -->
+                        <div class="col-2">
+                            <div class="row my-4">
+                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="add_user_photo_preview" >
+                                <form action="screens/upload_user_photo.php" method="post" enctype="multipart/form-data" >    
+                                    <div class="form-group">
+                                        <label for="add_user_photo">Select Photo</label>
+                                        <input type="hidden" name="add_user_photo_name" id="add_user_photo_name">
+                                        <input type="file" class="form-control-file" name="add_user_photo" id="add_user_photo" placeholder="Select Photo" aria-describedby="fileHelpId">
+                                        <button type="submit" name="submit" class="form-control">Upload</button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="row">
+                                <h4>Student ID:</h4>
+                            </div>
+                            <div class="row p-1 rounded border border-secondary text-center">
+                                <h5 id="student_id">000-0001</h5>
+                            </div>
+                        </div>
+                        <!-- Spacing -->
+                        <div class="col-1"></div>
+                        <!-- Information Column -->
+                        <div class="col-9">
+                            <div class="row ">
+                                <p class="text-end">
+                                    Date of registration:
+                                    <strong id="add_user_date_of_registration">09-06-2024</strong>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="row">
+                                        <h5>Full Name:</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="First name" id="add_user_first_name">
+                                    </div>
+                                    <div class="row">
+                                        <h5>Address:</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="add_user_barangay">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Middle name" id="add_user_middle_name">
+                                    </div>
+                                    <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Municipality / City" id="add_user_city">
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                <div class="row">
+                                <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Last name" id="add_user_last_name">
+                                    </div>
+                                    <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" placeholder="Province" id="add_user_province" >
+                                    </div>
+                                </div>
+                                <div class="col-2 mx-2">
+                                <div class="row">
+                                    <h5>Contact:</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="email" class="form-control" placeholder="Email" id="add_user_email">
+                                    </div>
+                                    <div class="row">
+                                    <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row">
+                                        <input type="number" class="form-control" placeholder="Phone" id="add_user_phone">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-5">
+                                <div class="row pt-5">
+                                        <h5 class="text-white">--</h5>
+                                    </div>
+                                    <div class="row py-3 text-end">
+                                        <p>Username:</p>
+                                    </div>
+                                    <div class="row py-3 text-end">
+                                        <p>Password:</p>
+                                    </div>
+                                    <div class="row py-3 text-end">
+                                        <p>Confirm Password:</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row pt-5">
+                                        <h5>Account information</h5>
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="text" class="form-control" placeholder="Enter username here..." id="add_user_username">
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="password" class="form-control" placeholder="Enter password..." id="add_user_password">
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="password" class="form-control" placeholder="Confirm password..." id="add_user_confirm_password">
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="confirm_add_user" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel">Message From System:</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 id="modalMessage">Your image has been successfully uploaded!</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
 </div>
 <script src="../assets/jquery-3.6.1.min.js"></script>
+<script src="../assets/js/DataTables/datatables.min.js"></script>
 <script>
      $(document).ready(()=>{
-        //first define an array of users
-        var user_accounts_map = [
-            {dor:"08/10/2022",user_id:"234-098",user_type:"Admin",user_account:"CRUZ, JANE O.",address:"NAPOLAN, PAGADIAN CITY, ZDS",email:"jane@gmail.com",phone:"09472018394"},
-            {dor:"08/10/2022",user_id:"100",user_type:"IT Coordinator",user_account:"LUMAAD, JOEL SARAJENA",address:"BOMVA, PAGADIAN CITY, ZDS",email:"joel@gmail.com",phone:"09867492019"},
-            {dor:"08/10/2022",user_id:"456",user_type:"School Coordinator",user_account:"NANO, EFREN M.",address:"SAN JOSE, PAGADIAN CITY, ZDS",email:"fren@gmail.com",phone:"09867492019"},
-        ];
-        var table_data = $("#table_data");
-        table_data.empty();
-        user_accounts_map.forEach((user_account,account_index)=>{
-            table_data.append(
-                $("<tr></tr>")
-                .append(
-                    $("<td>"+(parseInt(account_index)+1)+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.dor+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.user_id+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.user_type+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.user_account+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.address+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.email+"</td>")
-                )
-                .append(
-                    $("<td>"+user_account.phone+"</td>")
-                )
-                .click(()=>{
-                    alert(user_account.user_account+" selected.");
-                })
-            );
-        });
+        //Get query string parameters to display the message
+        const queryString = window.location.search;
+        console.log(queryString);
+        const urlParams = new URLSearchParams(queryString);
+        const message = urlParams.get('message');
+        const filename = urlParams.get('filename');
+
+        console.log(message);
+
+        if (filename != undefined){
+            $("#add_student_photo_name").val(filename);
+            $("#add_student_photo_preview").attr("src","../img/students/"+filename);
+        }
+        console.log(filename);
+        getStudentsTable();
+        function getStudentsTable(){
+            var table_data = $("#table_data");
+            table_data.empty();
+        $.post("../ajax.php",{action:"get_users"},(response,status)=>{
+            var users_table = JSON.parse(response);
+            users_table.forEach((user,user_index)=>{
+                table_data.append(
+                    $("<tr></tr>")
+                    .append(
+                        $("<td>"+(parseInt(user_index)+1)+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.date_registered+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.userID+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.access_type+"</td>")
+                    )
+                    .append(
+                        $("<td>"+ user.account_last_name +", "+  user.account_first_name + " " + user.account_middle_name.substring(0,1)  +". </td>")
+                    )
+                    .append(
+                        $("<td>"+user.account_barangay+", "+user.account_city+", "+user.account_province+" </td>")
+                    )
+                    .append(
+                        $("<td>"+user.account_email+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.account_phone+"</td>")
+                    )
+                    .append(
+                    )
+                    .append(
+                        $("<td></td>")
+                        .append(
+                            $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                                //Populate the input fields
+                                $("#edit_student_first_name").val(student.student_first_name);
+                                $("#edit_student_middle_name").val(student.student_middle_name);
+                                $("#edit_student_last_name").val(student.student_last_name);
+                                $("#edit_student_grade").val(student.student_grade);
+                                $("#edit_student_section").val(student.student_section);
+                                $("#edit_student_photo_name").val(student.student_photo);
+                                $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
+                                $("#edit_student_barangay").val(student.student_barangay);
+                                $("#edit_student_city").val(student.student_city);
+                                $("#edit_student_province").val(student.student_province);
+                                $("#edit_student_email").val(student.student_email);
+                                $("#edit_student_phone").val(student.student_phone);
+                                $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
+                                $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
+                                $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
+                                
+                                $("#editStudentID").val(user.accountID);
+                                $("#editUserModal").modal("toggle");
+                            })
+                        )
+                        .append(
+                            $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                                if (window.confirm("Are you sure you want to delete "+student.student_first_name +" "+student.student_last_name+"'s records?")) {
+                                    $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
+                                        window.location = "index.php?page=students&message=Student Data Deleted Successfully!";
+                                    });
+                                }
+                            })
+                        )
+                    )
+                );
+            });
+
+            $('#students_table tfoot th').each(function (i) {
+                    var title = $('#students_table thead th')
+                        .eq($(this).index())
+                        .text();
+                    $(this).html(
+                        '<input type="text" class="form-control w-100" placeholder="' + title + '" data-index="' + i + '" />'
+                    );
+                });
+
+                var table = $('#students_table').DataTable();
+            
+                // Filter event handler
+                $(table.table().container()).on('keyup', 'tfoot input', function () {
+                    table
+                        .column($(this).data('index'))
+                        .search(this.value)
+                        .draw();
+                });
+                    });
+            
+        }
+
+      $("#confirm_add_student").on("click",(event_info)=>{
+        if (window.confirm("Are you sure you want to add this student?")) {
+            $.post("../ajax.php",{action:"add_student",
+                    student_first_name:$("#add_student_first_name").val(),
+                    student_middle_name:$("#add_student_middle_name").val(),
+                    student_last_name:$("#add_student_last_name").val(),
+                    student_grade:$("#add_student_grade").val(),
+                    student_photo:$("#add_student_photo_name").val(),
+                    student_section:$("#add_student_section").val(),
+                    student_barangay:$("#add_student_barangay").val(),
+                    student_city:$("#add_student_city").val(),
+                    student_province:$("#add_student_province").val(),
+                    student_email:$("#add_student_email").val(),
+                    student_phone:$("#add_student_phone").val(),
+                    student_emergency_guardian:$("#add_student_emergency_guardian").val(),
+                    student_emergency_phone:$("#add_student_emergency_guardian_phone").val(),
+                    student_emergency_address:$("#add_student_emergency_guardian_address").val(),
+            },(data)=>{
+                window.location ="index.php?message=Student added successfully!";
+            });
+        }
+      });
+      $("#confirm_edit_student").on("click",(event_info)=>{
+        if (window.confirm("Are you sure you want to update this student's information?")) {
+            $.post("../ajax.php",{action:"update_student",
+                    studentID:$("#editStudentID").val(),
+                    student_first_name:$("#edit_student_first_name").val(),
+                    student_middle_name:$("#edit_student_middle_name").val(),
+                    student_last_name:$("#edit_student_last_name").val(),
+                    student_grade:$("#edit_student_grade").val(),
+                    student_photo:$("#edit_student_photo_name").val(),
+                    student_section:$("#edit_student_section").val(),
+                    student_barangay:$("#edit_student_barangay").val(),
+                    student_city:$("#edit_student_city").val(),
+                    student_province:$("#edit_student_province").val(),
+                    student_email:$("#edit_student_email").val(),
+                    student_phone:$("#edit_student_phone").val(),
+                    student_emergency_guardian:$("#edit_student_emergency_guardian").val(),
+                    student_emergency_phone:$("#edit_student_emergency_guardian_phone").val(),
+                    student_emergency_address:$("#edit_student_emergency_guardian_address").val(),
+            },(data)=>{
+                window.location ="index.php?message=Student information updated successfully!";
+            });
+        }
+      });
     });
 </script>

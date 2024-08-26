@@ -7,6 +7,8 @@ if($action == 'login'){
     $resultObject = new stdClass();
     $username = filter_input(INPUT_POST,"username");
     $password = filter_input(INPUT_POST,"password");
+    $password = filter_input(INPUT_POST,"password");
+
     // $result=$conn->query("SELECT * FROM `users` WHERE `username` = '".$username."' AND `password` = '".md5(hash("sha256",($password)))."' AND `type` = '".$type."' ;");
     $result=$conn->query("SELECT * FROM `user` WHERE `username` = '".$username."' AND `password` = '$password';");
     $row = $result->fetch_assoc();
@@ -60,6 +62,59 @@ if($action == 'get_students'){
     }
     echo json_encode($resultObject);
 }
+if($action == 'get_users'){
+    $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON  `account`.`userID` = `user`.`userID` INNER JOIN `school` ON `school`.`schoolID` = `account`.`schoolID`;");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->userID = $row["userID"];
+        $room_object->username = $row["username"];
+        $room_object->password = $row["password"];
+        $room_object->access_type = $row["access_type"];
+        $room_object->full_name = $row["full_name"];
+        $room_object->accountID = $row["acccountID"];
+        $room_object->userID = $row["userID"];
+        $room_object->schoolID = $row["schoolID"];
+        $room_object->account_first_name = $row["account_first_name"];
+        $room_object->account_middle_name = $row["account_middle_name"];
+        $room_object->account_last_name = $row["account_last_name"];
+        $room_object->account_grade = $row["account_grade"];
+        $room_object->account_section = $row["account_section"];
+        $room_object->account_photo = $row["account_photo"];
+        $room_object->account_barangay = $row["account_barangay"];
+        $room_object->account_city = $row["account_city"];
+        $room_object->account_province = $row["account_province"];
+        $room_object->account_email = $row["account_email"];
+        $room_object->account_phone = $row["account_phone"];
+        $room_object->districtID = $row["districtID"];
+        $room_object->school_name = $row["school_name"];
+        $room_object->school_address = $row["school_address"];
+        $room_object->date_registered = $row["date_registered"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'get_schools'){
+    $rooms_query=$conn->query("SELECT * FROM school");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->school_name = $row["school_name"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'get_schools_by_district'){
+    $districtID = filter_input(INPUT_POST,"districtID");
+    $rooms_query=$conn->query("SELECT * FROM school WHERE districtID = '$districtID'");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->school_name = $row["school_name"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
 if($action == 'log_out'){
     session_destroy();
 }
@@ -100,6 +155,18 @@ if($action == 'get_schedules'){
         array_push($resultObject,$room_object);
     }
     echo json_encode($resultObject);
+}
+if($action == 'get_page_information'){
+    $rooms_query=$conn->query("SELECT * FROM `page_information`;");
+    $room_object = new stdClass();
+    $row = $rooms_query->fetch_assoc();
+    if($row > 0){
+        $room_object->address = $row["address"];
+        $room_object->contact_globe = $row["contact_globe"];
+        $room_object->contact_smart = $row["contact_smart"];
+        $room_object->contact_email = $row["contact_email"];
+    }
+    echo json_encode($room_object);
 }
 if($action == 'add_student'){
     $student_first_name = filter_input(INPUT_POST,"student_first_name");
@@ -152,39 +219,20 @@ if($action == 'update_student'){
     `student_emergency_phone`='$student_emergency_phone',`student_emergency_address`='$student_emergency_address' WHERE `studentID`='$studentID';");
   
 }
+if($action == 'edit_page_information'){
+    $address = filter_input(INPUT_POST,"address");
+    $contact_globe = filter_input(INPUT_POST,"contact_globe");
+    $contact_smart = filter_input(INPUT_POST,"contact_smart");
+    $contact_email = filter_input(INPUT_POST,"contact_email");
+
+    $conn->query("UPDATE `page_information` SET
+    `address`='$address',`contact_globe`='$contact_globe',
+    `contact_smart`='$contact_smart',`contact_email`='$contact_email';");
+}
 if($action == 'delete_student'){
     $studentID = filter_input(INPUT_POST,"studentID");
 
     $add_students_query=$conn->query("DELETE FROM `student` WHERE `studentID`='$studentID';");
-  
-}
-if($action == 'add_schedule'){
-    $course_number = filter_input(INPUT_POST,"course_number");
-    $course_code =  filter_input(INPUT_POST,"course_code");
-    $subject_description =  filter_input(INPUT_POST,"subject_description");
-    $time_slot_from =  filter_input(INPUT_POST,"time_slot_from");
-    $time_slot_to =  filter_input(INPUT_POST,"time_slot_to");
-    $select_teacher =  filter_input(INPUT_POST,"select_teacher");
-    $room_selection =  filter_input(INPUT_POST,"room_selection");
-
-    $rooms_query=$conn->query("INSERT INTO `schedule`(`ID`, `course_code`, `subject_description`, `time_from`, `time_until`, `room_ID`, `teacher_ID`) 
-    VALUES ('$course_number','$course_code','$subject_description','$time_slot_from','$time_slot_to','$room_selection','$select_teacher')");
-  
-}
-if($action == 'add_schedule'){
-    $room_number = filter_input(INPUT_POST,"room_number");
-    $room_floor =  filter_input(INPUT_POST,"room_floor");
-    $seating_capacity =  filter_input(INPUT_POST,"seating_capacity");
-    $rooms_query=$conn->query(" INSERT INTO `room`( `room_number`, `floor`, `seating_capacity`) 
-    VALUES ('$room_number','$room_floor','$seating_capacity');");
-  
-}
-if($action == 'add_teacher'){
-    $teacher_name = filter_input(INPUT_POST,"teacher_name");
-    $teacher_address =  filter_input(INPUT_POST,"teacher_address");
-    $teacher_contact =  filter_input(INPUT_POST,"teacher_contact");
-    $rooms_query=$conn->query(" INSERT INTO `teacher`(`teacher_name`, `teacher_address`, `teacher_contact`) 
-    VALUES ('$teacher_name','$teacher_address','$teacher_contact');");
   
 }
 ?>

@@ -1,6 +1,7 @@
 :root {
     scroll-behavior: smooth;
     --main_color: rgb(61, 199, 56);
+    --background-color: #726C1E;
     --white: #ffffff;
   }
 nav{
@@ -13,4 +14,43 @@ nav{
     transition: 600ms;
     background-color: var(--main_color);
     color: var(--white);
+}
+.contact_us_button{
+    border-radius: 50px !important;
+    background-color: #72ca5c;
+    font-size: 1.2em !important;
+}
+.rounded-element{
+    border-radius: 20px !important;
+    font-size: 1.2em !important;
+    border: 1px solid #6ee06e;
+}
+.contact-us-card{
+    border-radius: 20px;
+    border: 1px solid #6ee06e;
+    padding: 1%;
+    padding-bottom: 3%;
+    margin: auto 3vw !important;
+    height: 60vh !important;
+}
+.template-card{
+    border-radius: 20px !important;
+    border: 1px solid #6ee06e !important;
+    padding: 1%;
+    padding-bottom: 3%;
+}
+.tag-text{
+    background-color: var(--background-color);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2%;
+    border-radius: 10px;
+    color: white;
+    margin-top: 5% !important;
+}
+.contact-us-card>*{
+    margin: auto;
 }

@@ -36,14 +36,14 @@ if (!isset($_SESSION["username"])) {
         </div>
         <div class="col-4">
         <select class="form-control" name="select_district" id="select_district">
-                <option value="district_1">District 1</option>
-                <option value="district_2">District 2</option>
-                <option value="district_3">District 3</option>
+                <option value="1">District 1</option>
+                <option value="2">District 2</option>
+                <option value="3">District 3</option>
             </select>
         </div>
         <div class="col-4"></div>
     </div>
-    <table class="table m-auto w-75 table-bordered table-rounded">
+    <table class="table m-auto w-75 table-bordered table-rounded" id="schools_table">
         <thead class="bg-success text-white">
             <tr>
                 <th>#</th>
@@ -54,31 +54,84 @@ if (!isset($_SESSION["username"])) {
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3"> <button class="btn btn-success">Print</button></td>
+                <td colspan="3"> <button class="btn btn-success" id="print_schools">Print</button></td>
             </tr>
         </tfoot>
     </table>
+   
+    <table id="schools_table_printing" class=" w-100 table-bordered table-rounded d-none">
+    <thead class="bg-dark text-white">
+            <tr style="border:1px solid black;">
+                <th style='border:1px solid black'>#</th>
+                <th style='border:1px solid black'>School name</th>
+            </tr>
+        </thead>
+        <tbody id="table_data_printing">
+        </tbody>
+    </table>
 </div>
 <script src="../assets/jquery-3.6.1.min.js"></script>
+<script src="../assets/js/printThis/printThis.js"></script>
 <script>
      $(document).ready(()=>{
-        //first define an array of school years
-        var school_name_map = ["BALANGASAN ELEMENTARY SCHOOL","CAMP ABELON ELEMENTARY SCHOOL","STA. LUCIA ELEMENTARY SCHOOL",
-        "NAPOLAN NATIONAL HIGH SCHOOL","BOMBA NATIONAL HIGH SCHOOL","BALANGASAN ELEMENTARY SCHOOL"];
-        var table_data = $("#table_data");
-        table_data.empty();
-        school_name_map.forEach((school_name,sn_index)=>{
-            table_data.append(
-                $("<tr></tr>")
-                .append(
-                    $("<td>"+(parseInt(sn_index)+1)+"</td>")
-                )
-                .append(
-                    $("<td>"+school_name+"</td>")
-                ).click(()=>{
-                    alert(school_name+" selected.");
-                })
-            );
+        // var school_name_map = ["BALANGASAN ELEMENTARY SCHOOL","CAMP ABELON ELEMENTARY SCHOOL","STA. LUCIA ELEMENTARY SCHOOL",
+        // "NAPOLAN NATIONAL HIGH SCHOOL","BOMBA NATIONAL HIGH SCHOOL","BALANGASAN ELEMENTARY SCHOOL"];
+        $("#print_schools").click(()=>{
+            alert("Printing...");
+            // $("#schools_table").remove("tfoot").printThis();
+            $("#schools_table_printing").printThis({
+                importCSS: false,
+                header:
+            "<h3 class='m-auto text-center'>LIST OF DISTRICT "+$("#select_district").val()+" SCHOOLS</h3>"+
+                "<h6 class='m-auto text-center'>S.Y.  2022-2023</h6>"
+            });
+        });
+        $.post("../ajax.php",{action:"get_schools"},(data)=>{
+            var school_map = JSON.parse(data);
+            var table_data = $("#table_data");
+            var table_data_printing = $("#table_data_printing");
+            table_data.empty();
+            school_map.forEach((school,sn_index)=>{
+                table_data.append(
+                    $("<tr></tr>")
+                    .append(
+                        $("<td>"+(parseInt(sn_index)+1)+"</td>")
+                    )
+                    .append(
+                        $("<td>"+school["school_name"]+"</td>")
+                    )
+ 
+                );
+                table_data_printing.append(
+                    $("<tr></tr>")
+                    .append(
+                        $("<td style='border:1px solid black'>"+(parseInt(sn_index)+1)+"</td>")
+                    )
+                    .append(
+                        $("<td style='border:1px solid black'>"+school["school_name"]+"</td>")
+                    )
+ 
+                );
+            });
+            
+        });
+        $("#select_district").on("change",(e)=>{
+            $.post("../ajax.php",{action:"get_schools_by_district",districtID:e.target.value},(data)=>{
+            var school_map = JSON.parse(data);
+            var table_data = $("#table_data");
+            table_data.empty();
+            school_map.forEach((school,sn_index)=>{
+                table_data.append(
+                    $("<tr></tr>")
+                    .append(
+                        $("<td>"+(parseInt(sn_index)+1)+"</td>")
+                    )
+                    .append(
+                        $("<td>"+school["school_name"]+"</td>")
+                    )
+                );
+            });
+        });
         });
     });
 </script>

@@ -6,6 +6,8 @@ if (!isset($_SESSION["username"])) {
 ?>
 <link rel="stylesheet" href="../assets/vendor/boxicons/css/boxicons.css">
 <link rel="stylesheet" href="../assets/vendor/boxicons/css/animations.css">
+<link rel="stylesheet" href="../assets/js/DataTables/datatables.css">
+<link rel="stylesheet" href="../assets/js/DataTables/Buttons-2.4.1/css/buttons.dataTables.css">
 <style>
     tr{
         transition: 300ms;
@@ -59,11 +61,29 @@ if (!isset($_SESSION["username"])) {
             </tr>
         </tfoot>
     </table>
+
+    <table class="table m-auto table-bordered table-rounded" style="display: none;" id="students_table_report">
+        <thead class="bg-success text-white">
+            <tr>
+                <th>#</th>
+                <th>Date of Registration</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Section</th>
+                <th>Rank</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="table_data_report">
+        </tbody>
+    </table>
+
     <div class="row">
         <div class="col-8">
             <div class="row">
                 <div class="col-1">
-                    <button class="btn btn-success">Print</button>
+                    <button class="btn btn-success" id="print_table">Print</button>
                 </div>
                 <div class="col-2">
                     <button class="btn rounded border border-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student</button>   
@@ -255,7 +275,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-2">
                             <div class="row my-4">
                                 <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="Student Photo Thumbnail" id="add_student_photo_preview" >
-                                <form action="screens/upload_student_photo.php" method="post" enctype="multipart/form-data" >    
+                                <form action="screens/upload_user_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
                                         <label for="add_student_photo">Select Photo</label>
                                         <input type="hidden" name="add_student_photo_name" id="add_student_photo_name">
@@ -419,8 +439,11 @@ if (!isset($_SESSION["username"])) {
         </div>
     </div>
 </div>
-<script src="../assets/jquery-3.6.1.min.js"></script>
-<script src="../assets/js/DataTables/datatables.min.js"></script>
+<script src="../assets/js/DataTables/datatables.js"></script>
+<script src="../assets/js/DataTables/Buttons-2.4.1/js/dataTables.buttons.js"></script>
+<script src="../assets/js/DataTables/Buttons-2.4.1/js/buttons.dataTables.js"></script>
+<script src="../assets/js/DataTables/Buttons-2.4.1/js/buttons.print.js"></script>
+<script src="../assets/js/printThis/printThis.js"></script>
 <script>
      $(document).ready(()=>{
         //Get query string parameters to display the message
@@ -440,6 +463,7 @@ if (!isset($_SESSION["username"])) {
         getStudentsTable();
         function getStudentsTable(){
             var table_data = $("#table_data");
+            var table_data_report = $("#table_data_report");
             table_data.empty();
         $.post("../ajax.php",{action:"get_students"},(response,status)=>{
             var students_table = JSON.parse(response);
@@ -525,6 +549,33 @@ if (!isset($_SESSION["username"])) {
                         )
                     )
                 );
+                table_data_report.append(
+                    $("<tr></tr>")
+                    .append(
+                        $("<td>"+(parseInt(student_index)+1)+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.date_registered+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.studentID+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.student_first_name +" "+ studentObject.student_middle_name + " " +  studentObject.student_last_name+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.student_grade+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.student_section+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.student_rank+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.student_email+"</td>")
+                    )
+                );
             });
 
             $('#students_table tfoot th').each(function (i) {
@@ -536,7 +587,8 @@ if (!isset($_SESSION["username"])) {
                     );
                 });
 
-                var table = $('#students_table').DataTable();
+                new DataTable('#students_table');
+
             
                 // Filter event handler
                 $(table.table().container()).on('keyup', 'tfoot input', function () {
@@ -571,10 +623,18 @@ if (!isset($_SESSION["username"])) {
             });
         }
       });
+      $("#print_table").click(()=>{
+        //Immutable type 
+        let students_table = $("#students_table_report").clone();
+        students_table.show();
+        students_table.printThis({    
+            importCSS: true,   // import parent page css
+            importStyle: true,  });
+        });
       $("#confirm_edit_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to update this student's information?")) {
             $.post("../ajax.php",{action:"update_student",
-                    studentID:$("#edit_student_first_name").val(),
+                    studentID:$("#editStudentID").val(),
                     student_first_name:$("#edit_student_first_name").val(),
                     student_middle_name:$("#edit_student_middle_name").val(),
                     student_last_name:$("#edit_student_last_name").val(),

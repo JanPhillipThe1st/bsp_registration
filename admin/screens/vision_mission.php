@@ -23,23 +23,30 @@ if (!isset($_SESSION["username"])) {
 <body>
  
     <div class="container-fluid border rounded border-success m-auto w-100 my-5 p-3 shadow" style="overflow:hidden !important;background-color:#fafafa !important;">
+        <h2 class="text-center">VISION & MISSION</h2>
         <div class="row ">
                 <div class="col-1">
                 </div>
-                <div class="col-10 mx-3 ">
+                <div class="col-5 mx-3 ">
                     <div class="row w-50 m-auto py-2 text-center ">
-                        <h1>HISTORY</h1>
+                        <h1>Vision</h1>
                     </div>
                     <div class="row  m-auto template-card py-5  text-center text-success" >
                         <h3  >
-                        The Boy  Scout  of the Philippines was legally established in 1936 in Manila trough the work of  three Men :  Josephus Emile Hamilton  Stevenot (1888-1943) ,  Tomas  Confesor  y  Valenzuela (1891-1951) , and  Manuel Luis  Quezon  y  Molina  (1878-1944) , and the organization  started activities in 1938.  
-                        <br/>
-                        <br/>
-                        In Zamboanga  del  Sur ,   Lt. Kiser observe the same  aimless  behavior  of  boys  and decide to push their   plan  of  forming  Boy  Scout  Troops. And so, the first   Filipino  troop  consisting  of 26  Boys  was  formed  on November  15,  1914.
+                            Foremost in preparing the<br/>youth to become agents of<br/>change in communities,<br/>guided by the Scout Oath<br/>and Law.
                         </h3>
                     </div>
                 </div>
-      
+                <div class="col-5 mx-3 ">
+                    <div class="row w-50 m-auto py-2 text-center">
+                    <h1>Mission</h1>
+                    </div>
+                    <div class="row  m-auto template-card py-5 text-center text-success" >
+                        <h3 >
+                            To help the youth develop <br/> values and acquire<br/>competencies  to become<br/>responsible citizens and<br/>capable leaders anchored<br/>on the Scout Oath and Law.
+                        </h3>
+                    </div>
+                </div>
                 <div class="col-1">
                 </div>
             </div>
