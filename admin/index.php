@@ -18,6 +18,8 @@ if (isset($_SESSION["username"])) {
     <meta name="viewport" content="width=1920, initial-scale=1.0">
     <title>BSP Registration System</title>
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/vendor/boxicons/css/boxicons.css">
     <link rel="stylesheet" href="../assets/vendor/chart.js/chart.js">
     <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="../assets/img/BSPLogo.png">
@@ -51,7 +53,7 @@ if (isset($_SESSION["username"])) {
             <h3>Welcome, <?= $_SESSION["full_name"]?>!</h3>
         </div>
         <div class="col-2">
-            <button class="btn text-secondary" id="btn_logout">Log out</button>
+            <button class="btn text-white btn-block btn-secondary" id="btn_logout"> <i class='bx bx-power-off' ></i></button>
         </div>
         
         <div class="col-8 ">
