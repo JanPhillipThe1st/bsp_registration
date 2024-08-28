@@ -83,6 +83,12 @@
                             $("#loginSuccess").click(()=>{
                             window.location = "teacher/index.php";});
                             break;
+                            case "it_coordinator":
+                            $("#loginStatusMessage").text(" You have successfully logged in as IT Coordinator!");
+                            $("#loginStatus").modal("toggle");
+                            $("#loginSuccess").click(()=>{
+                            window.location = "it_coordinator/index.php";});
+                            break;
                         default:
                             break;
                     }
