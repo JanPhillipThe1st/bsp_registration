@@ -15,7 +15,7 @@ if (!isset($_SESSION["username"])) {
     tr:hover{
         transition: 300ms;
         cursor: pointer;
-        background-color: rgb(61, 199, 56);
+        background-color: rgb(61, 199, 56) !important;
         color: white;
     }
 </style>
@@ -62,22 +62,23 @@ if (!isset($_SESSION["username"])) {
         </tfoot>
     </table>
 
-    <table class="table m-auto table-bordered table-rounded" style="display: none;" id="students_table_report">
-        <thead class="bg-success text-white">
-            <tr>
-                <th>#</th>
-                <th>Date of Registration</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Grade</th>
-                <th>Section</th>
-                <th>Rank</th>
-                <th>Email</th>
+    <table id="students_table_printing" class=" w-100 table-bordered table-rounded d-none">
+    <thead class="bg-dark text-white">
+            <tr style="border:1px solid black;">
+                <th style='border:1px solid black'>#</th>
+                <th style='border:1px solid black'>Date of Registration</th>
+                <th style='border:1px solid black'>Student ID</th>
+                <th style='border:1px solid black'>Name</th>
+                <th style='border:1px solid black'>Grade</th>
+                <th style='border:1px solid black'>Section</th>
+                <th style='border:1px solid black'>Rank</th>
+                <th style='border:1px solid black'>Email</th>
             </tr>
         </thead>
-        <tbody id="table_data_report">
+        <tbody id="table_data_printing">
         </tbody>
     </table>
+
 
     <div class="row">
         <div class="col-8">
@@ -275,7 +276,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-2">
                             <div class="row my-4">
                                 <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="Student Photo Thumbnail" id="add_student_photo_preview" >
-                                <form action="screens/upload_user_photo.php" method="post" enctype="multipart/form-data" >    
+                                <form action="screens/upload_student_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
                                         <label for="add_student_photo">Select Photo</label>
                                         <input type="hidden" name="add_student_photo_name" id="add_student_photo_name">
@@ -463,7 +464,7 @@ if (!isset($_SESSION["username"])) {
         getStudentsTable();
         function getStudentsTable(){
             var table_data = $("#table_data");
-            var table_data_report = $("#table_data_report");
+            var table_data_report = $("#table_data_printing");
             table_data.empty();
         $.post("../ajax.php",{action:"get_students"},(response,status)=>{
             var students_table = JSON.parse(response);
@@ -550,30 +551,30 @@ if (!isset($_SESSION["username"])) {
                     )
                 );
                 table_data_report.append(
-                    $("<tr></tr>")
+                    $("<tr style='border:1px solid black'></tr>")
                     .append(
-                        $("<td>"+(parseInt(student_index)+1)+"</td>")
+                        $("<td style='border:1px solid black'>"+(parseInt(student_index)+1)+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.date_registered+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.date_registered+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.studentID+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.studentID+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.student_first_name +" "+ studentObject.student_middle_name + " " +  studentObject.student_last_name+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.student_first_name +" "+ studentObject.student_middle_name + " " +  studentObject.student_last_name+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.student_grade+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.student_grade+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.student_section+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.student_section+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.student_rank+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.student_rank+"</td>")
                     )
                     .append(
-                        $("<td>"+studentObject.student_email+"</td>")
+                        $("<td style='border:1px solid black'>"+studentObject.student_email+"</td>")
                     )
                 );
             });
@@ -625,11 +626,14 @@ if (!isset($_SESSION["username"])) {
       });
       $("#print_table").click(()=>{
         //Immutable type 
-        let students_table = $("#students_table_report").clone();
+        let students_table = $("#students_table_printing").clone();
         students_table.show();
-        students_table.printThis({    
-            importCSS: true,   // import parent page css
-            importStyle: true,  });
+        students_table.printThis({
+                importCSS: false,
+                header:
+            "<h3 class='m-auto text-center'>LIST OF STUDENTS</h3>"+
+                "<h6 class='m-auto text-center'>S.Y.  2024-2025</h6>"
+            });
         });
       $("#confirm_edit_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to update this student's information?")) {

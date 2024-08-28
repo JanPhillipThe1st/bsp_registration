@@ -319,30 +319,6 @@ if (isset($_SESSION["username"])) {
             content.load("screens/contact_us.php");
         });
 
-        
-        $("#btn_account_settings").click(()=>{
-            //Get User Information
-            $.post("../ajax.php",{action:"get_current_teacher"},(current_teacher_query_response,current_teacher_query_status)=>{
-                var current_user_data = JSON.parse(current_teacher_query_response);
-
-                //TODO 
-                //Populate data
-                // $("#user_photo_preview").val(current_user_data.);
-                // $("#current_user_first_name").val(current_user_data.);
-                // $("#current_user_barangay").val(current_user_data.);
-                // $("#current_user_middle_name").val(current_user_data.);
-                // $("#current_user_city").val(current_user_data.);
-                // $("#current_user_last_name").val(current_user_data.);
-                // $("#current_user_province").val(current_user_data.);
-                // $("#current_user_email").val(current_user_data.);
-                // $("#current_user_phone").val(current_user_data.);
-                // $("#current_user_grade").val(current_user_data.);
-                // $("#current_user_section").val(current_user_data.);
-
-
-                $("#accountSettingsModal").modal("toggle");
-            });
-        });
         $("#btn_student").click(()=>{
             content.load("screens/students.php");
         });
@@ -360,6 +336,9 @@ if (isset($_SESSION["username"])) {
         });
         $("#btn_history").click(()=>{
             content.load("screens/history.php");
+        });
+        $("#btn_account_settings").click(()=>{
+            content.load("screens/account_settings.php");
         });
         $("#btn_logout").click(()=>{
             if (window.confirm("Are you sure you want to log out?")) {

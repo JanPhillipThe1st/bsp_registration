@@ -32,8 +32,6 @@
     <label for="password">Password</label>
     <input type="password" class="form-control bg-dark text-white" name="password" id="password"  placeholder="Enter your password here...">
     <button id="btn_login">Log in</button>
-    <center>OR</center>
-    <button id="btn_signup">Sign up</button>
     <a href="password_reset">Forgot Password</a>
 </div>
 </div>
