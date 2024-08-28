@@ -99,6 +99,7 @@ if($action == 'get_schools'){
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
+        $room_object->ID = $row["schoolID"];
         $room_object->school_name = $row["school_name"];
         array_push($resultObject,$room_object);
     }
@@ -193,6 +194,38 @@ if($action == 'add_student'){
      '$student_email', '$student_phone', '$student_emergency_guardian', '$student_emergency_phone', '$student_emergency_address') ;");
   
 }
+if($action == 'add_user'){
+    $user_first_name = filter_input(INPUT_POST,"add_user_first_name");
+    $user_middle_name = filter_input(INPUT_POST,"add_user_middle_name");
+    $user_last_name = filter_input(INPUT_POST,"add_user_last_name");
+    $user_photo = filter_input(INPUT_POST,"add_user_photo");
+    $user_username = filter_input(INPUT_POST,"add_user_username");
+    $user_password = filter_input(INPUT_POST,"add_user_password");
+    $user_account_grade = filter_input(INPUT_POST,"add_user_account_grade");
+    $user_section = "N/A";
+    $user_barangay = filter_input(INPUT_POST,"add_user_barangay");
+    $user_city = filter_input(INPUT_POST,"add_user_city");
+    $user_province = filter_input(INPUT_POST,"add_user_province");
+    $user_email = filter_input(INPUT_POST,"add_user_email");
+    $user_phone = filter_input(INPUT_POST,"add_user_phone");
+    $user_access_type = filter_input(INPUT_POST,"add_user_access_type");
+    $user_schoolID = filter_input(INPUT_POST,"add_user_school");
+    
+    $add_user_query=$conn->query("INSERT INTO `user`(`username`, `password`, `access_type`, `full_name`) 
+    VALUES ('$user_username', '$user_password', '$user_access_type', '$user_first_name  $user_last_name')");
+    $userID = $conn->insert_id;
+    echo $userID;
+    $conn->query("INSERT INTO `account`(`userID`, `schoolID`,
+     `account_first_name`, `account_middle_name`, `account_last_name`, `account_grade`,
+      `account_section`, `account_photo`, `account_barangay`, `account_city`, `account_province`,
+       `account_email`, `account_phone`) 
+       VALUES ('$userID', $user_schoolID,
+     '$user_first_name', '$user_middle_name', '$user_last_name', '$user_account_grade',
+      '$user_section', '$user_photo', '$user_barangay', '$user_city', '$user_province',
+       '$user_email', '$user_phone')");
+       
+  
+}
 if($action == 'update_student'){
     $studentID = filter_input(INPUT_POST,"studentID");
     $student_first_name = filter_input(INPUT_POST,"student_first_name");
@@ -217,6 +250,49 @@ if($action == 'update_student'){
     `student_barangay`='$student_barangay',`student_city`='$student_city',`student_province`='$student_province',
     `student_email`='$student_email',`student_phone`='$student_phone',`student_emergency_guardian`='$student_emergency_guardian',
     `student_emergency_phone`='$student_emergency_phone',`student_emergency_address`='$student_emergency_address' WHERE `studentID`='$studentID';");
+  
+}
+if($action == 'update_user'){
+    $user_first_name = filter_input(INPUT_POST,"user_first_name");
+    $user_middle_name = filter_input(INPUT_POST,"user_middle_name");
+    $user_last_name = filter_input(INPUT_POST,"user_last_name");
+    $user_photo_name = filter_input(INPUT_POST,"user_photo_name");
+    $user_barangay = filter_input(INPUT_POST,"user_barangay");
+    $user_city = filter_input(INPUT_POST,"user_city");
+    $user_province = filter_input(INPUT_POST,"user_province");
+    $user_email = filter_input(INPUT_POST,"user_email");
+    $user_phone = filter_input(INPUT_POST,"user_phone");
+    $user_username = filter_input(INPUT_POST,"user_username");
+    $user_password = filter_input(INPUT_POST,"user_password");
+    $user_confirm_password = filter_input(INPUT_POST,"user_confirm_password");
+    $user_access_type = filter_input(INPUT_POST,"edit_user_access_type");
+    $user_phone = filter_input(INPUT_POST,"user_phone");
+    $userID = filter_input(INPUT_POST,"userID");
+    $user_school = filter_input(INPUT_POST,"user_school");
+    $user_access_type = filter_input(INPUT_POST,"user_access_type");
+
+    $conn->query("UPDATE `user`
+     SET `username`='$user_username',`password`='$user_password',`access_type`='$user_access_type',`full_name`='$user_first_name $user_last_name' 
+    WHERE`userID`='$userID';");
+
+    $update_account_query ="UPDATE `account` SET `schoolID`='$user_school',`account_first_name`='$user_first_name',
+    `account_middle_name`='$user_middle_name',`account_last_name`='$user_last_name',`account_grade`='N/A',
+    `account_section`='N/A',`account_photo`='$user_photo_name',`account_barangay`='$user_barangay',
+    `account_city`='$user_city',`account_province`='$user_province',`account_email`='$user_email',
+    `account_phone`='$user_phone'
+    WHERE`userID`='$userID';";
+    if ($conn->query($update_account_query) === TRUE) {
+        echo "<h1>Record updated successfully</h1>";
+      } else {
+        echo "Error updating record: " . $conn->error;
+      }
+  
+}
+if($action == 'delete_user'){
+    $userID = filter_input(INPUT_POST,"userID");
+
+    $delete_user_query=$conn->query("DELETE FROM `user` WHERE userID = '$userID';");
+    $delete_account_query=$conn->query("DELETE FROM `account` WHERE userID = '$userID';");
   
 }
 if($action == 'edit_page_information'){

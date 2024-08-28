@@ -95,7 +95,7 @@ if (isset($_SESSION["username"])) {
             </button>
             </div>  
             <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded ">
+            <button class="btn btn-btn-success side-button border border-success rounded " id="btn_account_settings">
                 <h4>
                     Account Settings
                 </h4>
@@ -114,6 +114,26 @@ if (isset($_SESSION["username"])) {
 <script>
     $(document).ready(()=>{
         var content = $("#content");
+        const queryString = window.location.search;
+        console.log(queryString);
+        const urlParams = new URLSearchParams(queryString);
+        const page = urlParams.get('page');
+        if (page != undefined){
+            switch (page) {
+                case 'users': 
+                        content.load("screens/user_accounts.php");
+                        const message = urlParams.get('message');
+                        const filename = urlParams.get('filename'); 
+                            if (message != undefined){
+                                $("#modalMessage").text(message);
+                                $("#messageModal").modal("toggle");
+                            }                       
+                    break;
+            
+                default:
+                    break;
+            }
+        }
         $("#district").click(()=>{
             content.load("screens/district.php");
         });
@@ -134,6 +154,9 @@ if (isset($_SESSION["username"])) {
         });
         $("#btn_contact_us").click(()=>{
             content.load("screens/contact_us.php");
+        });
+        $("#btn_account_settings").click(()=>{
+            content.load("screens/account_settings.php");
         });
         $("#btn_logout").click(()=>{
             if (window.confirm("Are you sure you want to log out?")) {
