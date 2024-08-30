@@ -128,6 +128,31 @@ if($action == 'get_current_user'){
     }
     echo json_encode($resultObject);
 }
+if($action == 'get_school_coordinator'){
+    $school_coordinator_id = filter_input(INPUT_POST,"ID");
+    $rooms_query=$conn->query("SELECT * FROM `account`
+    WHERE `account`.`acccountID` = '$school_coordinator_id';");
+    $resultObject = new stdClass();
+    
+    while( $row = $rooms_query->fetch_assoc()){
+        $resultObject->accountID = $row["acccountID"];
+        $resultObject->userID = $row["userID"];
+        $resultObject->schoolID = $row["schoolID"];
+        $resultObject->account_first_name = $row["account_first_name"];
+        $resultObject->account_middle_name = $row["account_middle_name"];
+        $resultObject->account_last_name = $row["account_last_name"];
+        $resultObject->account_grade = $row["account_grade"];
+        $resultObject->account_section = $row["account_section"];
+        $resultObject->account_photo = $row["account_photo"];
+        $resultObject->account_barangay = $row["account_barangay"];
+        $resultObject->account_city = $row["account_city"];
+        $resultObject->account_province = $row["account_province"];
+        $resultObject->account_email = $row["account_email"];
+        $resultObject->account_phone = $row["account_phone"];
+        $resultObject->date_registered = $row["date_registered"];
+    }
+    echo json_encode($resultObject);
+}
 if($action == 'get_schools'){
     $rooms_query=$conn->query("SELECT * FROM school");
     $resultObject = array();
@@ -135,6 +160,39 @@ if($action == 'get_schools'){
         $room_object = new stdClass();
         $room_object->ID = $row["schoolID"];
         $room_object->school_name = $row["school_name"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'get_school_by_id'){
+    $schoolID = filter_input(INPUT_POST,"schoolID");
+    $rooms_query=$conn->query("SELECT * FROM school");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->ID = $row["schoolID"];
+        $room_object->school_name = $row["school_name"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'get_schools_it_coordinator'){
+    $rooms_query=$conn->query("SELECT * FROM `school` 
+    INNER JOIN `account` 
+    ON  `school`.`schoolID` = `account`.`schoolID` 
+    INNER JOIN `user` ON  `account`.`userID` = `user`.`userID` 
+    WHERE `user`.`access_type` = 'school_coordinator';");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->ID = $row["schoolID"];
+        $room_object->school_name = $row["school_name"];
+        $room_object->district = $row["districtID"];
+        $room_object->date_registered = $row["date_registered"];
+        $room_object->address = $row["school_address"];
+        $room_object->contact = $row["school_contact"];
+        $room_object->school_coordinator_id = $row["acccountID"];
+        $room_object->coordinator = $row["account_last_name"].	", ".  $row["account_first_name"]." ". substr($row["account_middle_name"],0,1).". ";
         array_push($resultObject,$room_object);
     }
     echo json_encode($resultObject);

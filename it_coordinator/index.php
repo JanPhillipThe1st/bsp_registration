@@ -63,9 +63,9 @@ if (isset($_SESSION["username"])) {
     <div class="row" style="height:75vh !important; display:flex; align-items:center; align-content:center;">
         <div class="col-2 ">
             <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_student">
+            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_schools">
                 <h4>
-                    Student
+                    Schools
                 </h4>
             </button>
             </div>
@@ -97,6 +97,13 @@ if (isset($_SESSION["username"])) {
             <button class="btn btn-btn-success side-button border border-success rounded " id="btn_account_settings">
                 <h4>
                     Account Settings
+                </h4>
+            </button>
+            </div>
+            <div class="row my-3">
+            <button class="btn btn-btn-success side-button border border-success rounded " id="btn_district">
+                <h4>
+                    District
                 </h4>
             </button>
             </div>
@@ -319,8 +326,8 @@ if (isset($_SESSION["username"])) {
             content.load("screens/contact_us.php");
         });
 
-        $("#btn_student").click(()=>{
-            content.load("screens/students.php");
+        $("#btn_schools").click(()=>{
+            content.load("screens/schools.php");
         });
         $("#btn_user_account").click(()=>{
             content.load("screens/user_accounts.php");
@@ -339,6 +346,9 @@ if (isset($_SESSION["username"])) {
         });
         $("#btn_account_settings").click(()=>{
             content.load("screens/account_settings.php");
+        });
+        $("#btn_district").click(()=>{
+            content.load("screens/district.php");
         });
         $("#btn_logout").click(()=>{
             if (window.confirm("Are you sure you want to log out?")) {
