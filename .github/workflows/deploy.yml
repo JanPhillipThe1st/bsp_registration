@@ -3,7 +3,7 @@ name: Deploy PHP Site to Z.com
 on:
   push:
     branches:
-      - main  # or youra production branch
+      - main  # or your production branch
 
 jobs:
   deploy:
