@@ -20,16 +20,14 @@ if (!isset($_SESSION["username"])) {
 <div class="container-fluid">
     <div class="row my-3">
         <div class="col-4"></div>
-        <div class="col-4">
-            <h3 class="m-auto text-center">LIST OF USER ACCOUNTS</h3>
-            <br>
-                <h6 class="m-auto text-center">S.Y. <?= $_SESSION["school_year_string"]?></h6>
+        <div class="col-12 text-center">
+            <h3>LIST OF USER ACCOUNTS</h3>
+            <h6>S.Y. <?= $_SESSION["school_year_string"]?></h6>
         </div>
         <div class="col-4"></div>
     </div>
-    <br>
- 
-    <table class="table m-auto w-75 table-bordered table-rounded" id="students_table">
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover overflow-scroll" id="user_accounts_table">
         <thead class="bg-success text-white">
             <tr>
                 <th>#</th>
@@ -59,24 +57,20 @@ if (!isset($_SESSION["username"])) {
             </tr>
         </tfoot>
     </table>
-    <div class="row">
-        <div class="col-8">
-            <div class="row">
-                <div class="col-1">
-                    <button class="btn btn-success">Print</button>
-                </div>
-                <div class="col-2">
-                    <button class="btn rounded border border-success" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>   
-                </div>
-            </div>
+    </div>
+    <div class="row mt-3 mb-3">
+        <div class="col-12 col-sm-auto mb-2 mb-sm-0">
+            <button class="btn btn-info w-100 w-sm-auto">Print</button>
         </div>
-        <div class="col-8"></div>
+        <div class="col-12 col-sm-auto">
+            <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+        </div>
     </div>
 </div>
 
 <div class="modal fade " id="addUserModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
                 <div class="modal-header">
                         <h5 class="modal-title text-success">USER INFORMATION FORM</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -87,138 +81,96 @@ if (!isset($_SESSION["username"])) {
                 <div class="container-fluid">
                     <div class="row">
                         <!-- Photo column -->
-                        <div class="col-2">
-                            <div class="row my-4">
-                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="add_user_photo_preview" >
+                        <div class="col-12 col-md-3 text-center mb-3 mb-md-0">
+                                <img src="../assets/img/BSPLogo.png" class="img-fluid img-thumbnail mb-2" alt="User Photo Thumbnail" id="add_user_photo_preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">
                                 <form action="screens/upload_user_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
-                                        <label for="add_user_photo">Select Photo</label>
+                                        <label for="add_user_photo_file_input" class="form-label">Select Photo</label>
                                         <input type="hidden" name="add_user_photo_name" id="add_user_photo_name">
-                                        <input type="file" class="form-control-file" name="add_user_photo" id="add_user_photo" placeholder="Select Photo" aria-describedby="fileHelpId">
-                                        <button type="submit" name="submit" class="form-control">Upload</button>
+                                        <input type="file" class="form-control form-control-sm" name="add_user_photo" id="add_user_photo_file_input" placeholder="Select Photo">
+                                        <button type="submit" name="submit" class="btn btn-primary btn-sm w-100 mt-2">Upload</button>
                                     </div>
                                 </form>
-                            </div>
-                            
-                        
                         </div>
-                        <!-- Spacing -->
-                        <div class="col-1"></div>
                         <!-- Information Column -->
-                        <div class="col-9">
-                            <div class="row ">
+                        <div class="col-12 col-md-9">
+                            <div class="row mb-3">
+                                <div class="col-12 text-md-end">
                                 <p class="text-end">
                                     Date of registration:
                                     <strong id="add_user_date_of_registration">09-06-2024</strong>
                                 </p>
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-3">
-                                    <div class="row">
-                                        <h5>Full Name:</h5>
-                                    </div>
-                                    <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="add_user_first_name" class="form-label">First Name:</label>
                                         <input type="text" class="form-control" placeholder="First name" id="add_user_first_name">
-                                    </div>
-                                    <div class="row">
-                                        <h5>Address:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="add_user_barangay">
-                                    </div>
                                 </div>
-                                <div class="col-3">
-                                <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="add_user_middle_name" class="form-label">Middle Name:</label>
                                         <input type="text" class="form-control" placeholder="Middle name" id="add_user_middle_name">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Municipality / City" id="add_user_city">
-                                    </div>
                                 </div>
-                                <div class="col-3">
-                                <div class="row">
-                                <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="add_user_last_name" class="form-label">Last Name:</label>
                                         <input type="text" class="form-control" placeholder="Last name" id="add_user_last_name">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Province" id="add_user_province" >
-                                    </div>
-                                </div>
-                                <div class="col-2 mx-2">
-                                <div class="row">
-                                    <h5>Contact:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="email" class="form-control" placeholder="Email" id="add_user_email">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="number" class="form-control" placeholder="Phone" id="add_user_phone">
-                                    </div>
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-5">
-                                <div class="row pt-5">
-                                        <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Username:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Password:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Confirm Password:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Access level:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Select School:</p>
-                                    </div>
+                            <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="add_user_barangay" class="form-label">Street / Barangay:</label>
+                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="add_user_barangay">
                                 </div>
-                                <div class="col-6">
-                                    <div class="row pt-5">
-                                        <h5>Account information</h5>
-                                    </div>
-                                    <div class="row py-3">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="add_user_city" class="form-label">Municipality / City:</label>
+                                        <input type="text" class="form-control" placeholder="Municipality / City" id="add_user_city">
+                                </div>
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="add_user_province" class="form-label">Province:</label>
+                                        <input type="text" class="form-control" placeholder="Province" id="add_user_province" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_email" class="form-label">Email:</label>
+                                        <input type="email" class="form-control" placeholder="Email" id="add_user_email">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_phone" class="form-label">Phone:</label>
+                                        <input type="number" class="form-control" placeholder="Phone" id="add_user_phone">
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h5>Account Information</h5>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_username" class="form-label">Username:</label>
                                         <input type="text" class="form-control" placeholder="Enter username here..." id="add_user_username">
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="password" class="form-control" placeholder="Enter password..." id="add_user_password">
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="password" class="form-control" placeholder="Confirm password..." id="add_user_confirm_password">
-                                    </div>
-                                    <div class="row py-3">
-                                        <select class="form-control" placeholder="Confirm password..." id="add_user_access_type">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_access_type" class="form-label">Access level:</label>
+                                        <select class="form-select" id="add_user_access_type">
                                             <option value="troop_leader">Troop Leader</option>
                                             <option value="it_coordinator">IT Coordinator</option>
                                             <option value="teacher">Teacher</option>
                                             <option value="school_coordinator">School Coordinator</option>
                                             <option value="admin">Admin</option>
                                         </select>
-                                    </div>
-                                    <div class="row py-3">
-                                        <select class="form-control" placeholder="School" id="add_user_school">
-                                        </select>
-                                    </div>
                                 </div>
-                                
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_password" class="form-label">Password:</label>
+                                        <input type="password" class="form-control" placeholder="Enter password..." id="add_user_password">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_confirm_password" class="form-label">Confirm Password:</label>
+                                        <input type="password" class="form-control" placeholder="Confirm password..." id="add_user_confirm_password">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="add_user_school" class="form-label">Select School:</label>
+                                        <select class="form-select" id="add_user_school">
+                                        </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -234,8 +186,8 @@ if (!isset($_SESSION["username"])) {
 
 
 <div class="modal fade " id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
                 <div class="modal-header">
                         <h5 class="modal-title text-success">USER INFORMATION FORM</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
@@ -246,138 +198,96 @@ if (!isset($_SESSION["username"])) {
                 <div class="container-fluid">
                     <div class="row">
                         <!-- Photo column -->
-                        <div class="col-2">
-                            <div class="row my-4">
-                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="edit_user_photo_preview" >
+                        <div class="col-12 col-md-3 text-center mb-3 mb-md-0">
+                                <img src="../assets/img/BSPLogo.png" class="img-fluid img-thumbnail mb-2" alt="User Photo Thumbnail" id="edit_user_photo_preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">
                                 <form action="screens/upload_edit_user_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
-                                        <label for="add_user_photo">Select Photo</label>
+                                        <label for="edit_user_photo_file_input" class="form-label">Select Photo</label>
                                         <input type="hidden" name="edit_user_photo_name" id="edit_user_photo_name">
-                                        <input type="file" class="form-control-file" name="edit_user_photo" id="edit_user_photo" placeholder="Select Photo" aria-describedby="fileHelpId">
-                                        <button type="submit" name="submit" class="form-control">Upload</button>
+                                        <input type="file" class="form-control form-control-sm" name="edit_user_photo" id="edit_user_photo_file_input" placeholder="Select Photo">
+                                        <button type="submit" name="submit" class="btn btn-primary btn-sm w-100 mt-2">Upload</button>
                                     </div>
                                 </form>
-                            </div>
-                            
-                        
                         </div>
-                        <!-- Spacing -->
-                        <div class="col-1"></div>
                         <!-- Information Column -->
-                        <div class="col-9">
-                            <div class="row ">
+                        <div class="col-12 col-md-9">
+                            <div class="row mb-3">
+                                <div class="col-12 text-md-end">
                                 <p class="text-end">
                                     Date of registration:
                                     <strong id="edit_user_date_of_registration">09-06-2024</strong>
                                 </p>
+                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-3">
-                                    <div class="row">
-                                        <h5>Full Name:</h5>
-                                    </div>
-                                    <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="edit_user_first_name" class="form-label">First Name:</label>
                                         <input type="text" class="form-control" placeholder="First name" id="edit_user_first_name">
-                                    </div>
-                                    <div class="row">
-                                        <h5>Address:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="edit_user_barangay">
-                                    </div>
                                 </div>
-                                <div class="col-3">
-                                <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="edit_user_middle_name" class="form-label">Middle Name:</label>
                                         <input type="text" class="form-control" placeholder="Middle name" id="edit_user_middle_name">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Municipality / City" id="edit_user_city">
-                                    </div>
                                 </div>
-                                <div class="col-3">
-                                <div class="row">
-                                <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="edit_user_last_name" class="form-label">Last Name:</label>
                                         <input type="text" class="form-control" placeholder="Last name" id="edit_user_last_name">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Province" id="edit_user_province" >
-                                    </div>
-                                </div>
-                                <div class="col-2 mx-2">
-                                <div class="row">
-                                    <h5>Contact:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="email" class="form-control" placeholder="Email" id="edit_user_email">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="number" class="form-control" placeholder="Phone" id="edit_user_phone">
-                                    </div>
                                 </div>
                             </div>
-                            <div class="row mt-3">
-                                <div class="col-5">
-                                <div class="row pt-5">
-                                        <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Username:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Password:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Confirm Password:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Access level:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Select School:</p>
-                                    </div>
+                            <div class="row">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="edit_user_barangay" class="form-label">Street / Barangay:</label>
+                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="edit_user_barangay">
                                 </div>
-                                <div class="col-6">
-                                    <div class="row pt-5">
-                                        <h5>Account information</h5>
-                                    </div>
-                                    <div class="row py-3">
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="edit_user_city" class="form-label">Municipality / City:</label>
+                                        <input type="text" class="form-control" placeholder="Municipality / City" id="edit_user_city">
+                                </div>
+                                <div class="col-12 col-md-4 mb-3">
+                                    <label for="edit_user_province" class="form-label">Province:</label>
+                                        <input type="text" class="form-control" placeholder="Province" id="edit_user_province" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_email" class="form-label">Email:</label>
+                                        <input type="email" class="form-control" placeholder="Email" id="edit_user_email">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_phone" class="form-label">Phone:</label>
+                                        <input type="number" class="form-control" placeholder="Phone" id="edit_user_phone">
+                                </div>
+                            </div>
+
+                            <hr>
+                            <h5>Account Information</h5>
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_username" class="form-label">Username:</label>
                                         <input type="text" class="form-control" placeholder="Enter username here..." id="edit_user_username">
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="password" class="form-control" placeholder="Enter password..." id="edit_user_password">
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="password" class="form-control" placeholder="Confirm password..." id="edit_user_confirm_password">
-                                    </div>
-                                    <div class="row py-3">
-                                        <select class="form-control" placeholder="Confirm password..." id="edit_user_access_type">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_access_type" class="form-label">Access level:</label>
+                                        <select class="form-select" id="edit_user_access_type">
                                             <option value="troop_leader">Troop Leader</option>
                                             <option value="it_coordinator">IT Coordinator</option>
                                             <option value="teacher">Teacher</option>
                                             <option value="school_coordinator">School Coordinator</option>
                                             <option value="admin">Admin</option>
                                         </select>
-                                    </div>
-                                    <div class="row py-3">
-                                        <select class="form-control" placeholder="School" id="edit_user_school">
-                                        </select>
-                                    </div>
                                 </div>
-                                
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_password" class="form-label">Password:</label>
+                                        <input type="password" class="form-control" placeholder="Enter password..." id="edit_user_password">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_confirm_password" class="form-label">Confirm Password:</label>
+                                        <input type="password" class="form-control" placeholder="Confirm password..." id="edit_user_confirm_password">
+                                </div>
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label for="edit_user_school" class="form-label">Select School:</label>
+                                        <select class="form-select" id="edit_user_school">
+                                        </select>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -420,7 +330,6 @@ if (!isset($_SESSION["username"])) {
 
         console.log(message);
         console.log(filename+ "<---- Filename");
-        
         $("#add_user_date_of_registration").text(new Date().toDateString());
 
         if (filename != null){
@@ -429,6 +338,7 @@ if (!isset($_SESSION["username"])) {
             $("#edit_user_photo_preview").attr("src","../img/users/"+filename);
             $("#edit_user_photo_name").val(filename.toString());
             $("#messageModal").modal("toggle");
+            $("#addUserModal").modal("toggle");
         }
         function getStudentsTable(){
             var table_data = $("#table_data");
@@ -465,9 +375,9 @@ if (!isset($_SESSION["username"])) {
                     .append(
                     )
                     .append(
-                        $("<td></td>")
+                        $("<td width='300px'></td>")
                         .append(
-                            $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                            $("<button class='btn btn-block btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
                                 //Populate the input fields
                                 $("#edit_user_first_name").val(user.account_first_name);
                                 $("#edit_user_middle_name").val(user.account_middle_name);
@@ -520,7 +430,7 @@ if (!isset($_SESSION["username"])) {
                             })
                         )
                         .append(
-                            $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                            $("<button class='btn btn-block btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
                                 if (window.confirm("Are you sure you want to delete "+user.account_first_name +" "+user.account_last_name+"'s records?")) {
                                     $.post("../ajax.php",{action:"delete_user",userID:user.userID},(delete_response,delete_status)=>{
                                         window.location = "index.php?page=students&message=User Data Deleted Successfully!";
@@ -533,16 +443,8 @@ if (!isset($_SESSION["username"])) {
                 );
             });
 
-            $('#students_table tfoot th').each(function (i) {
-                    var title = $('#students_table thead th')
-                        .eq($(this).index())
-                        .text();
-                    $(this).html(
-                        '<input type="text" class="form-control w-100" placeholder="' + title + '" data-index="' + i + '" />'
-                    );
-                });
 
-                var table = $('#students_table').DataTable();
+                var table = $('#user_accounts_table').DataTable();
             
                 // Filter event handler
                 $(table.table().container()).on('keyup', 'tfoot input', function () {
