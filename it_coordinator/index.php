@@ -19,7 +19,7 @@ if (isset($_SESSION["username"])) {
     <title>BSP Registration System</title>
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/vendor/chart.js/chart.js">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
   <link rel="icon" type="image/x-icon" href="../assets/img/BSPLogo.png">
 </head>
 <style>
@@ -294,7 +294,7 @@ if (isset($_SESSION["username"])) {
 </div>
 
 <script src="../assets/js/jquery-3.6.1.min.js"></script>
-<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+<script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script></script>
 <script>
     $(document).ready(()=>{
         var content = $("#content");
@@ -319,7 +319,7 @@ if (isset($_SESSION["username"])) {
             }
         }
         else{
-            content.load("screens/students.php");
+            content.load("screens/schools.php");
         }
 
         $("#btn_contact_us").click(()=>{

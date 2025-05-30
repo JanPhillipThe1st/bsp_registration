@@ -54,7 +54,7 @@ if (!isset($_SESSION["username"])) {
  
 </div>
 <div class="container-fluid">
-    <div class="container-fluid border rounded border-success m-auto w-50 my-5 p-3 shadow">
+    <div class="container-fluid card m-auto w-50 my-5 p-3 shadow">
         <h2 class="">Select school year</h2>
         <div class="form-group">
           <label for="select_school_year">School year:</label>

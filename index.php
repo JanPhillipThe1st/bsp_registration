@@ -1,8 +1,28 @@
+<?php
+// Dynamically determine base URL and page URL for Open Graph tags
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+$host = $_SERVER['HTTP_HOST'];
+$base_path = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/'); // e.g., /bsp_registration or empty if at root
+$og_image_url = $protocol . $host . $base_path . "/assets/img/BSPLogo.png";
+$og_url = $protocol . $host . $_SERVER['REQUEST_URI'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Official registration and monitoring system for the Zamboanga del Sur Boy Scout of the Philippines.">
+    <meta name="keywords" content="BSP, Boy Scout, Philippines, Zamboanga del Sur, registration, monitoring, scouting, youth">
+    <meta name="author" content="BSP Zamboanga del Sur">
+
+    <!-- Open Graph Meta Tags for Link Preview -->
+    <meta property="og:title" content="BSP Registration System" />
+    <meta property="og:description" content="Official registration and monitoring system for the Zamboanga del Sur Boy Scout of the Philippines." />
+    <meta property="og:image" content="<?php echo htmlspecialchars($og_image_url); ?>" />
+    <meta property="og:url" content="<?php echo htmlspecialchars($og_url); ?>" />
+    <meta property="og:type" content="website" />
+    <!-- End Open Graph Meta Tags -->
+
   <link rel="icon" type="image/x-icon" href="assets/img/BSPLogo.png">
     <title>BSP Registration System</title>
     <link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css">
