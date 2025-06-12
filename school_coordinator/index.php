@@ -109,13 +109,7 @@ if (isset($_SESSION["username"])) {
                 </h4>
             </button>
             </div>
-            <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded " id="btn_district">
-                <h4>
-                    District
-                </h4>
-            </button>
-            </div>
+
         </div>
         
         <div class="col-10" id="content">

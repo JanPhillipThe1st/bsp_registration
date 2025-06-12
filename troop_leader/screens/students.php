@@ -30,7 +30,25 @@ if (!isset($_SESSION["username"])) {
         <div class="col-4"></div>
     </div>
     <br>
- 
+  <div class="row my-3">
+        <div class="col-3 d-flex align-items-center justify-content-center">
+            <h5 class="text-end">Search by:</h5>
+        </div>
+        <div class="col-3">
+            <select class="form-control" name="search_filter" id="search_filter">
+                <option value="all">All</option>
+                <option value="student_grade">Grade</option>
+                <option value="student_section">Section</option>
+                <option value="student_rank">Rank</option>
+            </select>       
+        </div>
+       <div class="col-3" id="searchCriteria">
+            <input type="text" class="form-control" id="search_text" placeholder="Enter keyword here"/>
+        </div>
+          <div class="col-3">
+            <button class="btn btn-primary" id="search_button">Search</button>
+        </div>
+    </div>
     <table class="table m-auto w-75 table-bordered table-rounded" id="students_table">
         <thead class="bg-success text-white">
             <tr>
@@ -461,12 +479,20 @@ if (!isset($_SESSION["username"])) {
             $("#add_student_photo_preview").attr("src","../img/students/"+filename);
         }
         console.log(filename);
-        getStudentsTable();
-        function getStudentsTable(){
+        getStudentsTable(false).then(()=>{
+            new DataTable('#students_table',{dom:'ltrip'});
+        });
+        async function getStudentsTable(isFiltered){
             var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
             table_data.empty();
-        $.post("../ajax.php",{action:"get_students"},(response,status)=>{
+         var search_filter = $("#search_filter").val();
+            var search_text = $("#search_text").val();
+            var table_data = $("#table_data");
+            var table_data_report = $("#table_data_printing");
+            table_data.empty();
+            let reqBody = isFiltered? {action:"filter_students",search_filter:search_filter,search_text:search_text}:{action:"get_students"};
+        $.post("../ajax.php",reqBody,(response,status)=>{
             var students_table = JSON.parse(response);
             students_table.forEach((student,student_index)=>{
                 var studentObject = {
@@ -579,28 +605,19 @@ if (!isset($_SESSION["username"])) {
                 );
             });
 
-            $('#students_table tfoot th').each(function (i) {
-                    var title = $('#students_table thead th')
-                        .eq($(this).index())
-                        .text();
-                    $(this).html(
-                        '<input type="text" class="form-control w-100" placeholder="' + title + '" data-index="' + i + '" />'
-                    );
-                });
+          
 
-                new DataTable('#students_table');
 
-            
-                // Filter event handler
-                $(table.table().container()).on('keyup', 'tfoot input', function () {
-                    table
-                        .column($(this).data('index'))
-                        .search(this.value)
-                        .draw();
-                });
                     });
             
         }
+
+              $("#search_button").click(()=>{
+                 var table_data = $("#table_data");
+            var table_data_report = $("#table_data_printing");
+            table_data.empty();
+            getStudentsTable(true);
+        });
 
       $("#confirm_add_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to add this student?")) {

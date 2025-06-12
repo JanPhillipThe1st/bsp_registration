@@ -50,8 +50,9 @@ align-items: center;
 }
 .login_form>button:hover{
   transition: 500ms;
-  background-color: white;
+  background-color: green;
   color:var(--main_color);
+  color: white;
 }
 .login_form>#btn_signup{
   border: 1px solid var(--main_color);

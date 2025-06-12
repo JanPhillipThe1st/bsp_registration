@@ -67,6 +67,42 @@ if($action == 'get_students'){
     }
     echo json_encode($resultObject);
 }
+if($action == 'filter_students'){
+    $search_filter = filter_input(INPUT_POST,"search_filter");
+    $search_text = filter_input(INPUT_POST,"search_text");
+    switch($search_filter){
+        case 'all':
+            $query=$conn->query("SELECT * FROM `student` WHERE `student`.`school_year_ID` = ".$_SESSION["school_year"].";");
+            break;
+        default:
+            $query=$conn->query("SELECT * FROM `student` WHERE `student`.`school_year_ID` = ".$_SESSION["school_year"]." AND `$search_filter` LIKE '%$search_text%';");
+            break;
+    }
+    $resultObject = array();
+    while( $row = $query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->studentID = $row["studentID"];
+        $room_object->schoolID = $row["schoolID"];
+        $room_object->student_first_name = $row["student_first_name"];
+        $room_object->student_middle_name = $row["student_middle_name"];
+        $room_object->student_last_name = $row["student_last_name"];
+        $room_object->student_grade = $row["student_grade"];
+        $room_object->student_section = $row["student_section"];
+        $room_object->student_rank = $row["student_rank"];
+        $room_object->student_photo = $row["student_photo"];
+        $room_object->student_barangay = $row["student_barangay"];
+        $room_object->student_city = $row["student_city"];
+        $room_object->student_province = $row["student_province"];
+        $room_object->student_email = $row["student_email"];
+        $room_object->student_phone = $row["student_phone"];
+        $room_object->student_emergency_guardian = $row["student_emergency_guardian"];
+        $room_object->student_emergency_phone = $row["student_emergency_phone"];
+        $room_object->student_emergency_address = $row["student_emergency_address"];
+        $room_object->date_registered = $row["date_registered"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
 if($action == 'get_students_by_school_id'){
     $schoolID = filter_input(INPUT_POST,"schoolID");
     $query=$conn->query("SELECT * FROM `student` WHERE `student`.`school_year_ID` = ".$_SESSION["school_year"]." AND schoolID = '".$schoolID."';");
