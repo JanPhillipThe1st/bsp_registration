@@ -108,7 +108,7 @@ if($action == 'get_districts'){
     echo json_encode($resultObject);
 }
 if($action == 'get_teachers'){
-    $query=$conn->query("SELECT * FROM `teacher` WHERE `teacher`.`school_year_ID` = ".$_SESSION["school_year"].";");
+    $query=$conn->query("SELECT *,CONCAT(barangay,' ',city,' ',province) AS `address` FROM `teacher` WHERE `teacher`.`school_year_ID` = ".$_SESSION["school_year"].";");
     $resultObject = array();
     while( $row = $query->fetch_assoc()){
         $room_object = new stdClass();
@@ -118,6 +118,51 @@ if($action == 'get_teachers'){
         $room_object->student_middle_name = $row["middle_name"];
         $room_object->student_last_name = $row["last_name"];
         $room_object->student_grade = $row["grade"];
+        $room_object->student_address = $row["address"];
+        $room_object->student_section = $row["section"];
+        $room_object->student_barangay = $row["barangay"];
+        $room_object->student_city = $row["city"];
+        $room_object->student_province = $row["province"];
+        $room_object->student_email = $row["email_address"];
+        $room_object->student_phone = $row["phone_number"];
+        $room_object->student_photo = $row["teacher_photo"];
+        $room_object->student_emergency_guardian = $row["contact_person"];
+        $room_object->student_emergency_phone = $row["contact_person_number"];
+        $room_object->student_emergency_address = $row["contact_person_address"];
+        $room_object->date_registered = $row["date_registered"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'filter_teachers'){
+    $search_filter = filter_input(INPUT_POST,"search_filter");
+    $search_text = filter_input(INPUT_POST,"search_text");
+    switch($search_filter){
+        case 'name':
+                $query=$conn->query("SELECT *,CONCAT(first_name,' ',middle_name,' ',last_name) AS 'name',CONCAT(barangay,' ',city,' ',province) AS 'address'
+                FROM `teacher` 
+                WHERE `teacher`.`school_year_ID` = ".$_SESSION["school_year"]." AND (`first_name` LIKE '%".$search_text."%' OR `middle_name` LIKE '%".$search_text."%'OR `last_name` LIKE '%".$search_text."%');");
+            break;
+        case 'address':
+                $query=$conn->query("SELECT *,CONCAT(first_name,' ',middle_name,' ',last_name) AS 'name',CONCAT(barangay,' ',city,' ',province) AS 'address'
+                FROM `teacher` 
+                WHERE `teacher`.`school_year_ID` = ".$_SESSION["school_year"]." AND (`barangay` LIKE '%".$search_text."%' OR `city` LIKE '%".$search_text."%'OR `province` LIKE '%".$search_text."%');");
+            break;
+            default:
+                $query=$conn->query("SELECT *,CONCAT(first_name,' ',middle_name,' ',last_name) AS 'name',CONCAT(barangay,' ',city,' ',province) AS 'address'
+                FROM `teacher` WHERE `teacher`.`school_year_ID` = ".$_SESSION["school_year"]." AND `".$search_filter."` LIKE '%".$search_text."%';");
+            break;
+        }
+    $resultObject = array();
+    while( $row = $query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->studentID = $row["teacher_id"];
+        $room_object->schoolID = $row["school_id"];
+        $room_object->student_first_name = $row["first_name"];
+        $room_object->student_middle_name = $row["middle_name"];
+        $room_object->student_last_name = $row["last_name"];
+        $room_object->student_grade = $row["grade"];
+        $room_object->student_address = $row["address"];
         $room_object->student_section = $row["section"];
         $room_object->student_barangay = $row["barangay"];
         $room_object->student_city = $row["city"];

@@ -30,15 +30,35 @@ if (!isset($_SESSION["username"])) {
         <div class="col-4"></div>
     </div>
     <br>
- 
+     <div class="row my-3">
+        <div class="col-3 d-flex align-items-center justify-content-center">
+            <h5 class="text-end">Search by:</h5>
+        </div>
+        <div class="col-3">
+            <select class="form-control" name="search_filter" id="search_filter">
+                <option value="teacher_id">Teacher ID</option>
+                <option value="name">Teacher Name</option>
+                <option value="address">Address</option>
+                <option value="section">Section</option>
+                <option value="email_address">Email</option>
+            </select>       
+        </div>
+       <div class="col-3">
+            <input type="text" class="form-control" id="search_text" placeholder="Enter keyword here"/>
+        </div>
+          <div class="col-3">
+            <button class="btn btn-primary" id="search_button">Search</button>
+        </div>
+    </div>
     <table class="table m-auto w-75 table-bordered table-rounded" id="teachers_table">
         <thead class="bg-success text-white">
             <tr>
                 <th>#</th>
                 <th>Date of Registration</th>
                 <th>Teacher ID</th>
-                <th>User Account</th>
+                <th>Teacher Name</th>
                 <th>Address</th>
+                <th>Grade</th>
                 <th>Section</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -47,19 +67,6 @@ if (!isset($_SESSION["username"])) {
         </thead>
         <tbody id="table_data">
         </tbody>
-        <tfoot class="bg-success text-white">
-            <tr>
-            <th>#</th>
-                <th>Date of Registration</th>
-                <th>Teacher ID</th>
-                <th>User Account</th>
-                <th>Address</th>
-                <th>Section</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Action</th>
-            </tr>
-        </tfoot>
     </table>
 
     <table id="teachers_table_printing" class=" w-100 table-bordered table-rounded d-none">
@@ -120,13 +127,6 @@ if (!isset($_SESSION["username"])) {
                                         <button type="submit" name="submit" class="form-control">Upload</button>
                                     </div>
                                 </form>
-                            </div>
-                            
-                            <div class="row">
-                                <h4>Student ID:</h4>
-                            </div>
-                            <div class="row p-1 rounded border border-secondary text-center">
-                                <h5 id="student_id">000-0001</h5>
                             </div>
                         </div>
                         <!-- Spacing -->
@@ -284,13 +284,6 @@ if (!isset($_SESSION["username"])) {
                                         <button type="submit" name="submit" class="form-control">Upload</button>
                                     </div>
                                 </form>
-                            </div>
-                            
-                            <div class="row">
-                                <h4>Student ID:</h4>
-                            </div>
-                            <div class="row p-1 rounded border border-secondary text-center">
-                                <h5 id="student_id">000-0001</h5>
                             </div>
                         </div>
                         <!-- Spacing -->
@@ -462,19 +455,26 @@ if (!isset($_SESSION["username"])) {
             $("#addTeacherModal").modal('show');
         }
         console.log(filename);
-        getStudentsTable();
-        function getStudentsTable(){
+        getStudentsTable(false);
+        new DataTable('#teachers_table',{dom:'ltrip'});
+        function getStudentsTable( isFiltered){
             var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
+            
+            const search_filter = $("#search_filter").val();
+            const search_text = $("#search_text").val();
             table_data.empty();
-        $.post("../ajax.php",{action:"get_teachers"},(response,status)=>{
+            let reqBody = isFiltered?{action:"filter_teachers",search_filter:search_filter,search_text:search_text}:{action:"get_teachers",search_filter:search_filter,search_text:search_text};
+        $.post("../ajax.php",reqBody,(response,status)=>{
             var teachers_table = JSON.parse(response);
             teachers_table.forEach((student,student_index)=>{
+                console.log(student.query);
                 var studentObject = {
                     studentID:student.studentID,
                     schoolID:student.schoolID,
                     student_first_name:student.student_first_name,
                     student_middle_name:student.student_middle_name,
+                    student_address:student.student_address,
                     student_last_name:student.student_last_name,
                     student_grade:student.student_grade,
                     student_section:student.student_section,
@@ -502,6 +502,9 @@ if (!isset($_SESSION["username"])) {
                     )
                     .append(
                         $("<td>"+studentObject.student_first_name +" "+ studentObject.student_middle_name + " " +  studentObject.student_last_name+"</td>")
+                    )
+                    .append(
+                        $("<td>"+studentObject.student_address+"</td>")
                     )
                     .append(
                         $("<td>"+studentObject.student_grade+"</td>")
@@ -579,19 +582,20 @@ if (!isset($_SESSION["username"])) {
                     )
                 );
             });
-                new DataTable('#teachers_table');
 
+        });
             
-                // Filter event handler
-                $(table.table().container()).on('keyup', 'tfoot input', function () {
-                    table
-                        .column($(this).data('index'))
-                        .search(this.value)
-                        .draw();
-                });
-                    });
-            
-        }
+    }
+    $("#search_button").click(()=>{
+            const search_filter = $("#search_filter").val();
+            const search_text = $("#search_text").val();
+            var table_data = $("#table_data");
+            var table_data_report = $("#table_data_printing");
+            table_data.empty();
+            table_data_report.empty();
+            getStudentsTable(true);
+
+    });
 
       $("#confirm_add_teacher").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to add this teacher?")) {
