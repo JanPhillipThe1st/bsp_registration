@@ -26,6 +26,25 @@ if (!isset($_SESSION["username"])) {
         </div>
         <div class="col-4"></div>
     </div>
+       <div class="row my-3">
+        <div class="col-3 d-flex align-items-center justify-content-center">
+            <h5 class="text-end">Search by:</h5>
+        </div>
+        <div class="col-3">
+            <select class="form-control" name="search_filter" id="search_filter">
+                <option value="districtID">District</option>
+                <option value="school_name">School Name</option>
+                <option value="schoolID">School ID</option>
+                <option value="school_address">Address</option>
+            </select>       
+        </div>
+       <div class="col-3">
+            <input type="text" class="form-control" id="search_text" placeholder="Enter keyword here"/>
+        </div>
+          <div class="col-3">
+            <button class="btn btn-primary" id="search_button">Search</button>
+        </div>
+    </div>
     <div class="table-responsive">
         <table class="table table-bordered table-hover overflow-scroll" id="user_accounts_table">
         <thead class="bg-success text-white">
@@ -444,16 +463,8 @@ if (!isset($_SESSION["username"])) {
             });
 
 
-                var table = $('#user_accounts_table').DataTable();
+                var table = $('#user_accounts_table').DataTable({dom: 'ltipr'});
             
-                // Filter event handler
-                $(table.table().container()).on('keyup', 'tfoot input', function () {
-                    table
-                        .column($(this).data('index'))
-                        .search(this.value)
-                        .draw();
-                });
-
 
                 $.post("../ajax.php",{action:"get_schools"},(school_data)=>{
                     var school_map = JSON.parse(school_data);
@@ -515,6 +526,129 @@ if (!isset($_SESSION["username"])) {
             }
         }
       });
+      $("#search_button").click(()=>{
+        
+            var table_data = $("#table_data");
+            table_data.empty();
+           let searchFilter = $("#search_filter").val();
+           let searchTerm = $("#search_text").val();
+           //Maintain Loading State
+           $("#search_button").html(
+           `<div class="spinner-border text-white" role="status">
+           </div>`);
+           setTimeout(() => {
+               searchUsers(searchFilter,searchTerm);
+                $("#search_button").html(
+           `Search`);
+           //Perform a search query to to the database with ajax.php
+        $.post("../ajax.php",{action:"filter_users",searchFilter:searchFilter,searchTerm:searchTerm},(response,status)=>{
+            var users_table = JSON.parse(response);
+            users_table.forEach((user,user_index)=>{
+                table_data.append(
+                    $("<tr></tr>")
+                    .append(
+                        $("<td>"+(parseInt(user_index)+1)+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.date_registered+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.userID+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.access_type+"</td>")
+                    )
+                    .append(
+                        $("<td>"+ user.account_last_name +", "+  user.account_first_name + " " + user.account_middle_name.substring(0,1)  +". </td>")
+                    )
+                    .append(
+                        $("<td>"+user.account_barangay+", "+user.account_city+", "+user.account_province+" </td>")
+                    )
+                    .append(
+                        $("<td>"+user.account_email+"</td>")
+                    )
+                    .append(
+                        $("<td>"+user.account_phone+"</td>")
+                    )
+                    .append(
+                    )
+                    .append(
+                        $("<td width='300px'></td>")
+                        .append(
+                            $("<button class='btn btn-block btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                                //Populate the input fields
+                                $("#edit_user_first_name").val(user.account_first_name);
+                                $("#edit_user_middle_name").val(user.account_middle_name);
+                                $("#edit_user_last_name").val(user.account_last_name);
+                                $("#edit_user_photo_name").val(user.account_photo);
+                                $("#edit_user_barangay").val(user.account_barangay);
+                                $("#edit_user_city").val(user.account_city);
+                                $("#edit_user_province").val(user.account_province);
+                                $("#edit_user_access_type").val(user.access_type);
+                                $("#edit_user_email").val(user.account_email);
+                                $("#edit_user_phone").val(user.student_phone);
+                                $("#edit_user_username").val(user.username);
+                                $("#edit_user_password").val(user.password);
+                                $("#edit_user_photo_preview").attr("src","../img/users/"+user.account_photo);
+                                $("#edit_user_photo_name").val(user.account_photo);
+                                $("#edit_user_confirm_password").val(user.password);
+                                $("#edit_user_phone").val(user.account_phone);
+                                
+                                $("#editStudentID").val(user.accountID);
+                                $("#editUserModal").modal("toggle");
+                                
+                                $("#confirm_edit_user").click(()=>{
+                                    if(window.confirm("Are you sure you want to update this user's information?")){
+                                        $("#editUserModal").modal("toggle");
+                                        $.post("../ajax.php",{action:"update_user",   
+                                            user_first_name:$("#edit_user_first_name").val(),
+                                            user_middle_name:$("#edit_user_middle_name").val(),
+                                            user_last_name:$("#edit_user_last_name").val(),
+                                            user_photo_name:$("#edit_user_photo_name").val(),
+                                            user_barangay:$("#edit_user_barangay").val(),
+                                            user_city:$("#edit_user_city").val(),
+                                            user_province:$("#edit_user_province").val(),
+                                            user_email:$("#edit_user_email").val(),
+                                            user_phone:$("#edit_user_phone").val(),
+                                            user_username:$("#edit_user_username").val(),
+                                            user_password:$("#edit_user_password").val(),
+                                            user_confirm_password:$("#edit_user_confirm_password").val(),
+                                            user_school:$("#edit_user_school").val(),
+                                            user_access_type:$("#edit_user_access_type").val(),
+                                            user_phone:$("#edit_user_phone").val(),                                
+                                            userID:user.userID},
+                                (edit_user_response,edit_user_status)=>{
+                                         
+                                        });
+                                        $("#modalMessage").text("User information successfully updated!");   
+                                        $("#messageModal").modal("toggle");   
+                                        getStudentsTable();
+                                    }
+                                });
+                            })
+                        )
+                        .append(
+                            $("<button class='btn btn-block btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                                if (window.confirm("Are you sure you want to delete "+user.account_first_name +" "+user.account_last_name+"'s records?")) {
+                                    $.post("../ajax.php",{action:"delete_user",userID:user.userID},(delete_response,delete_status)=>{
+                                        window.location = "index.php?page=students&message=User Data Deleted Successfully!";
+                                        getStudentsTable();
+                                    });
+                                }
+                            })
+                        )
+                    )
+                );
+            });
+            
+        });
+            }, 1000);
+
+           
+      });
+     async function searchUsers(searchFilter,searchTerm) {
+        
+      }
       $("#confirm_edit_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to update this student's information?")) {
             $.post("../ajax.php",{action:"update_student",

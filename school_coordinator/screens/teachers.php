@@ -579,16 +579,6 @@ if (!isset($_SESSION["username"])) {
                     )
                 );
             });
-
-            $('#teachers_table tfoot th').each(function (i) {
-                    var title = $('#teachers_table thead th')
-                        .eq($(this).index())
-                        .text();
-                    $(this).html(
-                        '<input type="text" class="form-control w-100" placeholder="' + title + '" data-index="' + i + '" />'
-                    );
-                });
-
                 new DataTable('#teachers_table');
 
             

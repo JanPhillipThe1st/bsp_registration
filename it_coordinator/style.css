@@ -5,7 +5,7 @@
     --white: #ffffff;
   }
 nav{
-    background-image: linear-gradient( #e5d71c, #9a8f01);
+    background-color: #725528 ;
 }
 .btn-success{
     background-color: var(--main_color);
