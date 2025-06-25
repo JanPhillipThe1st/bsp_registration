@@ -64,7 +64,10 @@ if (!isset($_SESSION["username"])) {
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="8"> <button class="btn btn-success btn-block" id="print_schools">Print</button></td>
+                <td colspan="8"> 
+                    <button class="btn btn-success btn-block" id="print_schools">Print</button>
+                    <button class="btn btn-success btn-block" id="add_school">Add School</button>
+                </td>
             </tr>
         </tfoot>
     </table>
@@ -103,7 +106,7 @@ if (!isset($_SESSION["username"])) {
                             <div class="row ">
                                 <p class="text-end">
                                     Date of registration:
-                                    <strong id="school_date_registered">09-06-2024</strong>
+                                    <strong id="school_date_registered"></strong>
                                 </p>
                             </div>
                             <div class="row">
@@ -179,6 +182,62 @@ if (!isset($_SESSION["username"])) {
     </div>
 </div>
 
+<div class="modal fade " id="addSchoolModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+                <div class="modal-header">
+                        <h5 class="modal-title text-success m-auto">ADD SCHOOL</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row ">
+                                <p class="text-end">
+                                    Date of registration:
+                                    <strong id="add_school_date_registered"></strong>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School ID:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="add_school_id" ></div>
+                                    </div>
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School Name:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="add_school_name"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>District ID:</h5></div>
+                                        <select class="col-6 form-control" name="add_school_district_id" id="add_school_district_id"></select>
+                                    </div>
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="add_school_contact"></div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row mt-3">
+                                        <div class="col-3 align-middle"> <h5>School Address:</h5></div>
+                                        <div class="col-9"><input type="text" class="form-control"  id="add_school_address"></div>                                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-bs-dismiss="modal" aria-label="Close" type="button" class="btn btn-secondary" >Close</button>
+                <button id="confirm_add_school_button" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="../assets/jquery-3.6.1.min.js"></script>
 <script src="../assets/js/printThis/printThis.js"></script>
@@ -237,7 +296,7 @@ if (!isset($_SESSION["username"])) {
                             $("#school_name").val(school.school_name);
                             $("#school_district_id").val(school.district);
                             $("#school_contact").val(school.contact);
-                            $("#school_date_registered").val(school.date_registered);
+                            $("#school_date_registered").text(school.date_registered);
                             $("#school_address").val(school.address);
                             $("#school_coordinator_full_name").text(school_coordinator_data.account_first_name +" " + school_coordinator_data.account_middle_name + " "+ school_coordinator_data.account_last_name);
                             $("#school_coordinator_address").text(school_coordinator_data.account_barangay +", " + school_coordinator_data.account_city + ", "+ school_coordinator_data.account_province);
@@ -333,12 +392,11 @@ if (!isset($_SESSION["username"])) {
                             
                         });
                     })
- 
+                    
                 );
             });
-
+            
         });
-
         $("#select_district").on("change",(e)=>{
             $.post("../ajax.php",{action:"get_schools_by_district",districtID:e.target.value},(data)=>{
             var school_map = JSON.parse(data);
@@ -356,6 +414,25 @@ if (!isset($_SESSION["username"])) {
                 );
             });
         });
+        });
+    });
+    $("#add_school").click(()=>{
+        $("#addSchoolModal").modal("toggle");
+        //Get all school districts as well
+        $.post("../ajax.php",{action:"get_districts"},(data,status)=>{
+            let school_districts = JSON.parse(data);
+            school_districts.forEach((district)=>{
+                $("#add_school_district_id").append(`<option value='${district.districtID}' >${district.district_number}</option>`);
+            });
+        });
+        $("#confirm_add_school_button").click(()=>{
+            if(window.confirm("Are you sure you want to add this school?")){
+                $.post("../ajax.php",{action:"add_school"})
+                alert("School successfully saved!");
+            }
+            else{
+                $("#addSchoolModal").modal("toggle");
+            }   
         });
     });
     });

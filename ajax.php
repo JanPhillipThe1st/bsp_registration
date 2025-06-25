@@ -567,6 +567,70 @@ if($action == 'add_user'){
        
   
 }
+if($action == "add_school_year"){
+    $school_year_start = filter_input(INPUT_POST,"school_year_from");
+    $school_year_end = filter_input(INPUT_POST,"school_year_to");
+    $semester = filter_input(INPUT_POST,"semester");
+    $addSchoolYearQuery = "INSERT INTO `school_year`(`school_year_start`, `school_year_end`, `semester`) 
+    VALUES ('$school_year_start','$school_year_end','$semester')";
+    if($conn->query($addSchoolYearQuery)){
+        echo "200";
+        return true;
+    }
+    else{
+        echo "500";
+        return false; 
+    }
+}
+if($action == "update_school_year"){
+    $school_year_start = filter_input(INPUT_POST,"school_year_start");
+    $school_year_end = filter_input(INPUT_POST,"school_year_end");
+    $semester = filter_input(INPUT_POST,"semester");
+    $school_year_id = filter_input(INPUT_POST,"school_year_id");
+    $updateSchoolYearQuery = "UPDATE `school_year` SET `school_year_start`='$school_year_start',
+    `school_year_end`='$school_year_end',`semester`='$semester' WHERE `syID`='$school_year_id'";
+    if($conn->query($updateSchoolYearQuery)){
+        echo "200";
+        return true;
+    }
+    else{
+        echo "500";
+        return false; 
+    }
+}
+if($action == "delete_school_year"){
+    $school_year_id = filter_input(INPUT_POST,"school_year_id");
+    $deleteSchoolYearQuery = "DELETE FROM `school_year` WHERE `syID`='$school_year_id'";
+    if($conn->query($deleteSchoolYearQuery)){
+        echo "200";
+        return true;
+    }
+    else{
+        echo "500";
+        return false; 
+    }
+}
+if($action == "add_school"){
+    if(!isset($_SESSION["userID"])){
+        echo "no user ID found";
+        return;
+    }
+    else{
+        $schoolID = filter_input(INPUT_POST,"add_school_id");
+        $districtID = filter_input(INPUT_POST,"add_school_district_id");
+        $school_name = filter_input(INPUT_POST,"add_school_name");
+        $school_address = filter_input(INPUT_POST,"add_school_address");
+        $school_contact = filter_input(INPUT_POST,"add_school_contact");
+        $school_coordinator_ID = filter_input(INPUT_POST,"add_school_coordinator_id");
+        $add_school_query = $conn->query("INSERT INTO `school` (`schoolID`, `districtID`, `school_name`, `date_registered`, `school_address`, `school_contact`, `school_coordinator_ID`) 
+        VALUES ('$schoolID', '$districtID', '$school_name', current_timestamp(), '$school_address', '$school_contact', '$school_coordinator_ID')");
+        if ($add_school_query) {
+             http_response_code(200);
+            echo "200";
+        }    
+}
+
+}
 if($action == 'update_student'){
     $studentID = filter_input(INPUT_POST,"studentID");
     $student_first_name = filter_input(INPUT_POST,"student_first_name");
