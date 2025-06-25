@@ -36,6 +36,7 @@ if($action == 'get_school_years'){
         $room_object->school_year_start = $row["school_year_start"];
         $room_object->school_year_end = $row["school_year_end"];
         $room_object->semester = $row["semester"];
+        $room_object->current = $row["current"];
         array_push($resultObject,$room_object);
     }
     echo json_encode($resultObject);
@@ -381,9 +382,8 @@ if($action == 'get_school_by_id'){
 if($action == 'get_schools_it_coordinator'){
     $rooms_query=$conn->query("SELECT * FROM `school` 
     INNER JOIN `account` 
-    ON  `school`.`schoolID` = `account`.`schoolID` 
     INNER JOIN `user` ON  `account`.`userID` = `user`.`userID` 
-    WHERE `user`.`access_type` = 'school_coordinator';");
+    WHERE `user`.`access_type` = 'it_coordinator';");
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
@@ -598,6 +598,25 @@ if($action == "update_school_year"){
         return false; 
     }
 }
+if($action == "set_current_school_year"){
+    $school_year_id = filter_input(INPUT_POST,"syID");
+    $setSchoolYearQuery = "UPDATE `school_year` SET `current`='0' WHERE `syID`!='$school_year_id'";
+    if($conn->query($setSchoolYearQuery)){
+        $updateSchoolYearQuery = "UPDATE `school_year` SET `current`='1' WHERE `syID`='$school_year_id'";
+        if($conn->query($updateSchoolYearQuery)){
+            echo "200";
+            return true;
+        }
+        else{
+            echo "500";
+            return false; 
+        }
+    }
+    else{
+        echo "500";
+        return false; 
+    }
+}
 if($action == "delete_school_year"){
     $school_year_id = filter_input(INPUT_POST,"school_year_id");
     $deleteSchoolYearQuery = "DELETE FROM `school_year` WHERE `syID`='$school_year_id'";
@@ -616,12 +635,12 @@ if($action == "add_school"){
         return;
     }
     else{
-        $schoolID = filter_input(INPUT_POST,"add_school_id");
-        $districtID = filter_input(INPUT_POST,"add_school_district_id");
-        $school_name = filter_input(INPUT_POST,"add_school_name");
-        $school_address = filter_input(INPUT_POST,"add_school_address");
-        $school_contact = filter_input(INPUT_POST,"add_school_contact");
-        $school_coordinator_ID = filter_input(INPUT_POST,"add_school_coordinator_id");
+        $schoolID = filter_input(INPUT_POST,"school_id");
+        $districtID = filter_input(INPUT_POST,"school_district_id");
+        $school_name = filter_input(INPUT_POST,"school_name");
+        $school_address = filter_input(INPUT_POST,"school_address");
+        $school_contact = filter_input(INPUT_POST,"school_contact");
+        $school_coordinator_ID = filter_input(INPUT_POST,"school_coordinator_id");
         $add_school_query = $conn->query("INSERT INTO `school` (`schoolID`, `districtID`, `school_name`, `date_registered`, `school_address`, `school_contact`, `school_coordinator_ID`) 
         VALUES ('$schoolID', '$districtID', '$school_name', current_timestamp(), '$school_address', '$school_contact', '$school_coordinator_ID')");
         if ($add_school_query) {

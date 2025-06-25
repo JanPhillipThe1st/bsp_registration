@@ -57,7 +57,7 @@ if (!isset($_SESSION["username"])) {
                 <th >District</th>
                 <th >School Address</th>
                 <th >Contact Number.</th>
-                <th >School Coordinator</th>
+                <th >IT Coordinator</th>
             </tr>
         </thead>
         <tbody id="table_data">
@@ -82,7 +82,7 @@ if (!isset($_SESSION["username"])) {
                 <th style='border:1px solid black'>District</th>
                 <th style='border:1px solid black'>School Address</th>
                 <th style='border:1px solid black'>Contact Number.</th>
-                <th style='border:1px solid black'>School Coordinator</th>
+                <th style='border:1px solid black'>IT Coordinator</th>
             </tr>
         </thead>
         <tbody id="table_data_printing">
@@ -146,7 +146,7 @@ if (!isset($_SESSION["username"])) {
 
                                 <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="school_coordinator_photo">
                             </div>
-                            <h5 class="text-center">SCHOOL COORDINATOR ID</h5>
+                            <h5 class="text-center">IT COORDINATOR ID</h5>
                             <h3 class="form-control text-center">120987</h3>
                         </div>
                         <div class="col-9">
@@ -242,9 +242,7 @@ if (!isset($_SESSION["username"])) {
 <script src="../assets/jquery-3.6.1.min.js"></script>
 <script src="../assets/js/printThis/printThis.js"></script>
 <script>
-     $(document).ready(()=>{
-        // var school_name_map = ["BALANGASAN ELEMENTARY SCHOOL","CAMP ABELON ELEMENTARY SCHOOL","STA. LUCIA ELEMENTARY SCHOOL",
-        // "NAPOLAN NATIONAL HIGH SCHOOL","BOMBA NATIONAL HIGH SCHOOL","BALANGASAN ELEMENTARY SCHOOL"];
+     $(document).ready((e)=>{
         $("#print_schools").click(()=>{
             alert("Printing...");
             // $("#schools_table").remove("tfoot").printThis();
@@ -255,7 +253,9 @@ if (!isset($_SESSION["username"])) {
                 "<h6 class='m-auto text-center'>S.Y.  2022-2023</h6>"
             });
         });
-        $.post("../ajax.php",{action:"get_schools_it_coordinator"},(data)=>{
+        getSchools();
+        function getSchools(){
+         $.post("../ajax.php",{action:"get_schools_it_coordinator"},(data)=>{
             var school_map = JSON.parse(data);
             var table_data = $("#table_data");
             var table_data_printing = $("#table_data_printing");
@@ -336,9 +336,8 @@ if (!isset($_SESSION["username"])) {
                 );
             });
             
-        });
-
-       
+        });       
+        }
         $("#search_schools").click(()=>{
         let search_text = $("#search_text").val();
         let search_filter = $("#search_filter").val();
@@ -417,7 +416,7 @@ if (!isset($_SESSION["username"])) {
         });
     });
     $("#add_school").click(()=>{
-        $("#addSchoolModal").modal("toggle");
+        $("#addSchoolModal").modal("show");
         //Get all school districts as well
         $.post("../ajax.php",{action:"get_districts"},(data,status)=>{
             let school_districts = JSON.parse(data);
@@ -427,11 +426,19 @@ if (!isset($_SESSION["username"])) {
         });
         $("#confirm_add_school_button").click(()=>{
             if(window.confirm("Are you sure you want to add this school?")){
-                $.post("../ajax.php",{action:"add_school"})
-                alert("School successfully saved!");
+                let add_school_id = $("#add_school_id").val();
+                let add_school_name = $("#add_school_name").val();
+                let add_school_district_id = $("#add_school_district_id").val();
+                let add_school_contact = $("#add_school_contact").val();
+                let add_school_address = $("#add_school_address").val();
+                $.post("../ajax.php",{action:"add_school",school_id:add_school_id,school_name:add_school_name,
+                    school_district_id:add_school_district_id,school_contact:add_school_contact,school_address:add_school_address},(add_school_response)=>{
+                        alert("School information successfully saved!");
+                        getSchools();
+                    });
             }
             else{
-                $("#addSchoolModal").modal("toggle");
+                $("#addSchoolModal").modal("hide");
             }   
         });
     });

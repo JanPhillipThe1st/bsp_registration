@@ -41,7 +41,7 @@ if (!isset($_SESSION["username"])) {
             </select>
         </div>
         <div class="col-4">
-            <button class="btn btn-success" id="btnAddDistrict">Add District</button>
+            <button class="btn btn-success" id="btn_manage_districts">Manage Districts</button>
         </div>
     </div>
     <table class="table m-auto w-75 table-bordered table-rounded" id="schools_table">
@@ -167,12 +167,12 @@ if (!isset($_SESSION["username"])) {
      $(document).ready(()=>{
         let existingDistrictNumbers = [1,2,3];
         $.post("../ajax.php",{action:"get_districts"},(districtJSON)=>{
-            $("#select_district").empty();
-            existingDistrictNumbers = [];
-            JSON.parse(districtJSON).forEach((district)=>{
-                $("#select_district").append(`<option value="${district.district_number}">District ${district.district_number}</option>`);
-                existingDistrictNumbers.push(district.district_number);
-        });
+                $("#select_district").empty();
+                existingDistrictNumbers = [];
+                JSON.parse(districtJSON).forEach((district)=>{
+                    $("#select_district").append(`<option value="${district.district_number}">District ${district.district_number}</option>`);
+                    existingDistrictNumbers.push(district.district_number);
+            });
         });
         $("#print_schools").click(()=>{
             alert("Printing...");
@@ -184,7 +184,7 @@ if (!isset($_SESSION["username"])) {
                 "<h6 class='m-auto text-center'>S.Y.  2022-2023</h6>"
             });
         });
-        $("#btnAddDistrict").click(()=>{
+        $("#btn_manage_districts").click(()=>{
             $("#add_district_id").val(parseInt(existingDistrictNumbers[existingDistrictNumbers.length-1])+1);
             $("#addDistrictModal").modal("toggle");
             $("#btn_save_district").click(()=>{

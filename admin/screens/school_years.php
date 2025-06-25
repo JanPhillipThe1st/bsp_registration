@@ -30,7 +30,7 @@ if (!isset($_SESSION["username"])) {
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="3"> <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSchoolYearModal">New School Year</button></td>
+                <td colspan="3"> <button class="btn btn-success" data-bs-toggle="modal" id="btn_show_add_school_year_modal">New School Year</button></td>
             </tr>
         </tfoot>
     </table>
@@ -176,12 +176,23 @@ if (!isset($_SESSION["username"])) {
                             $("#deleteSchoolYearModal").modal("toggle");
                         })
                         )
+                        .append($(`<button class='btn ${school_year.current.includes("1")?"btn-success":"btn-secondary"}  mx-3'>`+
+                        "<i class='bx bx-check bxs-bounce'></i>"
+                        +"</button>").click(()=>{
+                            if ("Are you sure you want to set this as the current semester?") {
+                                $.post("../ajax.php",{action:"set_current_school_year",syID:school_year.ID},()=>{
+                                    alert(`SY ${school_year.school_year_start} - ${school_year.school_year_end} successfully set as current semester!`);
+                                    getSchoolYears();
+                                });
+                            }
+                        })
+                        )
                     )
                 );
             });
         });
         }
-        $("#btn_delete_school_year").on("click",(event_data)=>{
+        $("#btn_delete_school_year").click((event_data)=>{
             let delete_school_year_id = $("#delete_school_year_id").val();
             //Show school year deletion loading
             $("#btn_delete_school_year").html(`<div class="spinner-border text-white" role="status"></div>`);
@@ -203,7 +214,7 @@ if (!isset($_SESSION["username"])) {
             });
         });
         
-        $("#btn_update_school_year").on("click",(event_data)=>{
+        $("#btn_update_school_year").click((event_data)=>{
             let edit_school_year_from = $("#edit_school_year_from").val();
             let edit_school_year_to = $("#edit_school_year_to").val();
             let edit_school_year_term = $("#edit_school_year_term").val();
@@ -225,7 +236,10 @@ if (!isset($_SESSION["username"])) {
                 }
             );
         });
-        $("#btn_save_school_year").on("click",(event_data)=>{
+        $("#btn_show_add_school_year_modal").click((event_data)=>{
+            $("#addSchoolYearModal").modal("show");
+        });
+        $("#btn_save_school_year").click((event_data)=>{
             var school_year_from = $("#school_year_from").val();
             var school_year_to = $("#school_year_to").val();
             var semester = $("#school_year_term").val();

@@ -62,19 +62,6 @@ if (!isset($_SESSION["username"])) {
         </thead>
         <tbody id="table_data">
         </tbody>
-        <tfoot class="bg-success text-white">
-            <tr>
-                <th>#</th>
-                <th>Date of Registration</th>
-                <th>User ID</th>
-                <th>User Type</th>
-                <th>User Account</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Action</th>
-            </tr>
-        </tfoot>
     </table>
     </div>
     <div class="row mt-3 mb-3">
