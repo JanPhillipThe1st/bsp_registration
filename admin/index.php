@@ -79,13 +79,6 @@ if (isset($_SESSION["username"])) {
             </button>
             </div>
             <div class="row my-3">
-              <button class="btn btn-btn-success side-button border border-success rounded " id="btn_schools">
-                <h4>
-                    Schools
-                </h4>
-            </button>
-            </div>
-            <div class="row my-3">
             <button class="btn btn-btn-success side-button border border-success rounded" id="btn_contact_us">
                 <h4>
                     Contact Us
@@ -164,9 +157,6 @@ if (isset($_SESSION["username"])) {
         });
         $("#btn_school_years").click(()=>{
             content.load("screens/school_years.php");
-        });
-        $("#btn_schools").click(()=>{
-            content.load("screens/schools.php");
         });
         $("#btn_oath_law").click(()=>{
             content.load("screens/oath_law.php");

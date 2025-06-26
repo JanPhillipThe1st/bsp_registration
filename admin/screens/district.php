@@ -128,50 +128,19 @@ if (!isset($_SESSION["username"])) {
         </div>
     </div>
 </div>
-<div class="modal fade " id="addDistrictModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
-                <div class="modal-header">
-                        <h5 class="modal-title text-success m-auto">District Details</h5>
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                    </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="row py-3">
-                                        <div class="col-4 align-middle"> <h5>District Number:</h5></div>
-                                        <div class="col-7"><input type="number" class="form-control"  id="add_district_id"></div>
-                                    </div>
-                                </div>
-                            </div>  
-                        </div>
-                    </div>
-                    <div class="row pt-4">
-                        <div class="col-10"></div>
-                        <div class="col-2"> <button class="btn btn-success w-100" id="btn_save_district">Save District</button></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<?php
+include("../modals/districtModals.php");
 
+?>
 <script src="../assets/jquery-3.6.1.min.js"></script>
 <script src="../assets/js/printThis/printThis.js"></script>
 <script>
      $(document).ready(()=>{
-        let existingDistrictNumbers = [1,2,3];
         $.post("../ajax.php",{action:"get_districts"},(districtJSON)=>{
                 $("#select_district").empty();
                 existingDistrictNumbers = [];
                 JSON.parse(districtJSON).forEach((district)=>{
                     $("#select_district").append(`<option value="${district.district_number}">District ${district.district_number}</option>`);
-                    existingDistrictNumbers.push(district.district_number);
             });
         });
         $("#print_schools").click(()=>{
@@ -182,33 +151,6 @@ if (!isset($_SESSION["username"])) {
                 header:
             "<h3 class='m-auto text-center'>LIST OF DISTRICT "+$("#select_district").val()+" SCHOOLS</h3>"+
                 "<h6 class='m-auto text-center'>S.Y.  2022-2023</h6>"
-            });
-        });
-        $("#btn_manage_districts").click(()=>{
-            $("#add_district_id").val(parseInt(existingDistrictNumbers[existingDistrictNumbers.length-1])+1);
-            $("#addDistrictModal").modal("toggle");
-            $("#btn_save_district").click(()=>{
-                if(confirm("Are you sure you want to save this district number?")){
-                    let add_district_id = parseInt($("#add_district_id").val());
-
-                    //First check if district already exists...
-                        if (existingDistrictNumbers.includes(add_district_id)) {   
-                            alert("District "+add_district_id+" already exists!");
-                            $("#add_district_id").val(add_district_id+1);
-                            return;
-                        }
-                        else{   
-                            $.post("../ajax.php",{action:"add_district",district_number:add_district_id},(a)=>{
-                                alert("District "+a+" saved successfully!");
-                                $("#addDistrictModal").modal("toggle");
-                                location.reload();
-                            });
-                        }
-                }
-                else{
-                    $("#addDistrictModal").modal("toggle");
-
-                }
             });
         });
         $.post("../ajax.php",{action:"get_schools"},(data)=>{
@@ -275,4 +217,59 @@ if (!isset($_SESSION["username"])) {
         });
         });
     });
+
+    
+        $("#btn_manage_districts").click(()=>{
+            $("#addDistrictModal").modal("toggle");
+            //Get districts with post request
+            $.post("../ajax.php",{action:"get_districts"},(district_response,status)=>{
+                let districtList = JSON.parse(district_response);
+                districtList.forEach((district,districtIndex)=>{
+                    //inject to ui
+                        // districtID
+                        // district_number
+                        // date_created
+                    $("#district_table_data").append(
+                        $("<tr></tr>").
+                        append($(`<td>${parseInt(districtIndex)+1}</td>`))
+                        .append($(`<td>${district.district_number}</td>`))
+                        .append($(`<td></td>`)
+                            .append($("<button class='btn btn-warning mx-3'><i class='bx bxs-edit'></i></button>")
+                                .click(()=>{
+                                    //Edit button
+                                })
+                            )
+                            .append($("<button class='btn btn-danger mx-3'><i class='bx bxs-trash'></i></button>")
+                                .click(()=>{
+                                    //Delete button
+                                })
+                            )
+                        )
+                    );
+                });
+            });
+            // $("#btn_save_district").click(()=>{
+            //     if(confirm("Are you sure you want to save this district number?")){
+            //         let add_district_id = parseInt($("#add_district_id").val());
+
+            //         //First check if district already exists...
+            //             if (existingDistrictNumbers.includes(add_district_id)) {   
+            //                 alert("District "+add_district_id+" already exists!");
+            //                 $("#add_district_id").val(add_district_id+1);
+            //                 return;
+            //             }
+            //             else{   
+            //                 $.post("../ajax.php",{action:"add_district",district_number:add_district_id},(a)=>{
+            //                     alert("District "+a+" saved successfully!");
+            //                     $("#addDistrictModal").modal("toggle");
+            //                     location.reload();
+            //                 });
+            //             }
+            //     }
+            //     else{
+            //         $("#addDistrictModal").modal("toggle");
+
+            //     }
+          
+        });
 </script>
