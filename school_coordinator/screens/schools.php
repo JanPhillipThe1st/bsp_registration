@@ -52,7 +52,7 @@ if (!isset($_SESSION["username"])) {
                 <th >School name</th>
                 <th >District</th>
                 <th >School Address</th>
-                <th >Contact Number.</th>
+                <th >School's Contact No.</th>
                 <th >School Coordinator</th>
             </tr>
         </thead>
@@ -74,7 +74,7 @@ if (!isset($_SESSION["username"])) {
                 <th style='border:1px solid black'>School name</th>
                 <th style='border:1px solid black'>District</th>
                 <th style='border:1px solid black'>School Address</th>
-                <th style='border:1px solid black'>Contact Number.</th>
+                <th style='border:1px solid black'>School's Contact No.</th>
                 <th style='border:1px solid black'>School Coordinator</th>
             </tr>
         </thead>

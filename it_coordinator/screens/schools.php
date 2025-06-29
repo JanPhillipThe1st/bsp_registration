@@ -51,13 +51,13 @@ if (!isset($_SESSION["username"])) {
         <thead class="bg-success text-white">
             <tr>
                 <th >#</th>
-                <th >Date of Registration</th>
-                <th >School ID</th>
-                <th >School name</th>
+                <th >Date Registered</th>
+                <th >School's I.D</th>
+                <th >School's Name</th>
                 <th >District</th>
                 <th >School Address</th>
-                <th >Contact Number.</th>
-                <th >IT Coordinator</th>
+                <th >School's Contact No.</th>
+                <th >School Coordinator</th>
             </tr>
         </thead>
         <tbody id="table_data">
@@ -75,14 +75,14 @@ if (!isset($_SESSION["username"])) {
     <table id="schools_table_printing" class="d-flex table-bordered table-rounded d-none">
     <thead class="bg-dark text-white">
             <tr style="border:1px solid black;">
-                <th style='border:1px solid black'>#</th>
+                <th style='border:1px solid black'>No.</th>
                 <th style='border:1px solid black'>Date of Registration</th>
-                <th style='border:1px solid black'>School ID</th>
-                <th style='border:1px solid black'>School name</th>
+                <th style='border:1px solid black'>School's I.D</th>
+                <th style='border:1px solid black'>School's name</th>
                 <th style='border:1px solid black'>District</th>
                 <th style='border:1px solid black'>School Address</th>
-                <th style='border:1px solid black'>Contact Number.</th>
-                <th style='border:1px solid black'>IT Coordinator</th>
+                <th style='border:1px solid black'>School's Contact No.</th>
+                <th style='border:1px solid black'>School Coordinator</th>
             </tr>
         </thead>
         <tbody id="table_data_printing">
