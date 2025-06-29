@@ -324,7 +324,7 @@ if (!isset($_SESSION["username"])) {
             table_data.empty();
             school_map.forEach((school,sn_index)=>{
                 table_data.append(
-                    $("<tr></tr>")
+                    $(`<tr id='school-row-${school.ID}'></tr>`)
                     .append(
                         $("<td>"+(parseInt(sn_index)+1)+"</td>")
                     )
@@ -353,6 +353,9 @@ if (!isset($_SESSION["username"])) {
                         $(`<td id='td-schools-${school.ID}'></td>`)
                         .append(
                             $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                                $(`#schoolDetailsModal`).on('shown.bs.modal', function (e) {
+                                    $(`#schoolDetailsModal`).modal('hide');
+                                });
                                 //Populate the input fields
                                 $("#edit_school_date_registered").val(school.date_registered);
                                 $("#edit_school_id").val(school.ID);
@@ -365,6 +368,9 @@ if (!isset($_SESSION["username"])) {
                         )
                         .append(
                             $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                                $(`#schoolDetailsModal`).on('shown.bs.modal', function (e) {
+                                    $(`#schoolDetailsModal`).modal('hide');
+                                });
                                 if (window.confirm("Are you sure you want to delete "+school.school_name+"'s records?")) {
                                     // $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
                                     //     window.location = "index.php?page=schools&message=Student Data Deleted Successfully!";
@@ -372,9 +378,9 @@ if (!isset($_SESSION["username"])) {
                                 }
                             })
                         )
-                        .append(
-                                $(`<button id='btn-view-school${school.ID}' class='btn btn-primary mx-2 d-none text-white'><i class='bx bxs-report'></i> View</button>`).click(()=>{
-                                 $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
+                    ).hover(()=>{
+                        $(`#school-row-${school.ID}`).click(()=>{
+                                  $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
                                 var school_coordinator_data =JSON.parse(school_coordinator_response);
                                 
                                 $("#school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
@@ -390,14 +396,8 @@ if (!isset($_SESSION["username"])) {
                                 $("#schoolDetailsModal").modal("toggle");
                                 
                             });
-                            })
-                        )
-                    ).hover(()=>{
-                        $(`#btn-view-school${school.ID}`).removeClass("d-none");
-                    }).on("mouseleave",()=>{
-                        $(`#btn-view-school${school.ID}`).addClass("d-none");
-
-                    })                 
+                        });
+                    })              
                 );
                 table_data_printing.append(
                     $("<tr></tr>")
