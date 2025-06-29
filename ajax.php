@@ -380,17 +380,17 @@ if($action == 'get_school_by_id'){
     echo json_encode($room_object);
 }
 if($action == 'get_schools_it_coordinator'){
-    $rooms_query=$conn->query("SELECT * FROM `school` 
-    INNER JOIN `account` 
-    INNER JOIN `user` ON  `account`.`userID` = `user`.`userID` 
+    $rooms_query=$conn->query("SELECT *,a.schoolID AS 'school_id',a.date_registered AS 'school_registered' FROM `school` a
+    INNER JOIN `account`  
+    INNER JOIN `user`  ON  `account`.`userID` = `user`.`userID` 
     WHERE `user`.`access_type` = 'it_coordinator';");
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
-        $room_object->ID = $row["schoolID"];
+        $room_object->ID = $row["school_id"];
         $room_object->school_name = $row["school_name"];
         $room_object->district = $row["districtID"];
-        $room_object->date_registered = $row["date_registered"];
+        $room_object->date_registered = $row["school_registered"];
         $room_object->address = $row["school_address"];
         $room_object->contact = $row["school_contact"];
         $room_object->school_coordinator_id = $row["acccountID"];

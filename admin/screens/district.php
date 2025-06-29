@@ -223,6 +223,7 @@ include("../modals/districtModals.php");
             $("#addDistrictModal").modal("toggle");
             //Get districts with post request
             $.post("../ajax.php",{action:"get_districts"},(district_response,status)=>{
+                $("#district_table_data").empty();
                 let districtList = JSON.parse(district_response);
                 districtList.forEach((district,districtIndex)=>{
                     //inject to ui
