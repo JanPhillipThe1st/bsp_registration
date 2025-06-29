@@ -92,7 +92,7 @@ if (!isset($_SESSION["username"])) {
 </div>
 
 <div class="modal fade " id="schoolDetailsModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" id="schoolDetailsModalBody" role="document">
         <div class="modal-content" style="width:75vw; right:22.5vw !important;">
                 <div class="modal-header">
                         <h5 class="modal-title text-success m-auto">SCHOOL DETAILS</h5>
@@ -372,9 +372,9 @@ if (!isset($_SESSION["username"])) {
                                 }
                             })
                         )
-                        .append(
-                            $("<button class='btn btn-primary mx-2 text-white'><i class='bx bxs-report'></i> View</button>").click(()=>{
-                                 $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
+                    )
+                    .hover(()=>{
+                             $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
                                 var school_coordinator_data =JSON.parse(school_coordinator_response);
                                 
                                 $("#school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
@@ -388,11 +388,11 @@ if (!isset($_SESSION["username"])) {
                                 $("#school_coordinator_address").text(school_coordinator_data.account_barangay +", " + school_coordinator_data.account_city + ", "+ school_coordinator_data.account_province);
                                 $("#school_coordinator_contact").text(school_coordinator_data.account_phone);
                                 $("#schoolDetailsModal").modal("toggle");
-                                
+                                $("#schoolDetailsModalBody").on("mouseleave",()=>{
+                                    $("#schoolDetailsModal").modal("hide");
+                                });
                             });
-                            })
-                        )
-                    )
+                        })
                 );
                 table_data_printing.append(
                     $("<tr></tr>")
