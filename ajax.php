@@ -306,6 +306,32 @@ if($action == 'get_school_coordinator'){
     }
     echo json_encode($resultObject);
 }
+if($action == 'get_school_coordinators'){
+    $rooms_query=$conn->query("SELECT * FROM `account` a INNER JOIN `user` b
+    ON a.userID = b.userID WHERE b.access_type = 'school_coordinator';");
+    $resultArrayObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $resultObject = new stdClass();
+        $resultObject->accountID = $row["acccountID"];
+        $resultObject->userID = $row["userID"];
+        $resultObject->schoolID = $row["schoolID"];
+        $resultObject->full_name = $row["full_name"];
+        $resultObject->account_first_name = $row["account_first_name"];
+        $resultObject->account_middle_name = $row["account_middle_name"];
+        $resultObject->account_last_name = $row["account_last_name"];
+        $resultObject->account_grade = $row["account_grade"];
+        $resultObject->account_section = $row["account_section"];
+        $resultObject->account_photo = $row["account_photo"];
+        $resultObject->account_barangay = $row["account_barangay"];
+        $resultObject->account_city = $row["account_city"];
+        $resultObject->account_province = $row["account_province"];
+        $resultObject->account_email = $row["account_email"];
+        $resultObject->account_phone = $row["account_phone"];
+        $resultObject->date_registered = $row["date_registered"];
+        array_push($resultArrayObject,$resultObject);
+    }
+    echo json_encode($resultArrayObject);
+}
 if($action == 'get_schools'){
     $rooms_query=$conn->query("SELECT * FROM school");
     $resultObject = array();
@@ -383,7 +409,7 @@ if($action == 'get_schools_it_coordinator'){
     $rooms_query=$conn->query("SELECT *,a.schoolID AS 'school_id',a.date_registered AS 'school_registered' FROM `school` a
     INNER JOIN `account`  
     INNER JOIN `user`  ON  `account`.`userID` = `user`.`userID` 
-    WHERE `user`.`access_type` = 'it_coordinator';");
+    WHERE `user`.`access_type` = 'school_coordinator';");
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();

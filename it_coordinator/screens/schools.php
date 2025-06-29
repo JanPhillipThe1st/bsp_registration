@@ -147,7 +147,7 @@ if (!isset($_SESSION["username"])) {
 
                                 <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="school_coordinator_photo">
                             </div>
-                            <h5 class="text-center">IT COORDINATOR ID</h5>
+                            <h5 class="text-center">SCHOOL COORDINATOR ID</h5>
                             <h3 class="form-control text-center">120987</h3>
                         </div>
                         <div class="col-9">
@@ -259,7 +259,6 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-12">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date Registered:
                                     <strong id="add_school_date_registered"></strong>
                                 </p>
                             </div>
@@ -273,22 +272,66 @@ if (!isset($_SESSION["username"])) {
                                         <div class="col-4 align-middle"> <h5>School Name:</h5></div>
                                         <div class="col-7"><input type="text" class="form-control"  id="add_school_name"></div>
                                     </div>
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School Address:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="add_school_address"></div>                                        
+                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row py-3">
-                                        <div class="col-4 align-middle"> <h5>District ID:</h5></div>
-                                        <select class="col-6 form-control" name="add_school_district_id" id="add_school_district_id"></select>
+                                        <div class="col-4 align-end"> <h5>District ID:</h5></div>
+                                        <div class="col-8">
+                                            <select class="form-control align-start" name="add_school_district_id" id="add_school_district_id"></select>
+                                        </div>
                                     </div>
                                     <div class="row py-3">
-                                        <div class="col-4 align-middle"> <h5>School Tel. No.:</h5></div>
-                                        <div class="col-7"><input type="text" class="form-control"  id="add_school_contact"></div>
+                                        <div class="col-4 align-end"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-8"><input type="text" class="form-control align-start"  id="add_school_contact"></div>
                                     </div>
                                 </div>
                             </div>  
-                            <div class="row mt-3">
-                                        <div class="col-3 align-middle"> <h5>School Address:</h5></div>
-                                        <div class="col-9"><input type="text" class="form-control"  id="add_school_address"></div>                                        
+                            
+                             <div class="row my-3">
+                        <hr>
+                        <h4 class="text-center text-black">School Coordinator Information</h4>
+                        <div class="col-3 justify-items-center">
+                            <h5 class="text-center">Coordinator Photo</h5>
+                            <div class="row  m-auto">
+
+                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="add_school_coordinator_photo">
                             </div>
+                            <h5 class="text-center">SCHOOL COORDINATOR ID</h5>
+                            <select class="form-control text-center" id="it_coordinator_select">
+                                <option value="0">Select...</option>
+                            </select>
+                        </div>
+                        <div class="col-9">
+                            <div class="row my-5">
+                                <div class="col-2">
+                                    <div class="row my-2">
+                                        <h5 class="text-end">Full Name:</h5>
+                                    </div>
+                                    <div class="row my-2">
+                                        <h5 class="text-end">Address:</h5>
+                                    </div>
+                                    <div class="row my-2">
+                                        <h5 class="text-end">Contact:</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="add_school_coordinator_full_name"/>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="add_school_coordinator_address"/>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="add_school_coordinator_contact"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>
@@ -313,6 +356,23 @@ if (!isset($_SESSION["username"])) {
                 header:
             "<h3 class='m-auto text-center'>LIST OF DISTRICT "+$("#select_district").val()+" SCHOOLS</h3>"+
                 "<h6 class='m-auto text-center'>S.Y.  2022-2023</h6>"
+            });
+        });
+        $.post("../ajax.php",{action:"get_school_coordinators"},(sc_responses)=>{
+            JSON.parse(sc_responses).forEach((sc)=>{
+                $("#it_coordinator_select").append(
+                    $(`<option value='${sc.accountID}'>${sc.full_name}</option>`)
+                );
+            });
+            $("#it_coordinator_select").change(()=>{
+               let currentCoordinator = $("#it_coordinator_select").val();
+                  $.post("../ajax.php",{action:"get_school_coordinator",ID:currentCoordinator},(school_coordinator_response)=>{
+                                let school_coordinator_data = JSON.parse(school_coordinator_response);
+                               $("#add_school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
+                                $("#add_school_coordinator_full_name").val(school_coordinator_data.account_first_name +" " + school_coordinator_data.account_middle_name + " "+ school_coordinator_data.account_last_name);
+                                $("#add_school_coordinator_address").val(school_coordinator_data.account_barangay +", " + school_coordinator_data.account_city + ", "+ school_coordinator_data.account_province);
+                                $("#add_school_coordinator_contact").val(school_coordinator_data.account_phone);   
+                            });
             });
         });
         getSchools();
