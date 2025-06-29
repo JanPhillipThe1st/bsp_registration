@@ -45,7 +45,7 @@ if (!isset($_SESSION["username"])) {
         <thead class="bg-success text-white">
             <tr>
                 <th>No.</th>
-                <th>Date of Registration</th>
+                <th>Date Registered</th>
                 <th>User ID</th>
                 <th>User Type</th>
                 <th>User Account</th>

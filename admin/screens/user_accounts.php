@@ -50,7 +50,7 @@ if (!isset($_SESSION["username"])) {
         <thead class="bg-success text-white">
             <tr>
                 <th>No.</th>
-                <th>Date of Registration</th>
+                <th>Date Registered</th>
                 <th>User ID</th>
                 <th>User Type</th>
                 <th>User Account</th>
@@ -103,7 +103,7 @@ if (!isset($_SESSION["username"])) {
                             <div class="row mb-3">
                                 <div class="col-12 text-md-end">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="add_user_date_of_registration">09-06-2024</strong>
                                 </p>
                                 </div>
@@ -220,7 +220,7 @@ if (!isset($_SESSION["username"])) {
                             <div class="row mb-3">
                                 <div class="col-12 text-md-end">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="edit_user_date_of_registration">09-06-2024</strong>
                                 </p>
                                 </div>

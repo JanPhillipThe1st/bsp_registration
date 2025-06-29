@@ -41,7 +41,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-9">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="user_date_of_registration">09-06-2024</strong>
                                 </p>
                             </div>

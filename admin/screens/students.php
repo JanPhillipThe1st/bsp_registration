@@ -35,7 +35,7 @@ if (!isset($_SESSION["username"])) {
         <thead class="bg-success text-white">
             <tr>
                 <th>No.</th>
-                <th>Date of Registration</th>
+                <th>Date Registered</th>
                 <th>Student ID</th>
                 <th>Name</th>
                 <th>Grade</th>
@@ -50,7 +50,7 @@ if (!isset($_SESSION["username"])) {
         <tfoot class="bg-success text-white">
             <tr>
                 <th>No.</th>
-                <th>Date of Registration</th>
+                <th>Date Registered</th>
                 <th>Student ID</th>
                 <th>Name</th>
                 <th>Grade</th>
@@ -66,7 +66,7 @@ if (!isset($_SESSION["username"])) {
     <thead class="bg-dark text-white">
             <tr style="border:1px solid black;">
                 <th style='border:1px solid black'>No.</th>
-                <th style='border:1px solid black'>Date of Registration</th>
+                <th style='border:1px solid black'>Date Registered</th>
                 <th style='border:1px solid black'>Student ID</th>
                 <th style='border:1px solid black'>Name</th>
                 <th style='border:1px solid black'>Grade</th>
@@ -132,7 +132,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-9">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="edit_student_date_of_registration">09-06-2024</strong>
                                 </p>
                             </div>
@@ -296,7 +296,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-9">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="add_student_date_of_registration">09-06-2024</strong>
                                 </p>
                             </div>

@@ -58,6 +58,7 @@ if (!isset($_SESSION["username"])) {
                 <th >School Address</th>
                 <th >School's Contact No.</th>
                 <th >School Coordinator</th>
+                <th >Action</th>
             </tr>
         </thead>
         <tbody id="table_data">
@@ -76,7 +77,7 @@ if (!isset($_SESSION["username"])) {
     <thead class="bg-dark text-white">
             <tr style="border:1px solid black;">
                 <th style='border:1px solid black'>No.</th>
-                <th style='border:1px solid black'>Date of Registration</th>
+                <th style='border:1px solid black'>Date Registered</th>
                 <th style='border:1px solid black'>School's I.D</th>
                 <th style='border:1px solid black'>School's name</th>
                 <th style='border:1px solid black'>District</th>
@@ -105,7 +106,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-12">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="school_date_registered"></strong>
                                 </p>
                             </div>
@@ -182,6 +183,67 @@ if (!isset($_SESSION["username"])) {
     </div>
 </div>
 
+<div class="modal fade " id="editSchoolModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+                <div class="modal-header">
+                        <h5 class="modal-title text-success m-auto">EDIT SCHOOL DETAILS</h5>
+                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row ">
+                                <p class="text-end">
+                                    Date Registered:
+                                    <strong id="edit_school_date_registered"></strong>
+                                </p>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School ID:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_id"></div>
+                                    </div>
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School Name:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_name"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>District ID:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_district_id"></div>
+                                    </div>
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_contact"></div>
+                                    </div>
+                                </div>
+                            </div>  
+                            <div class="row mt-3">
+                                        <div class="col-3 align-middle"> <h5>School Address:</h5></div>
+                                        <div class="col-9"><input type="text" class="form-control"  id="edit_school_address"></div>                                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-4"></div>
+                    <div class="col-3">
+                        <button class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade " id="addSchoolModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:75vw; right:22.5vw !important;">
@@ -197,7 +259,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-12">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="add_school_date_registered"></strong>
                                 </p>
                             </div>
@@ -286,26 +348,51 @@ if (!isset($_SESSION["username"])) {
                     )
                     .append(
                         $("<td></td>")
-                    ).click(()=>{
-
-                        $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
-                            var school_coordinator_data =JSON.parse(school_coordinator_response);
-                            
-                            $("#school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
-                            $("#school_id").val(school.ID);
-                            $("#school_name").val(school.school_name);
-                            $("#school_district_id").val(school.district);
-                            $("#school_contact").val(school.contact);
-                            $("#school_date_registered").text(school.date_registered);
-                            $("#school_address").val(school.address);
-                            $("#school_coordinator_full_name").text(school_coordinator_data.account_first_name +" " + school_coordinator_data.account_middle_name + " "+ school_coordinator_data.account_last_name);
-                            $("#school_coordinator_address").text(school_coordinator_data.account_barangay +", " + school_coordinator_data.account_city + ", "+ school_coordinator_data.account_province);
-                            $("#school_coordinator_contact").text(school_coordinator_data.account_phone);
-                            $("#schoolDetailsModal").modal("toggle");
-                            
-                        });
-                    })
- 
+                    )
+                    .append(
+                        $("<td></td>")
+                        .append(
+                            $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                                //Populate the input fields
+                                $("#edit_school_date_registered").val(school.date_registered);
+                                $("#edit_school_id").val(school.ID);
+                                $("#edit_school_name").val(school.school_name);
+                                $("#edit_school_district_id").val(school.district);
+                                $("#edit_school_contact").val(school.address);
+                                $("#edit_school_address").val(school.contact);
+                                $("#editSchoolModal").modal("toggle");
+                            })
+                        )
+                        .append(
+                            $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                                if (window.confirm("Are you sure you want to delete "+school.school_name+"'s records?")) {
+                                    // $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
+                                    //     window.location = "index.php?page=schools&message=Student Data Deleted Successfully!";
+                                    // });
+                                }
+                            })
+                        )
+                        .append(
+                            $("<button class='btn btn-primary mx-2 text-white'><i class='bx bxs-report'></i> View</button>").click(()=>{
+                                 $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
+                                var school_coordinator_data =JSON.parse(school_coordinator_response);
+                                
+                                $("#school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
+                                $("#school_id").val(school.ID);
+                                $("#school_name").val(school.school_name);
+                                $("#school_district_id").val(school.district);
+                                $("#school_contact").val(school.contact);
+                                $("#school_date_registered").text(school.date_registered);
+                                $("#school_address").val(school.address);
+                                $("#school_coordinator_full_name").text(school_coordinator_data.account_first_name +" " + school_coordinator_data.account_middle_name + " "+ school_coordinator_data.account_last_name);
+                                $("#school_coordinator_address").text(school_coordinator_data.account_barangay +", " + school_coordinator_data.account_city + ", "+ school_coordinator_data.account_province);
+                                $("#school_coordinator_contact").text(school_coordinator_data.account_phone);
+                                $("#schoolDetailsModal").modal("toggle");
+                                
+                            });
+                            })
+                        )
+                    )
                 );
                 table_data_printing.append(
                     $("<tr></tr>")

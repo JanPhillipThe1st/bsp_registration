@@ -47,7 +47,7 @@ if (!isset($_SESSION["username"])) {
         <thead class="bg-success text-white">
             <tr>
                 <th >No.</th>
-                <th >Date of Registration</th>
+                <th >Date Registered</th>
                 <th >School ID</th>
                 <th >School name</th>
                 <th >District</th>
@@ -69,7 +69,7 @@ if (!isset($_SESSION["username"])) {
     <thead class="bg-dark text-white">
             <tr style="border:1px solid black;">
                 <th style='border:1px solid black'>No.</th>
-                <th style='border:1px solid black'>Date of Registration</th>
+                <th style='border:1px solid black'>Date Registered</th>
                 <th style='border:1px solid black'>School ID</th>
                 <th style='border:1px solid black'>School name</th>
                 <th style='border:1px solid black'>District</th>
@@ -98,7 +98,7 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-12">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date of registration:
+                                    Date Registered:
                                     <strong id="school_date_registered">09-06-2024</strong>
                                 </p>
                             </div>
