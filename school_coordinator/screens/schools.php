@@ -222,7 +222,7 @@ if (!isset($_SESSION["username"])) {
                         $("<td>"+school.contact+"</td>")
                     )
                     .append(
-                        $("<td>"+school.coordinator+"</td>")
+                        $("<td></td>")
                     ).click(()=>{
 
                         $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
@@ -268,7 +268,7 @@ if (!isset($_SESSION["username"])) {
                         $("<td style='border:1px solid black'>"+school.contact+"</td>")
                     )
                     .append(
-                        $("<td style='border:1px solid black'>"+school.coordinator+"</td>")
+                        $("<td style='border:1px solid black'></td>")
                     )
                 );
             });
