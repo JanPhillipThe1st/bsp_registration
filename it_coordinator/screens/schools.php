@@ -583,8 +583,9 @@ if (!isset($_SESSION["username"])) {
                 let add_school_district_id = $("#add_school_district_id").val();
                 let add_school_contact = $("#add_school_contact").val();
                 let add_school_address = $("#add_school_address").val();
+                let school_coordinator_id = $("#it_coordinator_select").val();
                 $.post("../ajax.php",{action:"add_school",school_id:add_school_id,school_name:add_school_name,
-                    school_district_id:add_school_district_id,school_contact:add_school_contact,school_address:add_school_address},(add_school_response)=>{
+                    school_district_id:add_school_district_id,school_contact:add_school_contact,school_address:add_school_address,school_coordinator_id:school_coordinator_id},(add_school_response)=>{
                         alert("School information successfully saved!");
                         getSchools();
                     });

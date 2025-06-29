@@ -667,12 +667,15 @@ if($action == "add_school"){
         $school_address = filter_input(INPUT_POST,"school_address");
         $school_contact = filter_input(INPUT_POST,"school_contact");
         $school_coordinator_ID = filter_input(INPUT_POST,"school_coordinator_id");
-        $add_school_query = $conn->query("INSERT INTO `school` (`schoolID`, `districtID`, `school_name`, `date_registered`, `school_address`, `school_contact`, `school_coordinator_ID`) 
+        $add_school_query = $conn->query("INSERT INTO `school` (`schoolID`, `districtID`, `school_name`, `date_registered`, `school_address`, `school_contact`, `it_coordinator_ID`) 
         VALUES ('$schoolID', '$districtID', '$school_name', current_timestamp(), '$school_address', '$school_contact', '$school_coordinator_ID')");
         if ($add_school_query) {
              http_response_code(200);
             echo "200";
-        }    
+        }   
+        else{
+            echo "500";
+        } 
 }
 
 }
