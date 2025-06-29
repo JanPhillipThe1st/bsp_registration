@@ -20,7 +20,7 @@ if (!isset($_SESSION["username"])) {
     <table class="table m-auto w-50 table-bordered table-rounded">
         <thead class="bg-success text-white">
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>School year</th>
                 <th>Action</th>
             </tr>

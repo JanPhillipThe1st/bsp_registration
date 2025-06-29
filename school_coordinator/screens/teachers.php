@@ -53,7 +53,7 @@ if (!isset($_SESSION["username"])) {
     <table class="table m-auto w-75 table-bordered table-rounded" id="teachers_table">
         <thead class="bg-success text-white">
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Date of Registration</th>
                 <th>Teacher ID</th>
                 <th>Teacher Name</th>
@@ -72,7 +72,7 @@ if (!isset($_SESSION["username"])) {
     <table id="teachers_table_printing" class=" w-100 table-bordered table-rounded d-none">
     <thead class="bg-dark text-white">
             <tr style="border:1px solid black;">
-                <th style='border:1px solid black'>#</th>
+                <th style='border:1px solid black'>No.</th>
                 <th style='border:1px solid black'>Date of Registration</th>
                 <th style='border:1px solid black'>Student ID</th>
                 <th style='border:1px solid black'>Name</th>

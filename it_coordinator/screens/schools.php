@@ -50,7 +50,7 @@ if (!isset($_SESSION["username"])) {
     <table class="table m-auto w-100 table-bordered table-rounded" id="schools_table">
         <thead class="bg-success text-white">
             <tr>
-                <th >#</th>
+                <th >No.</th>
                 <th >Date Registered</th>
                 <th >School's I.D</th>
                 <th >School's Name</th>

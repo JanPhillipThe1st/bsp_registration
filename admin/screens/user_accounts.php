@@ -49,7 +49,7 @@ if (!isset($_SESSION["username"])) {
         <table class="table table-bordered table-hover overflow-scroll" id="user_accounts_table">
         <thead class="bg-success text-white">
             <tr>
-                <th>#</th>
+                <th>No.</th>
                 <th>Date of Registration</th>
                 <th>User ID</th>
                 <th>User Type</th>
