@@ -198,47 +198,86 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-12">
                             <div class="row ">
                                 <p class="text-end">
-                                    Date Registered:
-                                    <strong id="edit_school_date_registered"></strong>
+                                    <strong id="add_school_date_registered"></strong>
                                 </p>
                             </div>
                             <div class="row">
                                 <div class="col-6">
                                     <div class="row py-3">
                                         <div class="col-4 align-middle"> <h5>School ID:</h5></div>
-                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_id"></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_id" ></div>
                                     </div>
                                     <div class="row py-3">
                                         <div class="col-4 align-middle"> <h5>School Name:</h5></div>
                                         <div class="col-7"><input type="text" class="form-control"  id="edit_school_name"></div>
                                     </div>
+                                    <div class="row py-3">
+                                        <div class="col-4 align-middle"> <h5>School Address:</h5></div>
+                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_address"></div>                                        
+                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="row py-3">
-                                        <div class="col-4 align-middle"> <h5>District ID:</h5></div>
-                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_district_id"></div>
+                                        <div class="col-4 align-end"> <h5>District ID:</h5></div>
+                                        <div class="col-8">
+                                            <select class="form-control align-start" name="add_school_district_id" id="edit_school_district_id"></select>
+                                        </div>
                                     </div>
                                     <div class="row py-3">
-                                        <div class="col-4 align-middle"> <h5>School Tel. No.:</h5></div>
-                                        <div class="col-7"><input type="text" class="form-control"  id="edit_school_contact"></div>
+                                        <div class="col-4 align-end"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-8"><input type="text" class="form-control align-start"  id="edit_school_contact"></div>
                                     </div>
                                 </div>
                             </div>  
-                            <div class="row mt-3">
-                                        <div class="col-3 align-middle"> <h5>School Address:</h5></div>
-                                        <div class="col-9"><input type="text" class="form-control"  id="edit_school_address"></div>                                        
+                            
+                             <div class="row my-3">
+                        <hr>
+                        <h4 class="text-center text-black">School Coordinator Information</h4>
+                        <div class="col-3 justify-items-center">
+                            <h5 class="text-center">Coordinator Photo</h5>
+                            <div class="row  m-auto">
+
+                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="User Photo Thumbnail" id="edit_school_coordinator_photo">
                             </div>
+                            <h5 class="text-center">SCHOOL COORDINATOR ID</h5>
+                            <select class="form-control text-center" id="school_coordinator_change">
+                                <option value="0">Select...</option>
+                            </select>
+                        </div>
+                        <div class="col-9">
+                            <div class="row my-5">
+                                <div class="col-2">
+                                    <div class="row my-2">
+                                        <h5 class="text-end">Full Name:</h5>
+                                    </div>
+                                    <div class="row my-2">
+                                        <h5 class="text-end">Address:</h5>
+                                    </div>
+                                    <div class="row my-2">
+                                        <h5 class="text-end">Contact:</h5>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="edit_school_coordinator_full_name"/>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="edit_school_coordinator_address"/>
+                                    </div>
+                                    <div class="row">
+                                        <input type="text" class="form-control" id="edit_school_coordinator_contact"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-3">
-                        <button class="btn btn-success">Save</button>
-                    </div>
-                </div>
+                <button data-bs-dismiss="modal" aria-label="Close" type="button" class="btn btn-secondary" >Close</button>
+                <button id="confirm_edit_school_button" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
@@ -363,6 +402,19 @@ if (!isset($_SESSION["username"])) {
                 $("#it_coordinator_select").append(
                     $(`<option value='${sc.accountID}'>${sc.full_name}</option>`)
                 );
+                $("#school_coordinator_change").append(
+                    $(`<option value='${sc.accountID}'>${sc.full_name}</option>`)
+                );
+            });
+            $("#school_coordinator_change").change(()=>{
+               let currentCoordinator = $("#school_coordinator_change").val();
+                  $.post("../ajax.php",{action:"get_school_coordinator",ID:currentCoordinator},(school_coordinator_response)=>{
+                                let school_coordinator_data = JSON.parse(school_coordinator_response);
+                               $("#edit_school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
+                                $("#edit_school_coordinator_full_name").val(school_coordinator_data.account_first_name +" " + school_coordinator_data.account_middle_name + " "+ school_coordinator_data.account_last_name);
+                                $("#edit_school_coordinator_address").val(school_coordinator_data.account_barangay +", " + school_coordinator_data.account_city + ", "+ school_coordinator_data.account_province);
+                                $("#edit_school_coordinator_contact").val(school_coordinator_data.account_phone);   
+                            });
             });
             $("#it_coordinator_select").change(()=>{
                let currentCoordinator = $("#it_coordinator_select").val();
@@ -416,14 +468,39 @@ if (!isset($_SESSION["username"])) {
                                 $(`#schoolDetailsModal`).on('shown.bs.modal', function (e) {
                                     $(`#schoolDetailsModal`).modal('hide');
                                 });
-                                //Populate the input fields
-                                $("#edit_school_date_registered").val(school.date_registered);
-                                $("#edit_school_id").val(school.ID);
-                                $("#edit_school_name").val(school.school_name);
-                                $("#edit_school_district_id").val(school.district);
-                                $("#edit_school_contact").val(school.address);
-                                $("#edit_school_address").val(school.contact);
-                                $("#editSchoolModal").modal("toggle");
+                                    //Get all school districts as well
+                                    $.post("../ajax.php",{action:"get_districts"},(data,status)=>{
+                                        let school_districts = JSON.parse(data);
+                                        school_districts.forEach((district)=>{
+                                            $("#edit_school_district_id").append(`<option value='${district.districtID}' >${district.district_number}</option>`);
+                                        });
+                                         //Populate the input fields
+                                        $("#edit_school_date_registered").val(school.date_registered);
+                                        $("#edit_school_id").val(school.ID);
+                                        $("#edit_school_name").val(school.school_name);
+                                        $("#edit_school_district_id").val(school.district);
+                                        $("#edit_school_contact").val(school.address);
+                                        $("#edit_school_address").val(school.contact);
+                                        $("#editSchoolModal").modal("toggle");
+
+                                        $("#confirm_edit_school_button").click(()=>{
+                                            if(window.confirm("Are you sure you want to add this school?")){
+                                                let add_school_id = $("#edit_school_id").val();
+                                                let add_school_name = $("#edit_school_name").val();
+                                                let add_school_district_id = $("#edit_school_district_id").val();
+                                                let add_school_contact = $("#edit_school_contact").val();
+                                                let add_school_address = $("#edit_school_address").val();
+                                                let school_coordinator_id = $("#school_coordinator_change").val();
+                                                $.post("../ajax.php",{action:"edit_school",school_id:add_school_id,school_name:add_school_name,
+                                                    school_district_id:add_school_district_id,school_contact:add_school_contact,school_address:add_school_address,school_coordinator_id:school_coordinator_id},(add_school_response)=>{
+                                                        alert("School information successfully updated!");
+                                                        getSchools();
+                                                    });
+                                                }
+                                        });
+                                    });
+
+                               
                             })
                         )
                         .append(
@@ -432,9 +509,9 @@ if (!isset($_SESSION["username"])) {
                                     $(`#schoolDetailsModal`).modal('hide');
                                 });
                                 if (window.confirm("Are you sure you want to delete "+school.school_name+"'s records?")) {
-                                    // $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
-                                    //     window.location = "index.php?page=schools&message=Student Data Deleted Successfully!";
-                                    // });
+                                    $.post("../ajax.php",{action:"delete_school",school_id:school.ID},(delete_response,delete_status)=>{
+                                        getSchools();
+                                    });
                                 }
                             })
                         )
