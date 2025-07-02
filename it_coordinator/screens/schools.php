@@ -510,16 +510,16 @@ if (!isset($_SESSION["username"])) {
                                 });
                                 if (window.confirm("Are you sure you want to delete "+school.school_name+"'s records?")) {
                                     $.post("../ajax.php",{action:"delete_school",school_id:school.ID},(delete_response,delete_status)=>{
+                                        alert(""+school.school_name+"'s records deleted successfully!");
                                         getSchools();
                                     });
                                 }
                             })
                         )
-                    ).hover(()=>{
-                        $(`#school-row-${school.ID}`).click(()=>{
+                        .append(
+                            $("<button class='btn btn-primary mx-2 text-white'><i class='bx bxs-report'></i> View</button>").click(()=>{
                                   $.post("../ajax.php",{action:"get_school_coordinator",ID:school.school_coordinator_id},(school_coordinator_response)=>{
                                 var school_coordinator_data =JSON.parse(school_coordinator_response);
-                                
                                 $("#school_coordinator_photo").attr("src","../img/users/"+school_coordinator_data.account_photo);
                                 $("#school_id").val(school.ID);
                                 $("#school_name").val(school.school_name);
@@ -533,8 +533,9 @@ if (!isset($_SESSION["username"])) {
                                 $("#schoolDetailsModal").modal("toggle");
                                 
                             });
-                        });
-                    })              
+                            })
+                        )
+                    )            
                 );
                 table_data_printing.append(
                     $("<tr></tr>")

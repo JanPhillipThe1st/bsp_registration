@@ -26,6 +26,10 @@ if($action == 'login'){
         $_SESSION["access"] = $row["access_type"];
         echo json_encode($resultObject);
     }
+    else{
+        echo json_encode($result);
+    }
+    
 }
 if($action == 'get_school_years'){
     $rooms_query=$conn->query("SELECT * FROM `school_year`;");
