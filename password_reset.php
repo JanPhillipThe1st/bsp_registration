@@ -14,15 +14,15 @@
 <div class="container">
 
 <div class="form-group login_form">
-    <div class="row w-100 my-3">
-        <div class="col d-flex align-items-center m-auto">
-            <img src="./assets/img/BSPLogo.png" class="m-auto" alt="" srcset="" style="max-width: 10vh;">
+     <div class="row w-100 my-3">
+        <div class="col-1 d-flex align-items-center m-auto">
+            <img src="./assets/img/BSPLogo.png" class="m-auto" alt="" srcset="" style="max-width: 5vw;">
         </div>
-        <div class="col d-flex align-items-center m-auto">
-            <h3 class="m-auto text-center" style="font-size:1.5em !important;">Boy Scouts of the Philippines</h3>
+        <div class="col-9 m-auto">
+            <h3 class="m-auto text-center" style="font-size:1.5em !important;">ZAMBOANGA DEL SUR BOY SCOUT OF THE PHILIPPINES <br/> REGISTRATION & MONITORING SYSTEM</h3>
         </div>
-        <div class="col d-flex align-items-center m-auto">
-            <img src="./assets/img/ZDS_Logo.png" class="m-auto" alt="" srcset="" style="max-width: 10vh;" >
+        <div class="col-1 d-flex align-items-center m-auto">
+            <img src="./assets/img/ZDS_Logo.png" class="m-auto" alt="" srcset="" style="max-width: 5vw;" >
         </div>
     </div>
     <hr>
@@ -92,6 +92,7 @@
                 }
                 else{
                     alert("Email addresses do not match!");
+                    $("#btn_send_password").html(`Send Password`);
                 }
             }
         });

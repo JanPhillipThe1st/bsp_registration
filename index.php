@@ -35,18 +35,18 @@ $og_url = $protocol . $host . $_SERVER['REQUEST_URI'];
 
 <div class="form-group login_form">
     <div class="row w-100 my-3">
-        <div class="col d-flex align-items-center m-auto">
-            <img src="./assets/img/BSPLogo.png" class="m-auto" alt="" srcset="" style="max-width: 10vh;">
+        <div class="col-1 d-flex align-items-center m-auto">
+            <img src="./assets/img/BSPLogo.png" class="m-auto" alt="" srcset="" style="max-width: 5vw;">
         </div>
-        <div class="col d-flex align-items-center m-auto">
-            <h3 class="m-auto text-center" style="font-size:1.5em !important;">Boy Scouts of the Philippines</h3>
+        <div class="col-9 m-auto">
+            <h3 class="m-auto text-center" style="font-size:1.5em !important;">ZAMBOANGA DEL SUR BOY SCOUT OF THE PHILIPPINES <br/> REGISTRATION & MONITORING SYSTEM</h3>
         </div>
-        <div class="col d-flex align-items-center m-auto">
-            <img src="./assets/img/ZDS_Logo.png" class="m-auto" alt="" srcset="" style="max-width: 10vh;" >
+        <div class="col-1 d-flex align-items-center m-auto">
+            <img src="./assets/img/ZDS_Logo.png" class="m-auto" alt="" srcset="" style="max-width: 5vw;" >
         </div>
     </div>
     <hr>
-    <h3>Login</h3>
+    <h3>User Login</h3>
     <h5>Enter your username and password below</h5>
     <label for="username">Username</label>
     <input type="text" class="form-control text-black" name="username" id="username"  placeholder="Enter your username here...">
