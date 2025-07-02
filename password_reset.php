@@ -67,17 +67,21 @@
         $(document).ready(()=>{
           
 
-        $("#btn_send_password").click(()=>{
-            if ( $("#email").val().toString().length <1 || $("#confirm_email").val().toString().length <1 ) {
-                alert("Please fill in all fields before proceeding!");
-            }
-            else{
-                
+            $("#btn_send_password").click(()=>{
+                $("#btn_send_password").html(`<div class="spinner-border text-light" role="status"></div>`);
+                if ( $("#email").val().toString().length <1 || $("#confirm_email").val().toString().length <1 ) {
+                    alert("Please fill in all fields before proceeding!");
+                    $("#btn_send_password").html(`Send Password`);
+                }
+                else{
+                    
                 var email =  $("#email").val();
                 var confirm_email =  $("#confirm_email").val();
                 if(email.toString() == confirm_email.toString()){
                     $.post("ajax.php",{action:"reset_password",recipient_email:confirm_email},(email_sent)=>{
                         $("#loginStatus").modal("show");
+                        
+                    $("#btn_send_password").html(`Send Password`);
                     });
                 }
                 else{
