@@ -476,8 +476,8 @@ if (!isset($_SESSION["username"])) {
                                         $("#edit_school_id").val(school.ID);
                                         $("#edit_school_name").val(school.school_name);
                                         $("#edit_school_district_id").val(school.district);
-                                        $("#edit_school_contact").val(school.address);
-                                        $("#edit_school_address").val(school.contact);
+                                        $("#edit_school_contact").val(school.contact);
+                                        $("#edit_school_address").val(school.address);
                                         $("#editSchoolModal").modal("toggle");
 
                                         $("#confirm_edit_school_button").click(()=>{
