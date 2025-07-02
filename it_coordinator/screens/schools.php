@@ -465,9 +465,6 @@ if (!isset($_SESSION["username"])) {
                         $(`<td id='td-schools-${school.ID}'></td>`)
                         .append(
                             $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
-                                $(`#schoolDetailsModal`).on('shown.bs.modal', function (e) {
-                                    $(`#schoolDetailsModal`).modal('hide');
-                                });
                                     //Get all school districts as well
                                     $.post("../ajax.php",{action:"get_districts"},(data,status)=>{
                                         let school_districts = JSON.parse(data);
@@ -505,9 +502,6 @@ if (!isset($_SESSION["username"])) {
                         )
                         .append(
                             $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
-                                $(`#schoolDetailsModal`).on('shown.bs.modal', function (e) {
-                                    $(`#schoolDetailsModal`).modal('hide');
-                                });
                                 if (window.confirm("Are you sure you want to delete "+school.school_name+"'s records?")) {
                                     $.post("../ajax.php",{action:"delete_school",school_id:school.ID},(delete_response,delete_status)=>{
                                         alert(""+school.school_name+"'s records deleted successfully!");
