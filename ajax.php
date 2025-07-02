@@ -853,10 +853,13 @@ if($action == 'reset_password'){
         $mail->Body    = "Your username is: '$username' and your password is: '$password'";
     
         $mail->send();
-        echo 'Message has been sent';
+        echo 'Password sent successfully! Please check your email.';
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }   
+    }
+    else{
+        echo "Message could not be sent. No email address found for this account.";
     }
  
 }

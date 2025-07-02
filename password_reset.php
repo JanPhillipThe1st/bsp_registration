@@ -79,7 +79,13 @@
                 var confirm_email =  $("#confirm_email").val();
                 if(email.toString() == confirm_email.toString()){
                     $.post("ajax.php",{action:"reset_password",recipient_email:confirm_email},(email_sent)=>{
-                        $("#loginStatus").modal("show");
+                        if(email_sent.includes("Please check your email")){
+                            $("#loginStatusMessage").text("Password sent successfully! Please check your email.");
+                            $("#loginStatus").modal("show");
+                        }else{
+                            $("#loginStatusMessage").text(email_sent);
+                            $("#loginStatus").modal("show");
+                        }
                         
                     $("#btn_send_password").html(`Send Password`);
                     });
