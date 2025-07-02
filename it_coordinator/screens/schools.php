@@ -127,7 +127,7 @@ if (!isset($_SESSION["username"])) {
                                         <div class="col-7"><input type="text" class="form-control"  id="school_district_id" disabled></div>
                                     </div>
                                     <div class="row py-3">
-                                        <div class="col-4 align-middle"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-4 align-middle"> <h5>School Contact No.:</h5></div>
                                         <div class="col-7"><input type="text" class="form-control"  id="school_contact" disabled></div>
                                     </div>
                                 </div>
@@ -224,7 +224,7 @@ if (!isset($_SESSION["username"])) {
                                         </div>
                                     </div>
                                     <div class="row py-3">
-                                        <div class="col-4 align-end"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-4 align-end"> <h5>School Contact No.:</h5></div>
                                         <div class="col-8"><input type="text" class="form-control align-start"  id="edit_school_contact"></div>
                                     </div>
                                 </div>
@@ -324,7 +324,7 @@ if (!isset($_SESSION["username"])) {
                                         </div>
                                     </div>
                                     <div class="row py-3">
-                                        <div class="col-4 align-end"> <h5>School Tel. No.:</h5></div>
+                                        <div class="col-4 align-end"> <h5>School Contact No.:</h5></div>
                                         <div class="col-8"><input type="text" class="form-control align-start"  id="add_school_contact"></div>
                                     </div>
                                 </div>
