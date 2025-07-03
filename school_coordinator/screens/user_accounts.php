@@ -46,7 +46,6 @@ if (!isset($_SESSION["username"])) {
             <button class="btn btn-primary" id="search_button">Search</button>
         </div>
     </div>
-    <div class="overflow-scroll" style="height: 50vh;">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover " id="user_accounts_table">
             <thead class="bg-success text-white">
@@ -65,7 +64,6 @@ if (!isset($_SESSION["username"])) {
             <tbody id="table_data">
             </tbody>
         </table>
-        </div>
     </div>
     <div class="row mt-3 mb-3">
         <div class="col-12 col-sm-auto mb-2 mb-sm-0">

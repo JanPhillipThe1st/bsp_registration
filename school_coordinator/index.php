@@ -109,8 +109,9 @@ if (isset($_SESSION["username"])) {
             </div>
 
         </div>
-        
-        <div class="col-10" id="content">
+                <div class="col-10 overflow-scroll" style="height: 70vh;" id="content">
+
+      
         <img src="../assets/img/BSPLogo.png" class="m-auto" alt="" srcset="" height="400px">
         </div>
     </div>

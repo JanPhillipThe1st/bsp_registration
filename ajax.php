@@ -390,12 +390,12 @@ if($action == 'school_coordinator_filter_users'){
     
       if ($searchFilter === "all") {
         $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
-      `account`.`userID` = `user`.`userID` ;");
+      `account`.`userID` = `user`.`userID` AND( `user`.`access_type` = 'teacher' OR `user`.`access_type` = 'troop_leader');");
       }
       else{
         $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
             `account`.`userID` = `user`.`userID` 
-            WHERE ".$searchFilter." LIKE '%".$searchTerm."%'");
+            WHERE ".$searchFilter." LIKE '%".$searchTerm."%' AND (`user`.`access_type` = 'teacher' OR `user`.`access_type` = 'troop_leader');");
       }
     $resultObject = array();
    
