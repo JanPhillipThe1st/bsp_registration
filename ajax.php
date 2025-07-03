@@ -254,7 +254,6 @@ if($action == 'get_users'){
 
 if($action == 'get_current_user'){
     $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON  `account`.`userID` = `user`.`userID` 
-    INNER JOIN `school` ON `school`.`schoolID` = `account`.`schoolID`
     WHERE `user`.`userID` = '".$_SESSION["userID"]."'
     ");
     $resultObject = new stdClass();
@@ -278,9 +277,6 @@ if($action == 'get_current_user'){
         $resultObject->account_province = $row["account_province"];
         $resultObject->account_email = $row["account_email"];
         $resultObject->account_phone = $row["account_phone"];
-        $resultObject->districtID = $row["districtID"];
-        $resultObject->school_name = $row["school_name"];
-        $resultObject->school_address = $row["school_address"];
         $resultObject->date_registered = $row["date_registered"];
     }
     echo json_encode($resultObject);
@@ -514,7 +510,7 @@ if($action == 'add_student'){
      `student_province`, `student_email`, `student_phone`, `student_emergency_guardian`, `student_emergency_phone`, 
      `student_emergency_address`) 
     VALUES ( '1', '$student_first_name', '$student_middle_name', 
-    '$student_last_name', '$student_grade', '$student_section', 'Growing Usa', '$student_photo', '$student_barangay', '$student_city', '$student_province',
+    '$student_last_name', '$student_grade', '$student_section', '', '$student_photo', '$student_barangay', '$student_city', '$student_province',
      '$student_email', '$student_phone', '$student_emergency_guardian', '$student_emergency_phone', '$student_emergency_address') ;");
   
 }

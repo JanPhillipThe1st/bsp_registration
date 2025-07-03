@@ -19,6 +19,7 @@ if (isset($_SESSION["username"])) {
     <title>BSP Registration System</title>
     <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/vendor/chart.js/chart.js">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="../assets/img/BSPLogo.png">
 </head>
@@ -69,8 +70,14 @@ if (isset($_SESSION["username"])) {
                     Students
                 </h4>
             </button>
-            </div>
-
+        </div>
+         <div class="row my-3">
+                <button class="btn btn-btn-success side-button border border-success rounded " id="btn_user_accounts">
+                    <h4>
+                     User Account
+                    </h4>
+                </button>
+            </div>  
             <div class="row my-3">
             <button class="btn btn-btn-success side-button border border-success rounded" id="btn_contact_us">
                 <h4>
@@ -92,12 +99,11 @@ if (isset($_SESSION["username"])) {
                         <a class="dropdown-item" id="btn_history" href="#">HISTORY</a>
                     </div>
             </div>
-            <div class="row my-3">
-            </div>  
+           
             <div class="row my-3">
             <button class="btn btn-btn-success side-button border border-success rounded " id="btn_account_settings">
                 <h4>
-                    User Account
+                    Account Settings
                 </h4>
             </button>
             </div>
@@ -321,6 +327,9 @@ if (isset($_SESSION["username"])) {
             content.load("screens/contact_us.php");
         });
        
+        $("#btn_user_accounts").click(()=>{
+            content.load("screens/user_accounts.php");
+        });
         $("#btn_teachers").click(()=>{
             content.load("screens/teachers.php");
         });
