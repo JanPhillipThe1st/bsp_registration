@@ -90,14 +90,11 @@ if (!isset($_SESSION["username"])) {
                         <!-- Photo column -->
                         <div class="col-12 col-md-3 text-center mb-3 mb-md-0">
                                 <img src="../assets/img/BSPLogo.png" class="img-fluid img-thumbnail mb-2" alt="User Photo Thumbnail" id="add_user_photo_preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">
-                                <form action="screens/upload_user_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
                                         <label for="add_user_photo_file_input" class="form-label">Select Photo</label>
                                         <input type="hidden" name="add_user_photo_name" id="add_user_photo_name">
                                         <input type="file" class="form-control form-control-sm" name="add_user_photo" id="add_user_photo_file_input" placeholder="Select Photo">
-                                        <button type="submit" name="submit" class="btn btn-primary btn-sm w-100 mt-2">Upload</button>
                                     </div>
-                                </form>
                         </div>
                         <!-- Information Column -->
                         <div class="col-12 col-md-9">
@@ -207,14 +204,11 @@ if (!isset($_SESSION["username"])) {
                         <!-- Photo column -->
                         <div class="col-12 col-md-3 text-center mb-3 mb-md-0">
                                 <img src="../assets/img/BSPLogo.png" class="img-fluid img-thumbnail mb-2" alt="User Photo Thumbnail" id="edit_user_photo_preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">
-                                <form action="screens/upload_edit_user_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
                                         <label for="edit_user_photo_file_input" class="form-label">Select Photo</label>
                                         <input type="hidden" name="edit_user_photo_name" id="edit_user_photo_name">
                                         <input type="file" class="form-control form-control-sm" name="edit_user_photo" id="edit_user_photo_file_input" placeholder="Select Photo">
-                                        <button type="submit" name="submit" class="btn btn-primary btn-sm w-100 mt-2">Upload</button>
                                     </div>
-                                </form>
                         </div>
                         <!-- Information Column -->
                         <div class="col-12 col-md-9">
@@ -339,18 +333,11 @@ if (!isset($_SESSION["username"])) {
         console.log(filename+ "<---- Filename");
         $("#add_user_date_of_registration").text(new Date().toDateString());
 
-        if (filename != null){
-            $("#add_user_photo_preview").attr("src","../img/users/"+filename);
-            $("#add_user_photo_name").val(filename.toString());
-            $("#edit_user_photo_preview").attr("src","../img/users/"+filename);
-            $("#edit_user_photo_name").val(filename.toString());
-            $("#messageModal").modal("toggle");
-            $("#addUserModal").modal("toggle");
-        }
+      
         function getStudentsTable(){
             var table_data = $("#table_data");
             table_data.empty();
-        $.post("../ajax.php",{action:"get_users"},(response,status)=>{
+        $.post("../ajax.php",{action:"school_coordinator_get_users"},(response,status)=>{
             var users_table = JSON.parse(response);
             users_table.forEach((user,user_index)=>{
                 table_data.append(
@@ -398,7 +385,7 @@ if (!isset($_SESSION["username"])) {
                                 $("#edit_user_phone").val(user.student_phone);
                                 $("#edit_user_username").val(user.username);
                                 $("#edit_user_password").val(user.password);
-                                $("#edit_user_photo_preview").attr("src","../img/users/"+user.account_photo);
+                                $("#edit_user_photo_preview").attr("src",user.account_photo);
                                 $("#edit_user_photo_name").val(user.account_photo);
                                 $("#edit_user_confirm_password").val(user.password);
                                 $("#edit_user_phone").val(user.account_phone);
@@ -413,7 +400,7 @@ if (!isset($_SESSION["username"])) {
                                             user_first_name:$("#edit_user_first_name").val(),
                                             user_middle_name:$("#edit_user_middle_name").val(),
                                             user_last_name:$("#edit_user_last_name").val(),
-                                            user_photo_name:$("#edit_user_photo_name").val(),
+                                            user_photo_name:userPhoto,
                                             user_barangay:$("#edit_user_barangay").val(),
                                             user_city:$("#edit_user_city").val(),
                                             user_province:$("#edit_user_province").val(),
@@ -450,8 +437,12 @@ if (!isset($_SESSION["username"])) {
                 );
             });
 
-
-                var table = $('#user_accounts_table').DataTable({dom: 'ltipr'});
+try {
+    
+    $('#user_accounts_table').DataTable({dom: 'ltipr'});
+} catch (error) {
+    
+}
             
 
                 $.post("../ajax.php",{action:"get_schools"},(school_data)=>{
@@ -478,7 +469,17 @@ if (!isset($_SESSION["username"])) {
                     });
             
         }
-
+        var userPhoto = "";
+         $("#edit_user_photo_file_input").change(async ()=>{ 
+            var fileInput = $("#edit_user_photo_file_input")[0];
+                var file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file); 
+                reader.onload =async function(e) {
+                    userPhoto = e.target.result;
+                    $("#edit_user_photo_preview").attr("src",e.target.result);
+                };
+        });
       $("#confirm_add_user").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to add this user?")) {
             if($("#add_user_password").val() === 
@@ -529,7 +530,7 @@ if (!isset($_SESSION["username"])) {
                 $("#search_button").html(
            `Search`);
            //Perform a search query to to the database with ajax.php
-        $.post("../ajax.php",{action:"filter_users",searchFilter:searchFilter,searchTerm:searchTerm},(response,status)=>{
+        $.post("../ajax.php",{action:"school_coordinator_filter_users",searchFilter:searchFilter,searchTerm:searchTerm},(response,status)=>{
             var users_table = JSON.parse(response);
             users_table.forEach((user,user_index)=>{
                 table_data.append(
@@ -577,42 +578,14 @@ if (!isset($_SESSION["username"])) {
                                 $("#edit_user_phone").val(user.student_phone);
                                 $("#edit_user_username").val(user.username);
                                 $("#edit_user_password").val(user.password);
-                                $("#edit_user_photo_preview").attr("src","../img/users/"+user.account_photo);
+                                $("#edit_user_photo_preview").attr("src",user.account_photo);
                                 $("#edit_user_photo_name").val(user.account_photo);
                                 $("#edit_user_confirm_password").val(user.password);
                                 $("#edit_user_phone").val(user.account_phone);
                                 
                                 $("#editStudentID").val(user.accountID);
                                 $("#editUserModal").modal("toggle");
-                                
-                                $("#confirm_edit_user").click(()=>{
-                                    if(window.confirm("Are you sure you want to update this user's information?")){
-                                        $("#editUserModal").modal("toggle");
-                                        $.post("../ajax.php",{action:"update_user",   
-                                            user_first_name:$("#edit_user_first_name").val(),
-                                            user_middle_name:$("#edit_user_middle_name").val(),
-                                            user_last_name:$("#edit_user_last_name").val(),
-                                            user_photo_name:$("#edit_user_photo_name").val(),
-                                            user_barangay:$("#edit_user_barangay").val(),
-                                            user_city:$("#edit_user_city").val(),
-                                            user_province:$("#edit_user_province").val(),
-                                            user_email:$("#edit_user_email").val(),
-                                            user_phone:$("#edit_user_phone").val(),
-                                            user_username:$("#edit_user_username").val(),
-                                            user_password:$("#edit_user_password").val(),
-                                            user_confirm_password:$("#edit_user_confirm_password").val(),
-                                            user_school:$("#edit_user_school").val(),
-                                            user_access_type:$("#edit_user_access_type").val(),
-                                            user_phone:$("#edit_user_phone").val(),                                
-                                            userID:user.userID},
-                                (edit_user_response,edit_user_status)=>{
-                                         
-                                        });
-                                        $("#modalMessage").text("User information successfully updated!");   
-                                        $("#messageModal").modal("toggle");   
-                                        getStudentsTable();
-                                    }
-                                });
+                               
                             })
                         )
                         .append(
@@ -634,6 +607,35 @@ if (!isset($_SESSION["username"])) {
 
            
       });
+       
+                                $("#confirm_edit_user").click(()=>{
+                                    if(window.confirm("Are you sure you want to update this user's information?")){
+                                        $("#editUserModal").modal("toggle");
+                                        $.post("../ajax.php",{action:"update_user",   
+                                            user_first_name:$("#edit_user_first_name").val(),
+                                            user_middle_name:$("#edit_user_middle_name").val(),
+                                            user_last_name:$("#edit_user_last_name").val(),
+                                            user_photo_name:userPhoto,
+                                            user_barangay:$("#edit_user_barangay").val(),
+                                            user_city:$("#edit_user_city").val(),
+                                            user_province:$("#edit_user_province").val(),
+                                            user_email:$("#edit_user_email").val(),
+                                            user_phone:$("#edit_user_phone").val(),
+                                            user_username:$("#edit_user_username").val(),
+                                            user_password:$("#edit_user_password").val(),
+                                            user_confirm_password:$("#edit_user_confirm_password").val(),
+                                            user_school:$("#edit_user_school").val(),
+                                            user_access_type:$("#edit_user_access_type").val(),
+                                            user_phone:$("#edit_user_phone").val(),                                
+                                            userID:user.userID},
+                                (edit_user_response,edit_user_status)=>{
+                                         
+                                        });
+                                        $("#modalMessage").text("User information successfully updated!");   
+                                        $("#messageModal").modal("toggle");   
+                                        getStudentsTable();
+                                    }
+                                });
      async function searchUsers(searchFilter,searchTerm) {
         
       }
