@@ -18,23 +18,22 @@ if (!isset($_SESSION["username"])) {
     }
 </style>
 <div class="container-fluid">
-    <input type="hidden" id="current_sy" value=<?=$_SESSION["school_year"]?>>
 
     <div class="content" style="width:75vw; right:22.5vw !important;">
                 <div class="modal-header">
-                        <h5 class="modal-title text-q">MY ACCOUNT</h5>
+                        <h5 class="modal-title text-dark">MY ACCOUNT</h5>
                            
                     </div>
                 <div class="container-fluid">
                     <div class="row">
                         <!-- Photo column -->
                         <div class="col-2">
-                             <img src="../assets/img/BSPLogo.png" class="img-fluid img-thumbnail mb-2" alt="User Photo Thumbnail" id="edit_user_photo_preview" style="max-width: 200px; max-height: 200px; object-fit: cover;">
-                                    <div class="form-group">
-                                        <label for="edit_user_photo_file_input" class="form-label">Select Photo</label>
-                                        <input type="hidden" name="edit_user_photo_name" id="edit_user_photo_name">
-                                        <input type="file" class="form-control form-control-sm " name="edit_user_photo" id="edit_user_photo_file_input" placeholder="Select Photo">
-                                    </div>                        
+                            <div class="row my-4">
+                                <img src="../assets/img/BSPLogo.png" class="bg-white border shadow" alt="User Photo Thumbnail" id="user_photo_preview" >
+
+                            </div>
+                            
+                        
                         </div>
                         <!-- Spacing -->
                         <div class="col-1"></div>
@@ -116,6 +115,9 @@ if (!isset($_SESSION["username"])) {
                                         <p>Password:</p>
                                     </div>
                                     <div class="row py-3 text-end">
+                                        <p>Confirm Password:</p>
+                                    </div>
+                                    <div class="row py-3 text-end">
                                         <p>Access level:</p>
                                     </div>
                                     <div class="row py-3 text-end">
@@ -130,16 +132,10 @@ if (!isset($_SESSION["username"])) {
                                         <input type="text" class="form-control" placeholder="Enter username here..." id="user_username" disabled>
                                     </div>
                                     <div class="row py-3">
-                                        <div class="col-10">
-                                            <input type="password" class="form-control" placeholder="Enter password..." id="user_password" disabled>
-                                        </div>
-                                        <div class="col-2">   
-                                            <button class="btn btn-secondary" id="togglePassword">
-                                                <i class="bi bi-eye-slash" ></i>
-                                            </button>
-                                        </div>
-                                       
-                                        
+                                        <input type="password" class="form-control" placeholder="Enter password..." id="user_password" disabled>
+                                    </div>
+                                    <div class="row py-3">
+                                        <input type="password" class="form-control" placeholder="Confirm password..." id="user_confirm_password" disabled>
                                     </div>
                                     <div class="row py-3">
                                         <select class="form-control" placeholder="Confirm password..." id="user_access_type" disabled>
@@ -161,10 +157,7 @@ if (!isset($_SESSION["username"])) {
                 </div>
             </div>
 
-        <div class="modal-footer">
-            <button class="btn btn-secondary mx-2" id="btn_cancel_edit">Cancel</button>
-            <button class="btn btn-primary mx-2" id="btn_edit_account">Edit</button>
-        </div>
+
 
 </div>
 
@@ -190,45 +183,15 @@ if (!isset($_SESSION["username"])) {
 <script src="../assets/js/DataTables/datatables.min.js"></script>
 <script>
      $(document).ready(()=>{
-        let isEditing = false;
-        let passwordShown = true;
-        var userPhoto = "";
-        var user = {};
-        //Capture photo data
-        $("#edit_user_photo_file_input").change(async ()=>{ 
-            var fileInput = $("#edit_user_photo_file_input")[0];
-                var file = fileInput.files[0];
-                const reader = new FileReader();
-                reader.readAsDataURL(file); 
-                reader.onload =async function(e) {
-                    userPhoto = e.target.result;
-                    $("#edit_user_photo_preview").attr("src",e.target.result);
-                };
-        });
-       
-           var isCurrentSY = false;
-        $.post("../ajax.php",{action:"get_SY_status",school_year:$("#current_sy").val()},(SYresponse)=>{
-            isCurrentSY = SYresponse.includes("true");
-            if (!isCurrentSY) {
-                $("#btn_edit_account").hide();
-            }
-            else{
-                $("#btn_edit_account").show();
-
-            }
-        });
-
-        $("#btn_cancel_edit").hide();
        //Get user data
        $.post("../ajax.php",{action:"get_current_user"},(user_data_response,request_status)=>{
-        user = JSON.parse(user_data_response);
+        var user = JSON.parse(user_data_response);
         $("#user_first_name").val(user.account_first_name);
         $("#user_middle_name").val(user.account_middle_name);
         $("#user_last_name").val(user.account_last_name);
         $("#user_barangay").val(user.account_barangay);
         $("#user_city").val(user.account_city);
-        userPhoto = user.account_photo;
-        $("#edit_user_photo_preview").attr("src",userPhoto);
+        $("#user_photo_preview").attr("src","../img/users/"+user.account_photo);
         $("#user_date_of_registration").text(user.date_registered);
         $("#user_province").val(user.account_province);
         $("#user_email").val(user.account_email);
@@ -238,101 +201,7 @@ if (!isset($_SESSION["username"])) {
         $("#user_confirm_password").val(user.password);
         $("#user_access_type").val(user.access_type);
         $("#user_school").val(user.schoolID);
-        $("#edit_user_photo_file_input").hide();
-        $("#togglePassword").hide();
-       });
-       $("#togglePassword").click(()=>{
-            if(passwordShown){
-                $("#user_password").attr("type","text");
-                $("#togglePassword").html(`<i class="bi bi-eye text-white" ></i>`);
-                passwordShown = false;
-            }
-            else{
-                $("#user_password").attr("type","password");
-                $("#togglePassword").html(`<i class="bi bi-eye-slash text-white" ></i>`);
-                passwordShown = true;
-            }
-        });
-       $("#btn_cancel_edit").click(()=>{
-            $("#user_barangay").attr("disabled","true");
-            $("#user_city").attr("disabled","true");
-            $("#user_province").attr("disabled","true");
-            $("#user_phone").attr("disabled","true");
-            $("#user_username").attr("disabled","true");
-            $("#user_password").attr("disabled","true");
-            $("#btn_edit_account").text("Edit");
-            $("#user_first_name").val(user.account_first_name);
-            $("#user_middle_name").val(user.account_middle_name);
-            $("#user_last_name").val(user.account_last_name);
-            $("#user_barangay").val(user.account_barangay);
-            $("#user_city").val(user.account_city);
-            userPhoto = user.account_photo;
-            $("#edit_user_photo_preview").attr("src",userPhoto);
-            $("#user_date_of_registration").text(user.date_registered);
-            $("#user_province").val(user.account_province);
-            $("#user_email").val(user.account_email);
-            $("#user_phone").val(user.account_phone);
-            $("#user_username").val(user.username);
-            $("#user_password").val(user.password);
-            $("#user_confirm_password").val(user.password);
-            $("#user_access_type").val(user.access_type);
-            $("#user_school").val(user.schoolID);
-            $("#edit_user_photo_file_input").hide();
-            $("#togglePassword").hide();
-            $("#btn_cancel_edit").hide();
-            isEditing = false;
-       });
-       $("#btn_edit_account").click(()=>{
-        if(!isEditing){
-            $("#user_barangay").removeAttr("disabled");
-            $("#user_city").removeAttr("disabled");
-            $("#user_province").removeAttr("disabled");
-            $("#user_phone").removeAttr("disabled");
-            $("#user_username").removeAttr("disabled");
-            $("#user_password").removeAttr("disabled");
-            $("#edit_user_photo_file_input").show();
-            $("#togglePassword").show();
-            $("#btn_edit_account").text("Save");
-            $("#btn_cancel_edit").show();
-            isEditing = true;
-        }else{
-            if(window.confirm("Are you sure you want to save this record?")){
-                $.post("../ajax.php",{action:"update_user",   
-                                            user_first_name:$("#user_first_name").val(),
-                                            user_middle_name:$("#user_middle_name").val(),
-                                            user_last_name:$("#user_last_name").val(),
-                                            user_photo_name:userPhoto,
-                                            user_barangay:$("#user_barangay").val(),
-                                            user_city:$("#user_city").val(),
-                                            user_province:$("#user_province").val(),
-                                            user_email:$("#user_email").val(),
-                                            user_phone:$("#user_phone").val(),
-                                            user_username:$("#user_username").val(),
-                                            user_password:$("#user_password").val(),
-                                            user_confirm_password:$("#user_password").val(),
-                                            user_school:$("#user_school").val(),
-                                            user_access_type:"school_coordinator",
-                                            user_phone:$("#user_phone").val(),                                
-                                            userID:user.userID},()=>{
-                    alert("Your profile has been successfully updated!");
-                    window.location.reload();
-                    $("#user_barangay").attr("disabled","true");
-                    $("#user_city").attr("disabled","true");
-                    $("#user_province").attr("disabled","true");
-                    $("#user_phone").attr("disabled","true");
-                    $("#user_username").attr("disabled","true");
-                    $("#user_password").attr("disabled","true");
-                    $("#edit_user_photo_file_input").hide();
-                    $("#btn_edit_account").text("Edit");
-                    $("#togglePassword").hide();
-                    $("#btn_cancel_edit").hide();
-                    isEditing = false;
-                });
-            }
-            
-
-        }
-
+        
        });
     });
 </script>

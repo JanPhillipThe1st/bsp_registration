@@ -519,6 +519,25 @@ if($action == 'confirm_school_year'){
     $_SESSION["school_year"] = $school_year_id;
     $_SESSION["school_year_string"] = $school_year_string;
 }
+if ($action == "get_SY_status") {
+    $school_year = filter_input(INPUT_POST,"school_year");
+    $rooms_query=$conn->query("SELECT * FROM `school_year` WHERE `syID` = '$school_year';");
+    $row = $rooms_query->fetch_assoc();
+    $room_object = new stdClass();
+    if($row > 0){
+        $room_object->syID = $row["syID"];
+        $room_object->school_year_start = $row["school_year_start"];
+        $room_object->school_year_end = $row["school_year_end"];
+        $room_object->semester = $row["semester"];
+        $room_object->current = $row["current"];
+    }
+    if ($room_object->current == "1") {
+        echo "true";
+    }
+    else {
+        echo "false";
+    }
+}
 if($action == 'get_current_teacher'){
     $current_userID = $_SESSION["userID"];
     $rooms_query=$conn->query("SELECT * FROM `teacher`;");
