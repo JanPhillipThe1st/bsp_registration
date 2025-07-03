@@ -57,7 +57,7 @@ if (!isset($_SESSION["username"])) {
                 <th>User Account</th>
                 <th>Address</th>
                 <th>Email</th>
-                <th>Phone</th>
+                <th>Contact No.</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -352,7 +352,7 @@ if (!isset($_SESSION["username"])) {
                         $("<td>"+user.userID+"</td>")
                     )
                     .append(
-                        $("<td>"+user.access_type+"</td>")
+                        $(`<td>${user.access_type.includes("teacher")?"Teacher":"Troop Leader"}</td>`)
                     )
                     .append(
                         $("<td>"+ user.account_last_name +", "+  user.account_first_name + " " + user.account_middle_name.substring(0,1)  +". </td>")
@@ -545,7 +545,7 @@ try {
                         $("<td>"+user.userID+"</td>")
                     )
                     .append(
-                        $("<td>"+user.access_type+"</td>")
+                        $(`<td>${user.access_type.includes("teacher")?"Teacher":"Troop Leader"}</td>`)
                     )
                     .append(
                         $("<td>"+ user.account_last_name +", "+  user.account_first_name + " " + user.account_middle_name.substring(0,1)  +". </td>")
