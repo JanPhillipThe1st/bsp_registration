@@ -60,24 +60,10 @@ if (!isset($_SESSION["username"])) {
                 <th>Section</th>
                 <th>Rank</th>
                 <th>Email</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody id="table_data">
         </tbody>
-        <tfoot class="bg-success text-white">
-            <tr>
-                <th>No.</th>
-                <th>Date Registered</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Grade</th>
-                <th>Section</th>
-                <th>Rank</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </tfoot>
     </table>
 
     <table id="students_table_printing" class=" w-100 table-bordered table-rounded d-none">
@@ -104,9 +90,9 @@ if (!isset($_SESSION["username"])) {
                 <div class="col-1">
                     <button class="btn btn-success" id="print_table">Print</button>
                 </div>
-                <div class="col-2">
+                <!-- <div class="col-2">
                     <button class="btn rounded border border-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student</button>   
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="col-8"></div>
@@ -479,7 +465,6 @@ if (!isset($_SESSION["username"])) {
             $("#add_student_photo_preview").attr("src","../img/students/"+filename);
         }
         getStudentsTable(false).then(()=>{
-            new DataTable('#students_table',{dom:'ltrip'});
         });
         async function getStudentsTable(isFiltered){
             var search_filter = $("#search_filter").val();
@@ -536,41 +521,41 @@ if (!isset($_SESSION["username"])) {
                     .append(
                         $("<td>"+studentObject.student_email+"</td>")
                     )
-                    .append(
-                        $("<td></td>")
-                        .append(
-                            $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
-                                //Populate the input fields
-                                $("#edit_student_first_name").val(student.student_first_name);
-                                $("#edit_student_middle_name").val(student.student_middle_name);
-                                $("#edit_student_last_name").val(student.student_last_name);
-                                $("#edit_student_grade").val(student.student_grade);
-                                $("#edit_student_section").val(student.student_section);
-                                $("#edit_student_photo_name").val(student.student_photo);
-                                $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
-                                $("#edit_student_barangay").val(student.student_barangay);
-                                $("#edit_student_city").val(student.student_city);
-                                $("#edit_student_province").val(student.student_province);
-                                $("#edit_student_email").val(student.student_email);
-                                $("#edit_student_phone").val(student.student_phone);
-                                $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
-                                $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
-                                $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
+                    // .append(
+                    //     $("<td></td>")
+                    //     .append(
+                    //         $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                    //             //Populate the input fields
+                    //             $("#edit_student_first_name").val(student.student_first_name);
+                    //             $("#edit_student_middle_name").val(student.student_middle_name);
+                    //             $("#edit_student_last_name").val(student.student_last_name);
+                    //             $("#edit_student_grade").val(student.student_grade);
+                    //             $("#edit_student_section").val(student.student_section);
+                    //             $("#edit_student_photo_name").val(student.student_photo);
+                    //             $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
+                    //             $("#edit_student_barangay").val(student.student_barangay);
+                    //             $("#edit_student_city").val(student.student_city);
+                    //             $("#edit_student_province").val(student.student_province);
+                    //             $("#edit_student_email").val(student.student_email);
+                    //             $("#edit_student_phone").val(student.student_phone);
+                    //             $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
+                    //             $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
+                    //             $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
                                 
-                                $("#editStudentID").val(studentObject.studentID);
-                                $("#editStudentModal").modal("toggle");
-                            })
-                        )
-                        .append(
-                            $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
-                                if (window.confirm("Are you sure you want to delete "+student.student_first_name +" "+student.student_last_name+"'s records?")) {
-                                    $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
-                                        window.location = "index.php?page=students&message=Student Data Deleted Successfully!";
-                                    });
-                                }
-                            })
-                        )
-                    )
+                    //             $("#editStudentID").val(studentObject.studentID);
+                    //             $("#editStudentModal").modal("toggle");
+                    //         })
+                    //     )
+                    //     .append(
+                    //         $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                    //             if (window.confirm("Are you sure you want to delete "+student.student_first_name +" "+student.student_last_name+"'s records?")) {
+                    //                 $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
+                    //                     window.location = "index.php?page=students&message=Student Data Deleted Successfully!";
+                    //                 });
+                    //             }
+                    //         })
+                    //     )
+                    // )
                 );
                 table_data_report.append(
                     $("<tr style='border:1px solid black'></tr>")
@@ -603,6 +588,7 @@ if (!isset($_SESSION["username"])) {
 
           
 
+            new DataTable('#students_table',{dom:'ltrip'});
 
                     });
             
@@ -612,7 +598,8 @@ if (!isset($_SESSION["username"])) {
                  var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
             table_data.empty();
-            getStudentsTable(true);
+            getStudentsTable(true).then(()=>{
+        });
         });
       $("#confirm_add_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to add this student?")) {

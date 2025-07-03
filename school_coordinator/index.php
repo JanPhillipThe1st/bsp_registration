@@ -64,17 +64,9 @@ if (isset($_SESSION["username"])) {
     <div class="row" style="display:flex; align-items:center; align-content:center;">
         <div class="col-2 ">
             <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_schools">
+            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_students">
                 <h4>
-                    Schools
-                </h4>
-            </button>
-            </div>
-
-            <div class="row my-3">
-            <button class="btn btn-btn-success side-button border border-success rounded" id="btn_teachers">
-                <h4>
-                    Teachers
+                    Students
                 </h4>
             </button>
             </div>
@@ -105,7 +97,7 @@ if (isset($_SESSION["username"])) {
             <div class="row my-3">
             <button class="btn btn-btn-success side-button border border-success rounded " id="btn_account_settings">
                 <h4>
-                    Account Settings
+                    User Account
                 </h4>
             </button>
             </div>
@@ -322,7 +314,7 @@ if (isset($_SESSION["username"])) {
             }
         }
         else{
-            content.load("screens/schools.php");
+            content.load("screens/students.php");
         }
 
         $("#btn_contact_us").click(()=>{
@@ -333,8 +325,8 @@ if (isset($_SESSION["username"])) {
             content.load("screens/teachers.php");
         });
 
-        $("#btn_schools").click(()=>{
-            content.load("screens/schools.php");
+        $("#btn_students").click(()=>{
+            content.load("screens/students.php");
         });
         $("#btn_user_account").click(()=>{
             content.load("screens/user_accounts.php");
