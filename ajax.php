@@ -357,10 +357,16 @@ if($action == 'search_schools'){
 if($action == 'filter_users'){
     $searchFilter = filter_input(INPUT_POST,"searchFilter");
     $searchTerm = filter_input(INPUT_POST,"searchTerm");
-    $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
-      `account`.`userID` = `user`.`userID` 
-      INNER JOIN `school` ON `school`.`schoolID` = `account`.`schoolID`
-      WHERE ".$searchFilter." LIKE '%".$searchTerm."%'");
+    
+      if ($searchFilter === "all") {
+        $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
+      `account`.`userID` = `user`.`userID` ;");
+      }
+      else{
+        $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
+            `account`.`userID` = `user`.`userID` 
+            WHERE ".$searchFilter." LIKE '%".$searchTerm."%'");
+      }
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
@@ -383,9 +389,6 @@ if($action == 'filter_users'){
         $room_object->account_province = $row["account_province"];
         $room_object->account_email = $row["account_email"];
         $room_object->account_phone = $row["account_phone"];
-        $room_object->districtID = $row["districtID"];
-        $room_object->school_name = $row["school_name"];
-        $room_object->school_address = $row["school_address"];
         $room_object->date_registered = $row["date_registered"];
         array_push($resultObject,$room_object);
     }

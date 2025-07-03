@@ -161,7 +161,8 @@ if (!isset($_SESSION["username"])) {
             </div>
 
         <div class="modal-footer">
-            <button class="btn btn-primary" id="btn_edit_account">Edit</button>
+            <button class="btn btn-secondary mx-2" id="btn_cancel_edit">Cancel</button>
+            <button class="btn btn-primary mx-2" id="btn_edit_account">Edit</button>
         </div>
 
 </div>
@@ -240,6 +241,34 @@ if (!isset($_SESSION["username"])) {
                 passwordShown = true;
             }
         });
+       $("#btn_cancel_edit").click(()=>{
+            $("#user_barangay").attr("disabled","true");
+            $("#user_city").attr("disabled","true");
+            $("#user_province").attr("disabled","true");
+            $("#user_phone").attr("disabled","true");
+            $("#user_username").attr("disabled","true");
+            $("#user_password").attr("disabled","true");
+            $("#btn_edit_account").text("Edit");
+            $("#user_first_name").val(user.account_first_name);
+            $("#user_middle_name").val(user.account_middle_name);
+            $("#user_last_name").val(user.account_last_name);
+            $("#user_barangay").val(user.account_barangay);
+            $("#user_city").val(user.account_city);
+            userPhoto = user.account_photo;
+            $("#edit_user_photo_preview").attr("src",userPhoto);
+            $("#user_date_of_registration").text(user.date_registered);
+            $("#user_province").val(user.account_province);
+            $("#user_email").val(user.account_email);
+            $("#user_phone").val(user.account_phone);
+            $("#user_username").val(user.username);
+            $("#user_password").val(user.password);
+            $("#user_confirm_password").val(user.password);
+            $("#user_access_type").val(user.access_type);
+            $("#user_school").val(user.schoolID);
+            $("#edit_user_photo_file_input").hide();
+            $("#togglePassword").hide();
+            isEditing = false;
+       });
        $("#btn_edit_account").click(()=>{
         if(!isEditing){
             $("#user_barangay").removeAttr("disabled");

@@ -32,6 +32,7 @@ if (!isset($_SESSION["username"])) {
         </div>
         <div class="col-3">
             <select class="form-control" name="search_filter" id="search_filter">
+                <option value="all">All</option>
                 <option value="districtID">District</option>
                 <option value="school_name">School Name</option>
                 <option value="schoolID">School ID</option>
