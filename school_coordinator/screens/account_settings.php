@@ -206,7 +206,7 @@ if (!isset($_SESSION["username"])) {
         });
        
         
-
+        $("#btn_cancel_edit").hide();
        //Get user data
        $.post("../ajax.php",{action:"get_current_user"},(user_data_response,request_status)=>{
         user = JSON.parse(user_data_response);
@@ -267,6 +267,7 @@ if (!isset($_SESSION["username"])) {
             $("#user_school").val(user.schoolID);
             $("#edit_user_photo_file_input").hide();
             $("#togglePassword").hide();
+            $("#btn_cancel_edit").hide();
             isEditing = false;
        });
        $("#btn_edit_account").click(()=>{
@@ -280,6 +281,7 @@ if (!isset($_SESSION["username"])) {
             $("#edit_user_photo_file_input").show();
             $("#togglePassword").show();
             $("#btn_edit_account").text("Save");
+            $("#btn_cancel_edit").show();
             isEditing = true;
         }else{
             if(window.confirm("Are you sure you want to save this record?")){
@@ -311,6 +313,7 @@ if (!isset($_SESSION["username"])) {
                     $("#edit_user_photo_file_input").hide();
                     $("#btn_edit_account").text("Edit");
                     $("#togglePassword").hide();
+                    $("#btn_cancel_edit").hide();
                     isEditing = false;
                 });
             }
