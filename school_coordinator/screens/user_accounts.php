@@ -46,24 +46,26 @@ if (!isset($_SESSION["username"])) {
             <button class="btn btn-primary" id="search_button">Search</button>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover overflow-scroll" id="user_accounts_table">
-        <thead class="bg-success text-white">
-            <tr>
-                <th>No.</th>
-                <th>Date Registered</th>
-                <th>User ID</th>
-                <th>User Type</th>
-                <th>User Account</th>
-                <th>Address</th>
-                <th>Email</th>
-                <th>Contact No.</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="table_data">
-        </tbody>
-    </table>
+    <div class="overflow-scroll" style="height: 50vh;">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover " id="user_accounts_table">
+            <thead class="bg-success text-white">
+                <tr>
+                    <th>No.</th>
+                    <th>Date Registered</th>
+                    <th>User ID</th>
+                    <th>User Type</th>
+                    <th>User Account</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Contact No.</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="table_data">
+            </tbody>
+        </table>
+        </div>
     </div>
     <div class="row mt-3 mb-3">
         <div class="col-12 col-sm-auto mb-2 mb-sm-0">
@@ -439,7 +441,7 @@ if (!isset($_SESSION["username"])) {
 
 try {
     
-    $('#user_accounts_table').DataTable({dom: 'ltipr'});
+    $('#user_accounts_table').DataTable({dom: 'lti'});
 } catch (error) {
     
 }

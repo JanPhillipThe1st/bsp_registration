@@ -398,6 +398,7 @@ if($action == 'school_coordinator_filter_users'){
             WHERE ".$searchFilter." LIKE '%".$searchTerm."%'");
       }
     $resultObject = array();
+   
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
         $room_object->userID = $row["userID"];
