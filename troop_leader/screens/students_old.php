@@ -20,7 +20,6 @@ if (!isset($_SESSION["username"])) {
     }
 </style>
 <div class="container-fluid">
-    <input type="hidden" id="current_sy" value=<?=$_SESSION["school_year"]?>>
     <div class="row my-3">
         <div class="col-4"></div>
         <div class="col-4">
@@ -50,7 +49,7 @@ if (!isset($_SESSION["username"])) {
             <button class="btn btn-primary" id="search_button">Search</button>
         </div>
     </div>
-    <table class="table m-auto  table-bordered table-rounded" id="students_table">
+    <table class="table m-auto w-75 table-bordered table-rounded" id="students_table">
         <thead class="bg-success text-white">
             <tr>
                 <th>No.</th>
@@ -66,7 +65,19 @@ if (!isset($_SESSION["username"])) {
         </thead>
         <tbody id="table_data">
         </tbody>
-       
+        <tfoot class="bg-success text-white">
+            <tr>
+                <th>No.</th>
+                <th>Date Registered</th>
+                <th>Student ID</th>
+                <th>Name</th>
+                <th>Grade</th>
+                <th>Section</th>
+                <th>Rank</th>
+                <th>Email</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
     </table>
 
     <table id="students_table_printing" class=" w-100 table-bordered table-rounded d-none">
@@ -93,6 +104,9 @@ if (!isset($_SESSION["username"])) {
                 <div class="col-1">
                     <button class="btn btn-success" id="print_table">Print</button>
                 </div>
+                <div class="col-2">
+                    <button class="btn rounded border border-success" data-bs-toggle="modal" data-bs-target="#addStudentModal">Add Student</button>   
+                </div>
             </div>
         </div>
         <div class="col-8"></div>
@@ -116,10 +130,14 @@ if (!isset($_SESSION["username"])) {
                         <div class="col-2">
                             <div class="row my-4">
                                 <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="Student Photo Thumbnail" id="edit_student_photo_preview" >
+                                <form action="screens/upload_student_photo.php" method="post" enctype="multipart/form-data" >    
                                     <div class="form-group">
                                         <label for="edit_student_photo">Select Photo</label>
                                         <input type="hidden" name="edit_student_photo_name" id="edit_student_photo_name">
+                                        <input type="file" class="form-control-file" name="edit_student_photo" id="edit_student_photo" placeholder="Select Photo" aria-describedby="fileHelpId">
+                                        <button type="submit" name="submit" class="form-control">Upload</button>
                                     </div>
+                                </form>
                             </div>
                             
                             <div class="row">
@@ -145,13 +163,13 @@ if (!isset($_SESSION["username"])) {
                                         <h5>Full Name:</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="text" class="form-control" placeholder="First name" disabled id="edit_student_first_name">
+                                        <input type="text" class="form-control" placeholder="First name" id="edit_student_first_name">
                                     </div>
                                     <div class="row">
                                         <h5>Address:</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="text" class="form-control" placeholder="Street / Barangay" disabled id="edit_student_barangay">
+                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="edit_student_barangay">
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -159,13 +177,13 @@ if (!isset($_SESSION["username"])) {
                                     <h5 class="text-white">--</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="text" class="form-control" placeholder="Middle name" disabled id="edit_student_middle_name">
+                                        <input type="text" class="form-control" placeholder="Middle name" id="edit_student_middle_name">
                                     </div>
                                     <div class="row">
                                     <h5 class="text-white">--</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="text" class="form-control" placeholder="Municipality / City" disabled id="edit_student_city">
+                                        <input type="text" class="form-control" placeholder="Municipality / City" id="edit_student_city">
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -173,13 +191,13 @@ if (!isset($_SESSION["username"])) {
                                 <h5 class="text-white">--</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="text" class="form-control" placeholder="Last name" disabled id="edit_student_last_name">
+                                        <input type="text" class="form-control" placeholder="Last name" id="edit_student_last_name">
                                     </div>
                                     <div class="row">
                                     <h5 class="text-white">--</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="text" class="form-control" placeholder="Province" disabled id="edit_student_province" >
+                                        <input type="text" class="form-control" placeholder="Province" id="edit_student_province" >
                                     </div>
                                 </div>
                                 <div class="col-2 mx-2">
@@ -187,13 +205,13 @@ if (!isset($_SESSION["username"])) {
                                     <h5>Contact:</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="email" class="form-control" placeholder="Email" disabled id="edit_student_email">
+                                        <input type="email" class="form-control" placeholder="Email" id="edit_student_email">
                                     </div>
                                     <div class="row">
                                     <h5 class="text-white">--</h5>
                                     </div>
                                     <div class="row">
-                                        <input type="number" class="form-control" placeholder="Phone" disabled id="edit_student_phone">
+                                        <input type="number" class="form-control" placeholder="Phone" id="edit_student_phone">
                                     </div>
                                 </div>
                             </div>
@@ -217,13 +235,13 @@ if (!isset($_SESSION["username"])) {
                                         <h5>In case of emergency:</h5>
                                     </div>
                                     <div class="row py-3">
-                                        <input type="email" class="form-control" placeholder="Enter guardian name here..." disabled id="edit_student_emergency_guardian">
+                                        <input type="email" class="form-control" placeholder="Enter guardian name here..." id="edit_student_emergency_guardian">
                                     </div>
                                     <div class="row py-3">
-                                        <input type="email" class="form-control" placeholder="Enter guardian phone here..." disabled id="edit_student_emergency_guardian_phone">
+                                        <input type="email" class="form-control" placeholder="Enter guardian phone here..." id="edit_student_emergency_guardian_phone">
                                     </div>
                                     <div class="row py-3">
-                                        <input type="email" class="form-control" placeholder="Enter guardian address here..." disabled id="edit_student_emergency_guardian_address">
+                                        <input type="email" class="form-control" placeholder="Enter guardian address here..." id="edit_student_emergency_guardian_address">
                                     </div>
                                 </div>
                                 <div class="col-2 mx-2">
@@ -231,7 +249,7 @@ if (!isset($_SESSION["username"])) {
                                         <h5>Grade:</h5>
                                     </div>
                                     <div class="row  w-100">
-                                        <select class="form-control" id="edit_student_grade" disabled>
+                                        <select class="form-control" id="edit_student_grade">
                                             <option value="1">Grade 1</option>
                                             <option value="2">Grade 2</option>
                                             <option value="3">Grade 3</option>
@@ -244,13 +262,7 @@ if (!isset($_SESSION["username"])) {
                                         <h5>Section:</h5>
                                     </div>
                                     <div class="row w-100">
-                                        <input type="text" class="form-control" placeholder="Enter section here..." id="edit_student_section" disabled>
-                                    </div>
-                                    <div class="row  w-100"  >
-                                        <h5>Rank:</h5>
-                                    </div>
-                                    <div class="row w-100">
-                                        <input type="text" class="form-control" placeholder="Enter section here..." id="edit_student_rank">
+                                        <input type="text" class="form-control" placeholder="Enter section here..." id="edit_student_section">
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +272,7 @@ if (!isset($_SESSION["username"])) {
             </div>
             <div class="modal-footer">
                 <button type="button" id="confirm_edit_student" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-secondary" id="btn_cancel_edit"data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -469,18 +481,6 @@ if (!isset($_SESSION["username"])) {
         console.log(filename);
         getStudentsTable(false).then(()=>{
         });
-        //Check if current SY
-        var isCurrentSY = false;
-        $.post("../ajax.php",{action:"get_SY_status",school_year:$("#current_sy").val()},(SYresponse)=>{
-            isCurrentSY = SYresponse.includes("true");
-            if (!isCurrentSY) {
-                $(".action-button").hide();
-            }
-            else{
-                $(".action-button").show();
-
-            }
-        });
         async function getStudentsTable(isFiltered){
             var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
@@ -542,7 +542,7 @@ if (!isset($_SESSION["username"])) {
                     .append(
                         $("<td></td>")
                         .append(
-                            $("<button class='btn btn-warning action-button mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                            $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
                                 //Populate the input fields
                                 $("#edit_student_first_name").val(student.student_first_name);
                                 $("#edit_student_middle_name").val(student.student_middle_name);
@@ -556,40 +556,21 @@ if (!isset($_SESSION["username"])) {
                                 $("#edit_student_province").val(student.student_province);
                                 $("#edit_student_email").val(student.student_email);
                                 $("#edit_student_phone").val(student.student_phone);
-                                $("#edit_student_rank").val(student.student_rank);
                                 $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
                                 $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
                                 $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
                                 
-                                $("#confirm_edit_student").show();
-                                $("#btn_cancel_edit").show();
                                 $("#editStudentID").val(studentObject.studentID);
                                 $("#editStudentModal").modal("toggle");
                             })
                         )
                         .append(
-                            $("<button class='btn btn-primary mx-2 text-white'><i class='bx bxs-report'></i> View</button>").click(()=>{
-                                //Populate the input fields
-                                $("#edit_student_first_name").val(student.student_first_name);
-                                $("#edit_student_middle_name").val(student.student_middle_name);
-                                $("#edit_student_last_name").val(student.student_last_name);
-                                $("#edit_student_grade").val(student.student_grade);
-                                $("#edit_student_section").val(student.student_section);
-                                $("#edit_student_photo_name").val(student.student_photo);
-                                $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
-                                $("#edit_student_barangay").val(student.student_barangay);
-                                $("#edit_student_city").val(student.student_city);
-                                $("#edit_student_province").val(student.student_province);
-                                $("#edit_student_email").val(student.student_email);
-                                $("#edit_student_phone").val(student.student_phone);
-                                $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
-                                $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
-                                $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
-                                
-                                $("#editStudentID").val(studentObject.studentID);
-                                $("#confirm_edit_student").hide();
-                                $("#btn_cancel_edit").hide();
-                                $("#editStudentModal").modal("toggle");
+                            $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
+                                if (window.confirm("Are you sure you want to delete "+student.student_first_name +" "+student.student_last_name+"'s records?")) {
+                                    $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
+                                        window.location = "index.php?page=students&message=Student Data Deleted Successfully!";
+                                    });
+                                }
                             })
                         )
                     )
