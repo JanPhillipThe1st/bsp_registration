@@ -15,7 +15,7 @@ if (!isset($_SESSION["username"])) {
     tr:hover{
         transition: 300ms;
         cursor: pointer;
-        background-color: rgb(61, 199, 56) !important;
+        background-color:rgb(211, 159, 81) !important;
         color: white;
     }
 </style>
@@ -250,7 +250,7 @@ if (!isset($_SESSION["username"])) {
                                         <h5>Rank:</h5>
                                     </div>
                                     <div class="row w-100">
-                                        <input type="text" class="form-control" placeholder="Enter section here..." id="edit_student_rank">
+                                        <input type="text" class="form-control" placeholder="Enter rank here..." id="edit_student_rank" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -259,18 +259,18 @@ if (!isset($_SESSION["username"])) {
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="confirm_edit_student" class="btn btn-primary">Save</button>
-                <button type="button" class="btn btn-secondary" id="btn_cancel_edit"data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="btn_manage_rank" class="btn btn-primary">Manage Rank</button>
+                <!-- <button type="button" class="btn btn-secondary" id="btn_cancel_edit"data-bs-dismiss="modal">Cancel</button> -->
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade " id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+<div class="modal fade " id="manageRankModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width:75vw; right:22.5vw !important;">
+        <div class="modal-content" style="width:50vw; right:12.75vw !important;">
                 <div class="modal-header">
-                        <h5 class="modal-title text-success">STUDENT INFORMATION FORM</h5>
+                        <h5 class="modal-title text-success">UPDATE STUDENT RANK</h5>
                             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -281,140 +281,40 @@ if (!isset($_SESSION["username"])) {
                         <!-- Photo column -->
                         <div class="col-2">
                             <div class="row my-4">
-                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="Student Photo Thumbnail" id="add_student_photo_preview" >
-                                <form action="screens/upload_student_photo.php" method="post" enctype="multipart/form-data" >    
+                                <img src="../assets/img/BSPLogo.png" class="bg-secondary" alt="Student Photo Thumbnail" id="student_photo_preview_rank" >
                                     <div class="form-group">
-                                        <label for="add_student_photo">Select Photo</label>
-                                        <input type="hidden" name="add_student_photo_name" id="add_student_photo_name">
-                                        <input type="file" class="form-control-file" name="add_student_photo" id="add_student_photo" placeholder="Select Photo" aria-describedby="fileHelpId">
-                                        <button type="submit" name="submit" class="form-control">Upload</button>
                                     </div>
-                                </form>
                             </div>
                             
                             <div class="row">
                                 <h4>Student ID:</h4>
                             </div>
                             <div class="row p-1 rounded border border-secondary text-center">
-                                <h5 id="student_id">000-0001</h5>
+                                <h5 id="student_id_rank">000-0001</h5>
                             </div>
                         </div>
                         <!-- Spacing -->
                         <div class="col-1"></div>
                         <!-- Information Column -->
                         <div class="col-9">
-                            <div class="row ">
-                                <p class="text-end">
-                                    Date Registered:
-                                    <strong id="add_student_date_of_registration">09-06-2024</strong>
-                                </p>
-                            </div>
                             <div class="row">
-                                <div class="col-3">
+                                <div class="col-12">
                                     <div class="row">
-                                        <h5>Full Name:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="First name" id="add_student_first_name">
+                                        <h4 class="h4" id="add_student_first_name_rank"></h4>
                                     </div>
                                     <div class="row">
-                                        <h5>Address:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Street / Barangay" id="add_student_barangay">
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Middle name" id="add_student_middle_name">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Municipality / City" id="add_student_city">
-                                    </div>
-                                </div>
-                                <div class="col-3">
-                                <div class="row">
-                                <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Last name" id="add_student_last_name">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="text" class="form-control" placeholder="Province" id="add_student_province" >
-                                    </div>
-                                </div>
-                                <div class="col-2 mx-2">
-                                <div class="row">
-                                    <h5>Contact:</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="email" class="form-control" placeholder="Email" id="add_student_email">
-                                    </div>
-                                    <div class="row">
-                                    <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row">
-                                        <input type="number" class="form-control" placeholder="Phone" id="add_student_phone">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-3">
-                                <div class="row pt-5">
-                                        <h5 class="text-white">--</h5>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Guardian:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Guardian's Phone #:</p>
-                                    </div>
-                                    <div class="row py-3 text-end">
-                                        <p>Permanent Address:</p>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="row pt-5">
-                                        <h5>In case of emergency:</h5>
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="email" class="form-control" placeholder="Enter guardian name here..." id="add_student_emergency_guardian">
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="email" class="form-control" placeholder="Enter guardian phone here..." id="add_student_emergency_guardian_phone">
-                                    </div>
-                                    <div class="row py-3">
-                                        <input type="email" class="form-control" placeholder="Enter guardian address here..." id="add_student_emergency_guardian_address">
-                                    </div>
-                                </div>
-                                <div class="col-2 mx-2">
-                                    <div class="row pt-5  w-100">
-                                        <h5>Grade:</h5>
-                                    </div>
-                                    <div class="row  w-100">
-                                        <select class="form-control" id="add_student_grade">
-                                            <option value="1">Grade 1</option>
-                                            <option value="2">Grade 2</option>
-                                            <option value="3">Grade 3</option>
-                                            <option value="4">Grade 4</option>
-                                            <option value="5">Grade 5</option>
-                                            <option value="6">Grade 6</option>
+                                        <label for="student_rank" class="form-label">Select Rank</label>
+                                        <select class="form-control" name="student_rank" id="student_rank">
+                                            <option value="Growing Usa">Growing Usa</option>
+                                            <option value="Leaping Usa">Leaping Usa</option>
+                                            <option value="Tender Foot">Tender Foot</option>
+                                            <option value="2nd Class">2nd Class</option>
+                                            <option value="Explorer">Explorer</option>
+                                            <option value="Path Finder">Path Finder</option>
+                                            <option value="Outdoorsman">Outdoorsman</option>
+                                            <option value="Venturer">Venturer</option>
+                                            <option value="Eagle">Eagle</option>
                                         </select>
-                                    </div>
-                                    <div class="row  w-100"  >
-                                        <h5>Section:</h5>
-                                    </div>
-                                    <div class="row w-100">
-                                        <input type="text" class="form-control" placeholder="Enter section here..." id="add_student_section">
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +323,7 @@ if (!isset($_SESSION["username"])) {
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" id="confirm_add_student" class="btn btn-primary">Submit</button>
+                <button type="button" id="confirm_update_rank" class="btn btn-primary">Submit</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -541,8 +441,35 @@ if (!isset($_SESSION["username"])) {
                     )
                     .append(
                         $("<td></td>")
+                        // .append(
+                        //     $("<button class='btn btn-warning action-button mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                        //         //Populate the input fields
+                        //         $("#edit_student_first_name").val(student.student_first_name);
+                        //         $("#edit_student_middle_name").val(student.student_middle_name);
+                        //         $("#edit_student_last_name").val(student.student_last_name);
+                        //         $("#edit_student_grade").val(student.student_grade);
+                        //         $("#edit_student_section").val(student.student_section);
+                        //         $("#edit_student_photo_name").val(student.student_photo);
+                        //         $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
+                        //         $("#edit_student_barangay").val(student.student_barangay);
+                        //         $("#edit_student_city").val(student.student_city);
+                        //         $("#edit_student_province").val(student.student_province);
+                        //         $("#edit_student_email").val(student.student_email);
+                        //         $("#edit_student_phone").val(student.student_phone);
+                        //         $("#edit_student_rank").val(student.student_rank);
+                        //         $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
+                        //         $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
+                        //         $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
+                                
+                        //         $("#edit_student_rank").removeAttr("disabled");
+                        //         $("#confirm_edit_student").show();
+                        //         $("#btn_cancel_edit").show();
+                        //         $("#editStudentID").val(studentObject.studentID);
+                        //         $("#editStudentModal").modal("toggle");
+                        //     })
+                        // )
                         .append(
-                            $("<button class='btn btn-warning action-button mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
+                            $("<button class='btn btn-primary mx-2 text-white'><i class='bx bxs-report'></i> View</button>").click(()=>{
                                 //Populate the input fields
                                 $("#edit_student_first_name").val(student.student_first_name);
                                 $("#edit_student_middle_name").val(student.student_middle_name);
@@ -560,35 +487,15 @@ if (!isset($_SESSION["username"])) {
                                 $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
                                 $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
                                 $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
+
+                                $("#student_photo_preview_rank").attr("src",`../img/students/${student.student_photo}`);
+                                $("#student_id_rank").text(student.studentID);
+                                $("#add_student_first_name_rank").text(`${student.student_first_name} ${student.student_middle_name} ${student.student_last_name}`);
                                 
-                                $("#confirm_edit_student").show();
-                                $("#btn_cancel_edit").show();
+                                $("#edit_student_rank").attr("disabled","true");
                                 $("#editStudentID").val(studentObject.studentID);
-                                $("#editStudentModal").modal("toggle");
-                            })
-                        )
-                        .append(
-                            $("<button class='btn btn-primary mx-2 text-white'><i class='bx bxs-report'></i> View</button>").click(()=>{
-                                //Populate the input fields
-                                $("#edit_student_first_name").val(student.student_first_name);
-                                $("#edit_student_middle_name").val(student.student_middle_name);
-                                $("#edit_student_last_name").val(student.student_last_name);
-                                $("#edit_student_grade").val(student.student_grade);
-                                $("#edit_student_section").val(student.student_section);
-                                $("#edit_student_photo_name").val(student.student_photo);
-                                $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
-                                $("#edit_student_barangay").val(student.student_barangay);
-                                $("#edit_student_city").val(student.student_city);
-                                $("#edit_student_province").val(student.student_province);
-                                $("#edit_student_email").val(student.student_email);
-                                $("#edit_student_phone").val(student.student_phone);
-                                $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
-                                $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
-                                $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
-                                
-                                $("#editStudentID").val(studentObject.studentID);
-                                $("#confirm_edit_student").hide();
-                                $("#btn_cancel_edit").hide();
+                                    // $("#confirm_edit_student").hide();
+                                    // $("#addStudentModal").hide();
                                 $("#editStudentModal").modal("toggle");
                             })
                         )
@@ -628,11 +535,33 @@ if (!isset($_SESSION["username"])) {
             
         }
 
-              $("#search_button").click(()=>{
-                 var table_data = $("#table_data");
+        $("#confirm_update_rank").click(()=>{
+            if (window.confirm("Are you sure you want to update this student's rank?")) {
+             var student_id_rank = $("#student_id_rank").text();
+             var student_rank = $("#student_rank").val();
+             $.post("../ajax.php",{action:"update_student_rank",studentID:student_id_rank,student_rank:student_rank},(student_id_rank_response)=>{
+                if(student_id_rank_response.includes("200")){
+                    alert("Student rank successfully updated!");
+                    $("#manageRankModal").modal("hide");
+                    getStudentsTable(false);
+                }
+                else{
+                    alert("Student rank update failed!");
+                    $("#manageRankModal").modal("hide");
+                }
+             });
+
+            }
+        });
+        $("#search_button").click(()=>{
+            var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
             table_data.empty();
             getStudentsTable(true);
+        });
+        $("#btn_manage_rank").click(()=>{
+            $("#editStudentModal").modal("hide");
+            $("#manageRankModal").modal("show");
         });
 
       $("#confirm_add_student").on("click",(event_info)=>{

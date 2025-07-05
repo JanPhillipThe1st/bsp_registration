@@ -840,6 +840,18 @@ if($action == 'update_student'){
     `student_emergency_phone`='$student_emergency_phone',`student_emergency_address`='$student_emergency_address' WHERE `studentID`='$studentID';");
   
 }
+if($action == 'update_student_rank'){
+    $studentID = filter_input(INPUT_POST,"studentID");
+    $student_rank = filter_input(INPUT_POST,"student_rank");
+
+    $add_students_query=$conn->query("UPDATE `student` SET `student_rank`='$student_rank' WHERE `studentID`='$studentID';");
+  if ($add_students_query) {
+    echo("200");
+  }
+  else{
+    echo "500";
+  }
+}
 if($action == 'update_user'){
     $user_first_name = filter_input(INPUT_POST,"user_first_name");
     $user_middle_name = filter_input(INPUT_POST,"user_middle_name");

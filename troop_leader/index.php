@@ -17,7 +17,7 @@ if (isset($_SESSION["username"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1920, initial-scale=1.0">
     <title>BSP Registration System</title>
-    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="../assets/vendor/chart.js/chart.js">
     <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/x-icon" href="../assets/img/BSPLogo.png">
