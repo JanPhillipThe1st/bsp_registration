@@ -1,7 +1,7 @@
 
 :root {
   scroll-behavior: smooth;
-  --main_color: rgb(61, 199, 56);
+  --main_color: #725528;
   --white: #ffffff;
 }
 body {
@@ -50,7 +50,7 @@ align-items: center;
 }
 .login_form>button:hover{
   transition: 500ms;
-  background-color: green;
+  background-color: #9c763f;
   color:var(--main_color);
   color: white;
 }

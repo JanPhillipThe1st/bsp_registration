@@ -359,7 +359,7 @@ if (!isset($_SESSION["username"])) {
         const urlParams = new URLSearchParams(queryString);
         const message = urlParams.get('message');
         const filename = urlParams.get('filename');
-
+        var refresh_count = 0;
         console.log(message);
 
         if (filename != undefined){
@@ -529,8 +529,10 @@ if (!isset($_SESSION["username"])) {
                     )
                 );
             });
-
-            new DataTable('#students_table',{dom:'ltrip'});
+            refresh_count += 1;
+            if(refresh_count < 2){
+                new DataTable('#students_table',{dom:'ltrip'});
+            }
                     });
             
         }

@@ -108,6 +108,19 @@ $og_url = $protocol . $host . $_SERVER['REQUEST_URI'];
             // Toggle the eye and bi-eye icon
             this.classList.toggle('bi-eye');
         });
+        $("#username").keypress((e)=>{
+            var keyCode = (e.keyCode ? e.keyCode : e.which);
+            if(keyCode == "13"){
+                $("#btn_login").click();
+            }
+        });
+        $("#password").keypress((e)=>{
+            var keyCode = (e.keyCode ? e.keyCode : e.which);
+            if(keyCode == "13"){
+                $("#btn_login").click();
+            }
+            
+        });
         $("#btn_login").click(()=>{
             var username = $("#username").val();
             var password = $("#password").val();
