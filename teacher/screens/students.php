@@ -253,6 +253,12 @@ if (!isset($_SESSION["username"])) {
                                     <div class="row w-100">
                                         <input type="text" class="form-control" placeholder="Enter section here..." id="edit_student_section">
                                     </div>
+                                    <div class="row  w-100"  >
+                                        <h5>Rank:</h5>
+                                    </div>
+                                    <div class="row w-100">
+                                        <input type="text" class="form-control" placeholder="Enter rank here..." id="edit_student_rank" disabled>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -552,6 +558,7 @@ if (!isset($_SESSION["username"])) {
                                 $("#edit_student_last_name").val(student.student_last_name);
                                 $("#edit_student_grade").val(student.student_grade);
                                 $("#edit_student_section").val(student.student_section);
+                                $("#edit_student_rank").val(student.student_rank);
                                 $("#edit_student_photo_name").val(student.student_photo);
                                 $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
                                 $("#edit_student_barangay").val(student.student_barangay);
@@ -587,6 +594,7 @@ if (!isset($_SESSION["username"])) {
                                 $("#edit_student_grade").val(student.student_grade);
                                 $("#edit_student_section").val(student.student_section);
                                 $("#edit_student_photo_name").val(student.student_photo);
+                                $("#edit_student_rank").val(student.student_rank);
                                 $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
                                 $("#edit_student_barangay").val(student.student_barangay);
                                 $("#edit_student_city").val(student.student_city);
