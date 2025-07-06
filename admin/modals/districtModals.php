@@ -1,4 +1,4 @@
-<div class="modal fade " id="addDistrictModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+<div class="modal fade " id="manageDistrictModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content" style="width:75vw; right:22.5vw !important;">
                 <div class="modal-header">

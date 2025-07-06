@@ -650,7 +650,6 @@ if($action == 'add_district'){
     $district_number = filter_input(INPUT_POST,"district_number");
     $add_user_query=$conn->query("INSERT INTO `district`(`district_number`)
     VALUES ('$district_number')");
-    $userID = $conn->insert_id;
        
   
 }
@@ -708,6 +707,31 @@ if($action == "update_school_year"){
     $school_year_id = filter_input(INPUT_POST,"school_year_id");
     $updateSchoolYearQuery = "UPDATE `school_year` SET `school_year_start`='$school_year_start',
     `school_year_end`='$school_year_end',`semester`='$semester' WHERE `syID`='$school_year_id'";
+    if($conn->query($updateSchoolYearQuery)){
+        echo "200";
+        return true;
+    }
+    else{
+        echo "500";
+        return false; 
+    }
+}
+if($action == "update_district"){
+    $edit_district_id = filter_input(INPUT_POST,"edit_district_id");
+    $edit_district_new_number = filter_input(INPUT_POST,"edit_district_new_number");
+    $updateSchoolYearQuery = "UPDATE `district` SET `district_number`='$edit_district_new_number' WHERE `districtID`='$edit_district_id'";
+    if($conn->query($updateSchoolYearQuery)){
+        echo "200";
+        return true;
+    }
+    else{
+        echo "500";
+        return false; 
+    }
+}
+if($action == "delete_district"){
+    $delete_district_id = filter_input(INPUT_POST,"delete_district_id");
+    $updateSchoolYearQuery = "DELETE FROM `district` WHERE `districtID`='$delete_district_id'";
     if($conn->query($updateSchoolYearQuery)){
         echo "200";
         return true;

@@ -130,6 +130,8 @@ if (!isset($_SESSION["username"])) {
 </div>
 <?php
 include("../modals/districtModals.php");
+include("../modals/addDistrictModal.php");
+include("../modals/editDistrictModal.php");
 
 ?>
 <script src="../assets/jquery-3.6.1.min.js"></script>
@@ -219,13 +221,42 @@ include("../modals/districtModals.php");
     });
 
     
+        $("#btn_save_district").click(()=>{
+            $("#manageDistrictModal").modal("hide");
+            $("#addDistrictModal").modal("show");
+            $("#btn_confirm_save_district").click(()=>{
+                if(confirm("Are you sure you want to save this district number?")){
+                    let add_district_id = parseInt($("#add_district_new_number").val());
+                    
+                    //First check if district already exists...
+                        if (existingDistrictNumbers.includes(add_district_id)) {   
+                            alert("District "+add_district_id+" already exists!");
+                            $("#add_district_new_number").val(add_district_id+1);
+                            return;
+                        }
+                        else{   
+                            $.post("../ajax.php",{action:"add_district",district_number:add_district_id},(a)=>{
+                                alert("District "+add_district_id+" saved successfully!");
+                                $("#addDistrictModal").modal("toggle");
+                                location.reload();
+                            });
+                        }
+                }
+                else{
+                    $("#addDistrictModal").modal("toggle");
+
+                }
+            });
+        });
         $("#btn_manage_districts").click(()=>{
-            $("#addDistrictModal").modal("toggle");
+            $("#manageDistrictModal").modal("toggle");
             //Get districts with post request
             $.post("../ajax.php",{action:"get_districts"},(district_response,status)=>{
                 $("#district_table_data").empty();
+                existingDistrictNumbers = [];
                 let districtList = JSON.parse(district_response);
                 districtList.forEach((district,districtIndex)=>{
+                    existingDistrictNumbers.push(parseInt(district.district_number));
                     //inject to ui
                         // districtID
                         // district_number
@@ -237,17 +268,46 @@ include("../modals/districtModals.php");
                         .append($(`<td></td>`)
                             .append($("<button class='btn btn-warning mx-3'><i class='bx bxs-edit'></i></button>")
                                 .click(()=>{
-                                    //Edit button
+                                     $("#edit_district_id").val(district.districtID);
+                                    $("#edit_district_number").text(district.district_number);
+                                    $("#editDistrictModal").modal("show");
+                                    $("#manageDistrictModal").modal("toggle");
                                 })
                             )
                             .append($("<button class='btn btn-danger mx-3'><i class='bx bxs-trash'></i></button>")
-                                .click(()=>{
-                                    //Delete button
+                            .click(()=>{
+                                if (window.confirm("Are you sure you want to delete this district?")) {
+                                        $.post("../ajax.php",{action:"delete_district",delete_district_id:district.districtID},(delete_district_response)=>{
+                                            if(delete_district_response.includes("200")){
+                                                alert("District successfully deleted!");
+                                            }
+                                            else{
+                                                alert("District deletion failed!");
+                                            }
+                                            window.location.reload();
+                                        });
+                                }
                                 })
                             )
                         )
                     );
                 });
+            });
+            $("#btn_confirm_edit").click(()=>{
+                var edit_district_id = $("#edit_district_id").val();
+                var edit_district_new_number = $("#edit_district_new_number").val();
+                if (window.confirm("Are you sure you want to update this district?")) {
+                    $.post("../ajax.php",{action:"update_district",edit_district_id:edit_district_id,edit_district_new_number:edit_district_new_number},(edit_district_response)=>{
+                        if(edit_district_response.includes("200")){
+                            alert("District successfully updated!");
+                        }
+                        else{
+                            alert("District edit failed!");
+                        }
+                        $("#editDistrictModal").modal("hide");
+                        window.location.reload();
+                    });
+                }
             });
             // $("#btn_save_district").click(()=>{
             //     if(confirm("Are you sure you want to save this district number?")){
