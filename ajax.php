@@ -219,6 +219,35 @@ if($action == 'filter_teachers'){
     }
     echo json_encode($resultObject);
 }
+if($action == 'get_users_admin'){
+    $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON  `account`.`userID` = `user`.`userID`;");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->userID = $row["userID"];
+        $room_object->username = $row["username"];
+        $room_object->password = $row["password"];
+        $room_object->access_type = $row["access_type"];
+        $room_object->full_name = $row["full_name"];
+        $room_object->accountID = $row["acccountID"];
+        $room_object->userID = $row["userID"];
+        $room_object->schoolID = $row["schoolID"];
+        $room_object->account_first_name = $row["account_first_name"];
+        $room_object->account_middle_name = $row["account_middle_name"];
+        $room_object->account_last_name = $row["account_last_name"];
+        $room_object->account_grade = $row["account_grade"];
+        $room_object->account_section = $row["account_section"];
+        $room_object->account_photo = $row["account_photo"];
+        $room_object->account_barangay = $row["account_barangay"];
+        $room_object->account_city = $row["account_city"];
+        $room_object->account_province = $row["account_province"];
+        $room_object->account_email = $row["account_email"];
+        $room_object->account_phone = $row["account_phone"];
+        $room_object->date_registered = $row["date_registered"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
 if($action == 'get_users'){
     $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON  `account`.`userID` = `user`.`userID` INNER JOIN `school` ON `school`.`schoolID` = `account`.`schoolID`;");
     $resultObject = array();

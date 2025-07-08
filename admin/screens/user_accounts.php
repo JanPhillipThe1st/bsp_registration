@@ -349,7 +349,7 @@ if (!isset($_SESSION["username"])) {
         function getStudentsTable(){
             var table_data = $("#table_data");
             table_data.empty();
-        $.post("../ajax.php",{action:"get_users"},(response,status)=>{
+        $.post("../ajax.php",{action:"get_users_admin"},(response,status)=>{
             var users_table = JSON.parse(response);
             users_table.forEach((user,user_index)=>{
                 table_data.append(
