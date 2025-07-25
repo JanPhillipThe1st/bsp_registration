@@ -114,6 +114,7 @@ if (!isset($_SESSION["username"])) {
                 $("#selected_school_year_modal_text").text($("#select_school_year option:selected").text());
                 $("#selected_school_year_modal").modal("toggle");
                 $("#confirm_school_year").on("click",()=>{
+                    sessionStorage.setItem("selected_school_year",$("#select_school_year").val());
                     $.post("../../ajax.php",{action:"confirm_school_year",school_year_id: $("#select_school_year").val(),school_year_string:$("#select_school_year option:selected").text()},(proceed_response,proceed_status)=>{
                        window.location = "../index.php";
                     });

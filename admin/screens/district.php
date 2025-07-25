@@ -23,7 +23,7 @@ if (!isset($_SESSION["username"])) {
         <div class="col-4">
             <h3 class="m-auto text-center">LIST OF DISTRICTS</h3>
             <br>
-                <h6 class="m-auto text-center">S.Y.  2022-2023</h6>
+                <h6 class="m-auto text-center" >S.Y. <?=$_SESSION["school_year_string"]?></h6>
         </div>
         <div class="col-4"></div>
     </div>
@@ -41,7 +41,7 @@ if (!isset($_SESSION["username"])) {
             </select>
         </div>
         <div class="col-4">
-            <button class="btn btn-success" id="btn_manage_districts">Manage Districts</button>
+            <button class="btn btn-success" id="btn_manage_districts">Add District</button>
         </div>
     </div>
     <table class="table m-auto w-75 table-bordered table-rounded" id="schools_table">
@@ -219,7 +219,17 @@ include("../modals/editDistrictModal.php");
         });
         });
     });
+   var isCurrentSY = false;
+        $.post("../ajax.php",{action:"get_SY_status",school_year:sessionStorage.getItem("selected_school_year")},(SYresponse)=>{
+            isCurrentSY = SYresponse.includes("true");
+            if (!isCurrentSY) {
+                $("#btn_manage_districts").hide();
+            }
+            else{
+                $("#btn_manage_districts").show();
 
+            }
+        });
     
         $("#btn_save_district").click(()=>{
             $("#manageDistrictModal").modal("hide");
