@@ -73,7 +73,7 @@ if (isset($_SESSION["username"])) {
                 </h4>
             </button>
             </div>
-            <div class="row my-3">
+            <div class="row my-3" id="school_years_control">
              <button class="btn btn-btn-success side-button border border-success rounded " id="btn_school_years">
                 <h4>
                     School Years
@@ -129,6 +129,10 @@ if (isset($_SESSION["username"])) {
         console.log(queryString);
         const urlParams = new URLSearchParams(queryString);
         const page = urlParams.get('page');
+        $("#school_years_control").hide();
+        if (sessionStorage.getItem("programmer").includes("true")) {
+            $("#school_years_control").show();
+        }
         if (page != undefined){
             switch (page) {
                 case 'users': 
