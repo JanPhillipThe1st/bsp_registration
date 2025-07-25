@@ -66,10 +66,10 @@ if (!isset($_SESSION["username"])) {
     </div>
     <div class="row mt-3 mb-3">
         <div class="col-12 col-sm-auto mb-2 mb-sm-0">
-            <button class="btn btn-info w-100 w-sm-auto">Print</button>
+            <button class="btn btn-success w-100 w-sm-auto">Print</button>
         </div>
         <div class="col-12 col-sm-auto">
-            <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" data-bs-target="#addUserModal">Add User</button>
+            <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" id="btn_add_user" data-bs-target="#addUserModal">Add User</button>
         </div>
     </div>
 </div>
@@ -346,6 +346,17 @@ if (!isset($_SESSION["username"])) {
             $("#messageModal").modal("toggle");
             $("#addUserModal").modal("toggle");
         }
+           var isCurrentSY = false;
+        $.post("../ajax.php",{action:"get_SY_status",school_year:sessionStorage.getItem("selected_school_year")},(SYresponse)=>{
+            isCurrentSY = SYresponse.includes("true");
+            if (!isCurrentSY) {
+                $("#btn_add_user").hide();
+            }
+            else{
+                $("#btn_add_user").show();
+
+            }
+        });
         function getStudentsTable(){
             var table_data = $("#table_data");
             table_data.empty();

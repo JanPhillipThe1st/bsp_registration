@@ -7,11 +7,7 @@
 nav{
     background-color: #725528 ;
 }
-.btn-success{
-    background-color: var(--main_color);
-    border-radius: 50px;
-    font-size: 1.2em;
-}
+
 .card{
     border-radius: 24px;
     border: 2px solid grey;
