@@ -32,10 +32,10 @@ if (!isset($_SESSION["username"])) {
         </div>
         <div class="col-3">
             <select class="form-control" name="search_filter" id="search_filter">
-                <option value="districtID">District</option>
-                <option value="school_name">School Name</option>
-                <option value="schoolID">School ID</option>
-                <option value="school_address">Address</option>
+                <option value="all">All</option>
+                <option value="ID">User ID</option>
+                <option value="type">User Type</option>
+                <option value="account">User Account</option>
             </select>       
         </div>
        <div class="col-3">
@@ -69,7 +69,7 @@ if (!isset($_SESSION["username"])) {
             <button class="btn btn-success w-100 w-sm-auto">Print</button>
         </div>
         <div class="col-12 col-sm-auto">
-            <button class="btn btn-success w-100 w-sm-auto" data-bs-toggle="modal" id="btn_add_user" data-bs-target="#addUserModal">Add User</button>
+            <button class="btn btn-success w-100 w-sm-auto" id="btn_add_user" >Add User</button>
         </div>
     </div>
 </div>
@@ -189,6 +189,98 @@ if (!isset($_SESSION["username"])) {
         </div>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div
+    class="modal fade"
+    id="userExistsModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modalTitleId"
+    aria-hidden="true"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">
+                    Add User
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <h3 class="h3">User already exists!</h3>
+                    <h3 class="h3">Do you want to activate this user?</h3>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary"
+                    data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal Body -->
+<!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+<div
+    class="modal fade"
+    id="inputUserIDModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="modalTitleId"
+    aria-hidden="true"
+>
+    <div
+        class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm"
+        role="document"
+    >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitleId">
+                    SELECT USER
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <div class="container container-fluid">
+                    ENTER USER ID
+                    <input type="text" class="form-control" id="inputUserID">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary" id="btn_check_user_id">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <div class="modal fade " id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
@@ -354,9 +446,36 @@ if (!isset($_SESSION["username"])) {
             }
             else{
                 $("#btn_add_user").show();
-
+                
             }
         });
+        //Check if userID exists
+        $("#btn_add_user").click(()=>{
+            $("#inputUserIDModal").modal("show");
+        });
+        $("#btn_check_user_id").click(()=>{
+        if ($("#inputUserID").val().length <1) {
+            alert("ID cannot be empty!");
+            return;
+        }
+           //Perform a search query to to the database with ajax.php
+        $.post("../ajax.php",{action:"filter_users",searchFilter:"ID",searchTerm:$("#inputUserID").val()},(response,status)=>{
+            var users_table = JSON.parse(response);
+            if (users_table.length < 1) {
+                $("#inputUserIDModal").modal("hide");
+                $("#addUserModal").modal("show");
+                return;
+            }
+            else {
+                $("#inputUserIDModal").modal("hide");
+                $("#userExistsModal").modal("show");
+                return;
+            }
+        });
+           
+          
+        });
+        
         function getStudentsTable(){
             var table_data = $("#table_data");
             table_data.empty();
@@ -535,12 +654,15 @@ if (!isset($_SESSION["username"])) {
            `<div class="spinner-border text-white" role="status">
            </div>`);
            setTimeout(() => {
-               searchUsers(searchFilter,searchTerm);
                 $("#search_button").html(
            `Search`);
            //Perform a search query to to the database with ajax.php
         $.post("../ajax.php",{action:"filter_users",searchFilter:searchFilter,searchTerm:searchTerm},(response,status)=>{
             var users_table = JSON.parse(response);
+            if (users_table.length < 1) {
+                alert("USER NOT FOUND. PLEASE TRY AGAIN.");
+                return;
+            }
             users_table.forEach((user,user_index)=>{
                 table_data.append(
                     $("<tr></tr>")
@@ -644,9 +766,6 @@ if (!isset($_SESSION["username"])) {
 
            
       });
-     async function searchUsers(searchFilter,searchTerm) {
-        
-      }
       $("#confirm_edit_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to update this student's information?")) {
             $.post("../ajax.php",{action:"update_student",

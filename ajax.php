@@ -458,15 +458,30 @@ if($action == 'filter_users'){
     $searchFilter = filter_input(INPUT_POST,"searchFilter");
     $searchTerm = filter_input(INPUT_POST,"searchTerm");
     
-      if ($searchFilter === "all") {
-        $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
-      `account`.`userID` = `user`.`userID` ;");
-      }
-      else{
-        $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
-            `account`.`userID` = `user`.`userID` 
-            WHERE ".$searchFilter." LIKE '%".$searchTerm."%'");
-      }
+        switch ($searchFilter) {
+            case 'all':
+                    $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
+                `account`.`userID` = `user`.`userID` ;");
+                break;
+            
+            case 'ID':
+                    $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
+                `account`.`userID` = `user`.`userID` 
+                WHERE `user`.`userID`  = '$searchTerm'");
+                break;
+            
+            case 'type':
+                $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
+                `account`.`userID` = `user`.`userID` 
+                WHERE `user`.`access_type`  LIKE '%".$searchTerm."%'");
+                break;
+            default:
+                $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON
+                `account`.`userID` = `user`.`userID` 
+                WHERE ".$searchFilter." LIKE '%".$searchTerm."%'");
+                break;
+        }
+        
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
