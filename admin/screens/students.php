@@ -30,8 +30,26 @@ if (!isset($_SESSION["username"])) {
         <div class="col-4"></div>
     </div>
     <br>
- 
-    <table class="table m-auto w-75 table-bordered table-rounded" id="students_table">
+    <div class="row my-3">
+        <div class="col-2 text-end"><h5>Search by:</h5></div>
+        <div class="col-2">
+            <select name="" id="search_by" class="form-control w-100" aria-placeholder="Grade">
+                <option value="all">All</option>
+                <option value="grade">Grade</option>
+                <option value="rank">Rank</option>
+            </select>
+        </div>
+        <div class="col-3" id="select_level_1">
+            <select name="" id="search_term_2" class="form-control w-100" aria-placeholder="Grade">
+            </select>
+            
+        </div>
+        <div class="col-3" id="select_level_2">
+                <select name="" id="search_term_3" class="form-control w-100" aria-placeholder="Grade">
+                </select>
+            </div>
+    </div>
+    <table class="table m-auto table-bordered table-rounded" id="students_table">
         <thead class="bg-success text-white">
             <tr>
                 <th>No.</th>
@@ -42,24 +60,10 @@ if (!isset($_SESSION["username"])) {
                 <th>Section</th>
                 <th>Rank</th>
                 <th>Email</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody id="table_data">
         </tbody>
-        <tfoot class="bg-success text-white">
-            <tr>
-                <th>No.</th>
-                <th>Date Registered</th>
-                <th>Student ID</th>
-                <th>Name</th>
-                <th>Grade</th>
-                <th>Section</th>
-                <th>Rank</th>
-                <th>Email</th>
-                <th>Action</th>
-            </tr>
-        </tfoot>
     </table>
 
     <table id="students_table_printing" class=" w-100 table-bordered table-rounded d-none">
@@ -444,14 +448,15 @@ if (!isset($_SESSION["username"])) {
 <script src="../assets/js/printThis/printThis.js"></script>
 <script>
      $(document).ready(()=>{
-        //Get query string parameters to display the message
+         //Get query string parameters to display the message
         const queryString = window.location.search;
         console.log(queryString);
         const urlParams = new URLSearchParams(queryString);
         const message = urlParams.get('message');
         const filename = urlParams.get('filename');
-
+        let schoolID = window.sessionStorage.getItem("schoolID");
         console.log(message);
+        new DataTable('#students_table',{dom:'tip'});
 
         if (filename != undefined){
             $("#add_student_photo_name").val(filename);
@@ -463,8 +468,6 @@ if (!isset($_SESSION["username"])) {
             var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
             table_data.empty();
-            let searchParams = new URLSearchParams(window.location.search);
-            let schoolID = searchParams.get('schoolID');
         $.post("../ajax.php",{action:"get_students_by_school_id",schoolID:schoolID},(response,status)=>{
             var students_table = JSON.parse(response);
             students_table.forEach((student,student_index)=>{
@@ -513,41 +516,6 @@ if (!isset($_SESSION["username"])) {
                     .append(
                         $("<td>"+studentObject.student_email+"</td>")
                     )
-                    .append(
-                        $("<td></td>")
-                        .append(
-                            $("<button class='btn btn-warning mx-2 text-white'><i class='bx bxs-edit'></i> Edit</button>").click(()=>{
-                                //Populate the input fields
-                                $("#edit_student_first_name").val(student.student_first_name);
-                                $("#edit_student_middle_name").val(student.student_middle_name);
-                                $("#edit_student_last_name").val(student.student_last_name);
-                                $("#edit_student_grade").val(student.student_grade);
-                                $("#edit_student_section").val(student.student_section);
-                                $("#edit_student_photo_name").val(student.student_photo);
-                                $("#edit_student_photo_preview").attr("src","../img/students/"+student.student_photo);
-                                $("#edit_student_barangay").val(student.student_barangay);
-                                $("#edit_student_city").val(student.student_city);
-                                $("#edit_student_province").val(student.student_province);
-                                $("#edit_student_email").val(student.student_email);
-                                $("#edit_student_phone").val(student.student_phone);
-                                $("#edit_student_emergency_guardian").val(student.student_emergency_guardian);
-                                $("#edit_student_emergency_guardian_phone").val(student.student_emergency_phone);
-                                $("#edit_student_emergency_guardian_address").val(student.student_emergency_address);
-                                
-                                $("#editStudentID").val(studentObject.studentID);
-                                $("#editStudentModal").modal("toggle");
-                            })
-                        )
-                        .append(
-                            $("<button class='btn btn-danger mx-2 text-white'><i class='bx bxs-trash'></i> Delete</button>").click(()=>{
-                                if (window.confirm("Are you sure you want to delete "+student.student_first_name +" "+student.student_last_name+"'s records?")) {
-                                    $.post("../ajax.php",{action:"delete_student",studentID:studentObject.studentID},(delete_response,delete_status)=>{
-                                        window.location = "index.php?page=students&message=Student Data Deleted Successfully!";
-                                    });
-                                }
-                            })
-                        )
-                    )
                 );
                 table_data_report.append(
                     $("<tr style='border:1px solid black'></tr>")
@@ -578,29 +546,50 @@ if (!isset($_SESSION["username"])) {
                 );
             });
 
-            $('#students_table tfoot th').each(function (i) {
-                    var title = $('#students_table thead th')
-                        .eq($(this).index())
-                        .text();
-                    $(this).html(
-                        '<input type="text" class="form-control w-100" placeholder="' + title + '" data-index="' + i + '" />'
+        });
+        
+    }
+    //all, grade, rank
+    $("#search_by").on("change",(e)=>{
+        switch (e.target.value) {
+            case "all":
+                //Hide all other columns
+                $("#select_level_1").hide();
+                $("#select_level_2").hide();
+                break;
+            case "grade":
+                $("#select_level_1").show();
+                $("#select_level_2").show();
+                $("#search_term_2").empty();
+                for (let i = 1; i <=6; i++) {
+                    $("#search_term_2").append(
+                        `<option value="${i}">${i}</option>`
                     );
-                });
+                }
+                $("#search_term_2").on("change",(gradeValue)=>{
+                    $("#search_term_3").empty();
+                    $.post("../ajax.php",{"action":"get_sections",schoolID:schoolID,grade:gradeValue.target.value},(data)=>{
+                    let sections = JSON.parse(data);
+                    sections.forEach((section,index)=>{
+                        $("#search_term_3").append(
+                            `<option value="${section}">${section}</option>`
+                        );
 
-                new DataTable('#students_table');
-
-            
-                // Filter event handler
-                $(table.table().container()).on('keyup', 'tfoot input', function () {
-                    table
-                        .column($(this).data('index'))
-                        .search(this.value)
-                        .draw();
-                });
                     });
-            
-        }
+                });
+                });
+                
 
+                break;
+            case "rank":
+                $("#search_term_2").empty();
+
+                break;
+        
+            default:
+                break;
+        }
+    });
       $("#confirm_add_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to add this student?")) {
             $.post("../ajax.php",{action:"add_student",
@@ -631,9 +620,9 @@ if (!isset($_SESSION["username"])) {
                 importCSS: false,
                 header:
             "<h3 class='m-auto text-center'>LIST OF STUDENTS</h3>"+
-                "<h6 class='m-auto text-center'>S.Y.  2024-2025</h6>"
-            });
+            "<h6 class='m-auto text-center'>S.Y.  2024-2025</h6>"
         });
+    });
       $("#confirm_edit_student").on("click",(event_info)=>{
         if (window.confirm("Are you sure you want to update this student's information?")) {
             $.post("../ajax.php",{action:"update_student",

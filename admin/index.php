@@ -55,7 +55,7 @@ if (isset($_SESSION["username"])) {
             <h3>Welcome, <?= $_SESSION["full_name"]?>!</h3>
         </div>
         <div class="col-2">
-            <button class="btn text-white btn-block btn-secondary" id="btn_logout"> <i class='bx bx-power-off' ></i></button>
+            <button class="btn text-success btn-block btn-white" > <strong id="btn_logout"><u>Logout</u></strong>
         </div>
         
         <div class="col-8 ">

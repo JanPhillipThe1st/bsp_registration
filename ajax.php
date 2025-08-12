@@ -509,6 +509,16 @@ if($action == 'filter_users'){
     }
     echo json_encode($resultObject);
 }
+if ($action == "get_sections") {
+    $schoolID = filter_input(INPUT_POST,"schoolID");
+    $grade = filter_input(INPUT_POST,"grade");
+    $sectionsQuery = $conn->query("SELECT DISTINCT student_section FROM student WHERE schoolID = '$schoolID' AND student_grade = '$grade'");
+    $result = array();
+    while( $row = $sectionsQuery->fetch_assoc()){
+        array_push($result,$row["student_section"]);
+    }
+    echo json_encode($result);
+}
 if($action == 'get_school_by_id'){
     $schoolID = filter_input(INPUT_POST,"schoolID");
     $rooms_query=$conn->query("SELECT * FROM school");

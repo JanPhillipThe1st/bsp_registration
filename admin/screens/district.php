@@ -40,9 +40,6 @@ if (!isset($_SESSION["username"])) {
                 <option value="2">District 2</option>
             </select>
         </div>
-        <div class="col-4">
-            <button class="btn btn-success" id="btn_manage_districts">Add District</button>
-        </div>
     </div>
     <table class="table m-auto w-75 table-bordered table-rounded" id="schools_table">
         <thead class="bg-success text-white">
@@ -53,13 +50,18 @@ if (!isset($_SESSION["username"])) {
         </thead>
         <tbody id="table_data">
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3"> <button class="btn btn-success" id="print_schools">Print</button></td>
-            </tr>
-        </tfoot>
     </table>
    
+        <div class="row m-auto w-75 my-3 d-flex">
+            <div class="col-4 d-flex">
+                <button class="btn btn-success text-white m-auto border-black " id="btn_manage_districts">Add District</button>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4 d-flex">
+                <button class="btn btn-success text-white m-auto border-black " id="print_schools">Print</button>
+            </div>
+        </div>
+
     <table id="schools_table_printing" class=" w-100 table-bordered table-rounded d-none">
     <thead class="bg-dark text-white">
             <tr style="border:1px solid black;">
@@ -178,13 +180,10 @@ include("../modals/editDistrictModal.php");
                             $("#school_contact").val(school.school_contact);
                             $("#school_date_registered").val(school.date_registered);
                             $("#school_address").val(school.school_address);
-                          $("#schoolDetailsModal").modal("toggle");
-                          $("#btn_view_students").click((e)=>{
-                              $("#schoolDetailsModal").modal("toggle");
                             var content = $("#content");
+                            window.sessionStorage.setItem("schoolID",school.ID);
                             content.load("screens/students.php?schoolID="+school.ID);
                           });
-                        });
                         })
                 );
                 table_data_printing.append(
