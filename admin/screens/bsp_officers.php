@@ -32,8 +32,9 @@ if (!isset($_SESSION["username"])) {
                         <img src="../assets/img/oic.jpg" height="180px" width="100px" alt="BSP OIC photo" >
                     </div>
                     <div class="row  m-auto tag-text">
-                        <h5>MANNY C. ELLUNADO</h5>
+                        <h5 class="title">MANNY C. ELLUNADO</h5>
                         <p><i>Council Scout  Executive/ OIC</i></p>
+                        <input type="text" class="title-input" id="council_scout1">
                     </div>
                 </div>
                 <div class="col-3 mx-3 template-card">
@@ -41,8 +42,9 @@ if (!isset($_SESSION["username"])) {
                         <img src="../assets/img/it_officer_photo.jpg" height="180px" width="100px" alt="IT Officer photo" >
                     </div>
                     <div class="row  m-auto tag-text">
-                        <h5>ALEXE V. BELOY</h5>
+                        <h5 class="title">ALEXE V. BELOY</h5>
                         <p><i>Council Scout  Executive/ OIC</i></p>
+                        <input type="text" class="title-input" id="council_scout2">
                     </div>
                 </div>
                 <div class="col-3">
@@ -56,7 +58,8 @@ if (!isset($_SESSION["username"])) {
                         <img src="../assets/img/staff_manager.jpg" height="180px" width="100px" alt="Staff Manager photo" >
                     </div>
                     <div class="row  m-auto tag-text">
-                        <h5>INN B. ELLUNADO</h5>
+                        <h5 class="title">INN B. ELLUNADO</h5>
+                        <input type="text" class="title-input" id="staff_manager">
                         <p><i>Staff Manager</i></p>
                     </div>
                 </div>
@@ -65,7 +68,8 @@ if (!isset($_SESSION["username"])) {
                         <img src="../assets/img/support_staff.jpg" height="180px" width="100px" alt="Support Staff 1" >
                     </div>
                     <div class="row  m-auto tag-text">
-                        <h5>SANIBOY D. CAIPILAN</h5>
+                        <h5 class="title">SANIBOY D. CAIPILAN</h5>
+                        <input type="text" class="title-input" id="support_staff1">
                         <p><i>Support Staff</i></p>
                     </div>
                 </div>
@@ -74,7 +78,8 @@ if (!isset($_SESSION["username"])) {
                         <img src="../assets/img/support_staff_2.jpg" height="180px" width="100px" alt="Support Staff 2" >
                     </div>
                     <div class="row  m-auto tag-text">
-                        <h5>RUEL N. PENAZO</h5>
+                        <h5 class="title">RUEL N. PENAZO</h5>
+                        <input type="text" class="title-input" id="support_staff2">
                         <p><i>Support Staff</i></p>
                     </div>
                 </div>
@@ -91,7 +96,7 @@ if (!isset($_SESSION["username"])) {
 <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
 <script>
     $(document).ready(()=>{
-     
+        $(".title").hide();
     });
 </script>
 </html>

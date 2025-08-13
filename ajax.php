@@ -1057,6 +1057,8 @@ if($action == 'reset_password'){
     WHERE `account_email` = '".$recipient_email."' ;");
     $row = $result->fetch_assoc();
     if($row > 0){
+        while ($row = $result->fetch_assoc()) {
+         
         $username = $row["username"];
         $password = $row["password"];
     $mail = new PHPMailer(true);
@@ -1079,13 +1081,14 @@ if($action == 'reset_password'){
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
         $mail->Subject = 'BSP Registration';
-        $mail->Body    = "Your username is: '$username' and your password is: '$password'";
+        $mail->Body    = "Account Type: ".$row["access_type"]."\nYour username is: '$username'\nand your password is: '$password' \n go to https://bsp-zds.com to login";
     
         $mail->send();
         echo 'Password sent successfully! Please check your email.';
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    }   
+    } 
+        }  
     }
     else{
         echo "Message could not be sent. No email address found for this account.";
