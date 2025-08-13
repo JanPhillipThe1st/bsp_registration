@@ -23,7 +23,20 @@ if (!isset($_SESSION["username"])) {
     <div class="row my-3">
         <div class="col-4"></div>
         <div class="col-4">
+        <div class="center">
+                <h4>School year: <?= $_SESSION["school_year_string"]?></h4>
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row my-3">
+        <div class="col-4"></div>
+        <div class="col-4">
             <h3 class="m-auto text-center">LIST OF ACTIVE STUDENTS</h3>
+
+            <br>
+            
+                <h4 id="school_name" class="text-center"></h4>
             <br>
                 <h6 class="m-auto text-center">S.Y. <?= $_SESSION["school_year_string"]?></h6>
         </div>
@@ -62,7 +75,6 @@ if (!isset($_SESSION["username"])) {
                 <th>Grade</th>
                 <th>Section</th>
                 <th>Rank</th>
-                <th>Email</th>
             </tr>
         </thead>
         <tbody id="table_data">
@@ -79,7 +91,6 @@ if (!isset($_SESSION["username"])) {
                 <th style='border:1px solid black'>Grade</th>
                 <th style='border:1px solid black'>Section</th>
                 <th style='border:1px solid black'>Rank</th>
-                <th style='border:1px solid black'>Email</th>
             </tr>
         </thead>
         <tbody id="table_data_printing">
@@ -458,6 +469,8 @@ if (!isset($_SESSION["username"])) {
         const message = urlParams.get('message');
         const filename = urlParams.get('filename');
         let schoolID = window.sessionStorage.getItem("schoolID");
+        let schoolName = window.sessionStorage.getItem("schoolName");
+        $("#school_name").text(schoolName);
         let isFiltered = false;
         console.log(message);
         new DataTable('#students_table',{dom:'tip'});
@@ -524,9 +537,6 @@ if (!isset($_SESSION["username"])) {
                     .append(
                         $("<td>"+studentObject.student_rank+"</td>")
                     )
-                    .append(
-                        $("<td>"+studentObject.student_email+"</td>")
-                    )
                 );
                 table_data_report.append(
                     $("<tr style='border:1px solid black'></tr>")
@@ -551,9 +561,6 @@ if (!isset($_SESSION["username"])) {
                     .append(
                         $("<td style='border:1px solid black'>"+studentObject.student_rank+"</td>")
                     )
-                    .append(
-                        $("<td style='border:1px solid black'>"+studentObject.student_email+"</td>")
-                    )
                 );
             });
 
@@ -567,16 +574,26 @@ if (!isset($_SESSION["username"])) {
                 //Hide all other columns
                 $("#select_level_1").hide();
                 $("#select_level_2").hide();
+                $("#search_term_2").empty();
+                $("#search_term_3").empty();
                 break;
             case "grade":
                 $("#select_level_1").show();
                 $("#select_level_2").show();
                 $("#search_term_2").empty();
-                for (let i = 1; i <=6; i++) {
+                $("#search_term_3").empty();
+                $("#search_term_2").append(`<option>LEVEL</option>`);
+                $("#search_term_3").append(`<option>SECTION</option>`);
+                
+                $("#search_term_2").on("click",()=>{
+                $("#search_term_2").empty();
+                 for (let i = 1; i <=6; i++) {
                     $("#search_term_2").append(
                         `<option value="${i}">${i}</option>`
                     );
                 }
+                });
+               
                 $("#search_term_2").on("change",(gradeValue)=>{
                     $("#search_term_3").empty();
                     $.post("../ajax.php",{"action":"get_sections",schoolID:schoolID,grade:gradeValue.target.value},(data)=>{

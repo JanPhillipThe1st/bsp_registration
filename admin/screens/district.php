@@ -21,6 +21,17 @@ if (!isset($_SESSION["username"])) {
     <div class="row my-3">
         <div class="col-4"></div>
         <div class="col-4">
+        <div class="center">
+                <h4>School year: <?= $_SESSION["school_year_string"]?></h4>
+            </div>
+        </div>
+        <div class="col-4"></div>
+    </div>
+    <div class="row my-3">
+        <div class="col-4">
+            
+        </div>
+        <div class="col-4">
             <h3 class="m-auto text-center">LIST OF DISTRICTS</h3>
             <br>
                 <h6 class="m-auto text-center" >S.Y. <?=$_SESSION["school_year_string"]?></h6>
@@ -174,6 +185,7 @@ include("../modals/editDistrictModal.php");
                        
                             var content = $("#content");
                             window.sessionStorage.setItem("schoolID",school.ID);
+                            window.sessionStorage.setItem("schoolName",school.school_name);
                             content.load("screens/students.php?schoolID="+school.ID);
                         })
                 );

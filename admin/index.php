@@ -59,9 +59,7 @@ if (isset($_SESSION["username"])) {
         </div>
         
         <div class="col-8 ">
-            <div class="center">
-                <h4>School year: <?= $_SESSION["school_year_string"]?></h4>
-            </div>
+            
         </div>
     </div>
     <div class="row" style=" display:flex; align-items:center; align-content:center;">
