@@ -110,7 +110,48 @@ if($action == 'filter_students'){
 }
 if($action == 'get_students_by_school_id'){
     $schoolID = filter_input(INPUT_POST,"schoolID");
-    $query=$conn->query("SELECT * FROM `student` WHERE `student`.`school_year_ID` = ".$_SESSION["school_year"]." AND schoolID = '".$schoolID."';");
+    $query=$conn->query("SELECT * FROM `student` WHERE `student`.`school_year_ID` = ".$_SESSION["school_year"]." AND schoolID = '".$schoolID."' LIMIT 100;");
+    $resultObject = array();
+    while( $row = $query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->studentID = $row["studentID"];
+        $room_object->schoolID = $row["schoolID"];
+        $room_object->student_first_name = $row["student_first_name"];
+        $room_object->student_middle_name = $row["student_middle_name"];
+        $room_object->student_last_name = $row["student_last_name"];
+        $room_object->student_grade = $row["student_grade"];
+        $room_object->student_section = $row["student_section"];
+        $room_object->student_rank = $row["student_rank"];
+        $room_object->student_photo = $row["student_photo"];
+        $room_object->student_barangay = $row["student_barangay"];
+        $room_object->student_city = $row["student_city"];
+        $room_object->student_province = $row["student_province"];
+        $room_object->student_email = $row["student_email"];
+        $room_object->student_phone = $row["student_phone"];
+        $room_object->student_emergency_guardian = $row["student_emergency_guardian"];
+        $room_object->student_emergency_phone = $row["student_emergency_phone"];
+        $room_object->student_emergency_address = $row["student_emergency_address"];
+        $room_object->date_registered = $row["date_registered"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'filter_students_by_school_id'){
+    $schoolID = filter_input(INPUT_POST,"schoolID");
+    $search_by = filter_input(INPUT_POST,"search_by");
+    $search_column_1 = filter_input(INPUT_POST,"search_column_1");
+    $search_column_2 = filter_input(INPUT_POST,"search_column_2");
+    switch($search_by){
+        case 'all':
+            $query=$conn->query("SELECT * FROM `student` WHERE `student`.`school_year_ID` = ".$_SESSION["school_year"]." AND schoolID = '".$schoolID."' LIMIT 100;");
+            break;
+        case 'grade':
+            $query=$conn->query("SELECT * FROM `student` WHERE `student`.`student_grade` = '$search_column_1' AND `student`.`student_section` = '$search_column_2' AND schoolID = '".$schoolID."' LIMIT 100;");
+            break;
+        case 'rank':
+            $query=$conn->query("SELECT * FROM `student` WHERE `student`.`student_rank` = '$search_column_1' AND schoolID = '".$schoolID."' LIMIT 100;");
+            break;
+    }
     $resultObject = array();
     while( $row = $query->fetch_assoc()){
         $room_object = new stdClass();
@@ -516,6 +557,15 @@ if ($action == "get_sections") {
     $result = array();
     while( $row = $sectionsQuery->fetch_assoc()){
         array_push($result,$row["student_section"]);
+    }
+    echo json_encode($result);
+}
+if ($action == "get_ranks_by_school") {
+    $schoolID = filter_input(INPUT_POST,"schoolID");
+    $sectionsQuery = $conn->query("SELECT DISTINCT student_rank FROM student WHERE schoolID = '$schoolID'");
+    $result = array();
+    while( $row = $sectionsQuery->fetch_assoc()){
+        array_push($result,$row["student_rank"]);
     }
     echo json_encode($result);
 }

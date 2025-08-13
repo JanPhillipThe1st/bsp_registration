@@ -45,9 +45,12 @@ if (!isset($_SESSION["username"])) {
             
         </div>
         <div class="col-3" id="select_level_2">
-                <select name="" id="search_term_3" class="form-control w-100" aria-placeholder="Grade">
-                </select>
-            </div>
+            <select name="" id="search_term_3" class="form-control w-100" aria-placeholder="Grade">
+            </select>
+        </div>
+        <div class="col-2" id="select_level_3">
+            <button class="btn btn-success btn-block w-100" id="btn_search">Search</button>
+        </div>
     </div>
     <table class="table m-auto table-bordered table-rounded" id="students_table">
         <thead class="bg-success text-white">
@@ -455,6 +458,7 @@ if (!isset($_SESSION["username"])) {
         const message = urlParams.get('message');
         const filename = urlParams.get('filename');
         let schoolID = window.sessionStorage.getItem("schoolID");
+        let isFiltered = false;
         console.log(message);
         new DataTable('#students_table',{dom:'tip'});
 
@@ -462,13 +466,20 @@ if (!isset($_SESSION["username"])) {
             $("#add_student_photo_name").val(filename);
             $("#add_student_photo_preview").attr("src","../img/students/"+filename);
         }
-        console.log(filename);
+        $("#btn_search").click(()=>{
+            getStudentsTable();
+        });
         getStudentsTable();
         function getStudentsTable(){
             var table_data = $("#table_data");
             var table_data_report = $("#table_data_printing");
             table_data.empty();
-        $.post("../ajax.php",{action:"get_students_by_school_id",schoolID:schoolID},(response,status)=>{
+            let search_by = $("#search_by").val()??"";
+            let search_column_1 = $("#search_term_2").val()??"";
+            search_column_1 = search_column_1.length < 0 || search_column_1 === undefined?"":$("#search_term_2").val();
+            let search_column_2 = $("#search_term_3").val()??"";
+            search_column_2 = search_column_2.length < 0 || search_column_2 === undefined?"":$("#search_term_3").val();
+        $.post("../ajax.php",{action:"filter_students_by_school_id",schoolID:schoolID,search_by:search_by,search_column_1:search_column_1,search_column_2:search_column_2},(response,status)=>{
             var students_table = JSON.parse(response);
             students_table.forEach((student,student_index)=>{
                 var studentObject = {
@@ -574,7 +585,9 @@ if (!isset($_SESSION["username"])) {
                         $("#search_term_3").append(
                             `<option value="${section}">${section}</option>`
                         );
-
+                    });
+                    $("#search_term_3").on((sectionSelection)=>{
+                        //search by section here:
                     });
                 });
                 });
@@ -583,7 +596,21 @@ if (!isset($_SESSION["username"])) {
                 break;
             case "rank":
                 $("#search_term_2").empty();
-
+                $("#select_level_2").hide();
+                //Get the ranks exclusive to school
+                $("#search_term_2").empty();
+                $.post("../ajax.php",{"action":"get_ranks_by_school",schoolID:schoolID},(data)=>{
+                    let ranks = JSON.parse(data);
+                    //iterate through ranks $("#search_term_2").append(
+                    ranks.forEach((rank)=>{
+                         $("#search_term_2").append(
+                            `<option value="${rank}">${rank}</option>`
+                        );  
+                    });
+                    $("#search_term_2").on("change",(rankSelection)=>{
+                            //Search the table here
+                    });
+                });
                 break;
         
             default:
