@@ -171,19 +171,10 @@ include("../modals/editDistrictModal.php");
                     .append(
                         $("<td>"+school["school_name"]+"</td>")
                     ).click(()=>{
-                        $.post("../ajax.php",{action:"get_school_by_id",ID:school.ID},(school_coordinator_response)=>{
-                            var school =JSON.parse(school_coordinator_response);
-                            console.table(school);
-                            $("#school_id").val(school.ID);
-                            $("#school_name").val(school.school_name);
-                            $("#school_district_id").val(school.district);
-                            $("#school_contact").val(school.school_contact);
-                            $("#school_date_registered").val(school.date_registered);
-                            $("#school_address").val(school.school_address);
+                       
                             var content = $("#content");
                             window.sessionStorage.setItem("schoolID",school.ID);
                             content.load("screens/students.php?schoolID="+school.ID);
-                          });
                         })
                 );
                 table_data_printing.append(
