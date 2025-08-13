@@ -32,7 +32,7 @@ if($action == 'login'){
     
 }
 if($action == 'get_school_years'){
-    $rooms_query=$conn->query("SELECT * FROM `school_year`;");
+    $rooms_query=$conn->query("SELECT * FROM `school_year` ORDER BY `syID` ASC;");
     $resultObject = array();
     while( $row = $rooms_query->fetch_assoc()){
         $room_object = new stdClass();
