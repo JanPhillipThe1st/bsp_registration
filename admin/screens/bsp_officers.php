@@ -40,8 +40,8 @@ if (!isset($_SESSION["username"])) {
                 </div>
                 <div class="col-3 mx-3 template-card">
                     <div class="row w-50 m-auto">
-                        <img src="../assets/img/it_officer_photo.jpg" height="180px" width="100px" alt="IT Officer photo" >
-                        <button class="btn btn-transparent btn_change_photo" id="change_it_officer_photo">Change photo</button>
+                        <img src="../assets/img/it_officer_photo.jpg" id="it_officer_photo" height="180px" width="100px" alt="IT Officer photo" >
+                        <input type="file" class="btn btn-transparent btn_change_photo" title="Change photo" id="change_it_officer_photo"/>
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="it_officer_name">ALEXE V. BELOY</h5>
@@ -57,8 +57,8 @@ if (!isset($_SESSION["username"])) {
                 </div>
                 <div class="col-3 mx-2 template-card">
                     <div class="row w-50 m-auto">
-                        <img src="../assets/img/staff_manager.jpg" height="180px" width="100px" alt="Staff Manager photo" >
-                        <button class="btn btn-transparent btn_change_photo" id="change_staff_manager_photo">Change photo</button>
+                        <img src="../assets/img/staff_manager.jpg" height="180px"  id="staff_manager_photo" width="100px" alt="Staff Manager photo" >
+                        <input type="file" class="btn btn-transparent btn_change_photo" id="change_staff_manager_photo" title="Change photo"/>
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="staff_manager_name">INN B. ELLUNADO</h5>
@@ -68,8 +68,8 @@ if (!isset($_SESSION["username"])) {
                 </div>
                 <div class="col-3 mx-2 template-card">
                     <div class="row w-50 m-auto">
-                        <img src="../assets/img/support_staff.jpg" height="180px" width="100px" alt="Support Staff 1" >
-                        <button class="btn btn-transparent btn_change_photo" id="change_support_staff1_photo">Change photo</button>
+                        <img src="../assets/img/support_staff.jpg" height="180px" width="100px" id="support_staff1_photo" alt="Support Staff 1" >
+                        <input type="file" class="btn btn-transparent btn_change_photo" id="change_support_staff1_photo" title="Change photo"/>
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="support_staff_1_name">SANIBOY D. CAIPILAN</h5>
@@ -79,8 +79,8 @@ if (!isset($_SESSION["username"])) {
                 </div>
                 <div class="col-3 mx-2 template-card">
                     <div class="row w-50 m-auto">
-                        <img src="../assets/img/support_staff_2.jpg" height="180px" width="100px" alt="Support Staff 2" >
-                        <button class="btn btn-transparent btn_change_photo" id="change_support_staff2_photo">Change photo</button>
+                        <img src="../assets/img/support_staff_2.jpg" height="180px" width="100px" id="support_staff2_photo" alt="Support Staff 2" >
+                        <input type="file" class="btn btn-transparent btn_change_photo" id="change_support_staff2_photo" title="Change photo"/>
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="support_staff_2_name">RUEL N. PENAZO</h5>
@@ -126,6 +126,11 @@ if (!isset($_SESSION["username"])) {
             $("#staff_manager_name").text(bsp_officers_setting.staff_manager);
             $("#support_staff_1_name").text(bsp_officers_setting.support_staff_1);
             $("#support_staff_2_name").text(bsp_officers_setting.support_staff_2);
+            $("#council_scout1").val(bsp_officers_setting.oic);
+            $("#it_officer").val(bsp_officers_setting.it_officer);
+            $("#staff_manager").val(bsp_officers_setting.staff_manager);
+            $("#support_staff1").val(bsp_officers_setting.support_staff_1);
+            $("#support_staff2").val(bsp_officers_setting.support_staff_2);
 
         });
         $("#btn_save").click(()=>{
@@ -141,17 +146,64 @@ if (!isset($_SESSION["username"])) {
 
         });
 
-          $("#change_council_scout1_photo").change(async ()=>{ 
+
+
+
+          $("#change_support_staff2_photo").change(async ()=>{ 
+            var fileInput = $("#change_support_staff2_photo")[0];
+                var file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file); 
+                reader.onload =async function(e) {
+                    userPhoto = e.target.result;
+                    alert(e.target.result);
+                    $("#support_staff2_photo").attr("src",e.target.result);
+                };
+        });
+          $("#change_staff_manager_photo").change(async ()=>{ 
+            var fileInput = $("#change_staff_manager_photo")[0];
+                var file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file); 
+                reader.onload =async function(e) {
+                    userPhoto = e.target.result;
+                    alert(e.target.result);
+                    $("#staff_manager_photo").attr("src",e.target.result);
+                };
+        });
+          $("#change_support_staff1_photo").change(async ()=>{ 
+            var fileInput = $("#change_support_staff1_photo")[0];
+                var file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file); 
+                reader.onload =async function(e) {
+                    userPhoto = e.target.result;
+                    alert(e.target.result);
+                    $("#support_staff1_photo").attr("src",e.target.result);
+                };
+        });
+          $("#change_it_officer_photo").change(async ()=>{ 
+            var fileInput = $("#change_it_officer_photo")[0];
+                var file = fileInput.files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file); 
+                reader.onload =async function(e) {
+                    userPhoto = e.target.result;
+                    alert(e.target.result);
+                    $("#it_officer_photo").attr("src",e.target.result);
+                };
+        });
+         $("#change_council_scout1_photo").change(async ()=>{ 
             var fileInput = $("#change_council_scout1_photo")[0];
                 var file = fileInput.files[0];
                 const reader = new FileReader();
                 reader.readAsDataURL(file); 
                 reader.onload =async function(e) {
                     userPhoto = e.target.result;
+                    alert(e.target.result);
                     $("#oic_photo").attr("src",e.target.result);
                 };
         });
-
         $("#btn_edit").click(()=>{
             //show the save and cancel buttons
             $(".editing_button").show();
