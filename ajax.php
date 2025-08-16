@@ -289,6 +289,28 @@ if($action == 'get_users_admin'){
     }
     echo json_encode($resultObject);
 }
+if($action == 'get_officers'){
+    $rooms_query=$conn->query("SELECT * FROM `page_settings`;");
+    $resultObject = array();
+    while( $row = $rooms_query->fetch_assoc()){
+        $room_object = new stdClass();
+        $room_object->ID = $row["ID"];
+        $room_object->setting_value = $row["setting_value"];
+        array_push($resultObject,$room_object);
+    }
+    echo json_encode($resultObject);
+}
+if($action == 'setting'){
+    $settingData = filter_input(INPUT_POST,"data");
+    $settingID = filter_input(INPUT_POST,"settingID");
+    $query=$conn->query("UPDATE `page_settings` SET `setting_value` = '$settingData' WHERE ID = '$settingID'");
+    if(!$query){
+        echo "UPDATE `page_settings` SET `setting_value` = '$settingData' WHERE ID = '$settingID'";
+    }
+    else{
+        echo json_encode($query);
+    }
+}
 if($action == 'get_users'){
     $rooms_query=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON  `account`.`userID` = `user`.`userID` INNER JOIN `school` ON `school`.`schoolID` = `account`.`schoolID`;");
     $resultObject = array();
