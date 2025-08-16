@@ -126,11 +126,43 @@ if (!isset($_SESSION["username"])) {
             $("#staff_manager_name").text(bsp_officers_setting.staff_manager);
             $("#support_staff_1_name").text(bsp_officers_setting.support_staff_1);
             $("#support_staff_2_name").text(bsp_officers_setting.support_staff_2);
+            //Set the input text properties as well
             $("#council_scout1").val(bsp_officers_setting.oic);
             $("#it_officer").val(bsp_officers_setting.it_officer);
             $("#staff_manager").val(bsp_officers_setting.staff_manager);
             $("#support_staff1").val(bsp_officers_setting.support_staff_1);
             $("#support_staff2").val(bsp_officers_setting.support_staff_2);
+            //Set the images
+            if (bsp_officers_setting.oic_photo === undefined) {
+                 $("#oic_photo").attr("src","../assets/img/oic.jpg");
+            }
+            else{
+                $("#oic_photo").attr("src",bsp_officers_setting.oic_photo);
+            }
+            if (bsp_officers_setting.it_officer_photo === undefined) {
+                $("#it_officer_photo").attr("src","../assets/img/it_officer_photo.jpg");
+            }
+            else{
+                $("#it_officer_photo").attr("src",bsp_officers_setting.it_officer_photo);
+            }
+            if (bsp_officers_setting.staff_manager_photo === undefined) {
+                $("#staff_manager_photo").attr("src","../assets/img/staff_manager.jpg");
+            }
+            else{
+                $("#staff_manager_photo").attr("src",bsp_officers_setting.staff_manager_photo);
+            }
+            if (bsp_officers_setting.support_staff1_photo === undefined) {
+                $("#support_staff1_photo").attr("src","../assets/img/support_staff.jpg");
+            }
+            else{
+                $("#support_staff1_photo").attr("src",bsp_officers_setting.support_staff1_photo);
+            }
+            if (bsp_officers_setting.support_staff2_photo === undefined) {
+                $("#support_staff2_photo").attr("src","../assets/img/support_staff_2.jpg");
+            }
+            else{
+                $("#support_staff2_photo").attr("src",bsp_officers_setting.support_staff2_photo);
+            }
 
         });
         $("#btn_save").click(()=>{
@@ -140,6 +172,7 @@ if (!isset($_SESSION["username"])) {
            bsp_officers_setting.support_staff_1 = $("#support_staff1").val();
            bsp_officers_setting.support_staff_2 = $("#support_staff2").val();
            if (window.confirm("Are you sure you want to save this data?")) {
+            console.log(JSON.stringify({"bsp_officers":bsp_officers_setting}));
                $.post("../ajax.php",{action:"setting",settingID:settingID,data:JSON.stringify({"bsp_officers":bsp_officers_setting})});
            }
            //[{"ID":"2","setting_value":"{\"bsp_officers\":{\n\"oic\":\"MANNY C. ELLUNADO\",\n\"it_officer\":\"ALEXE V. BELOY\",\n\"staff_manager\":\"INN  B. ELLUNADO\",\n\"support_staff1\":\"SANIBOY D. CAIPILAN\",\n\"support_staff2\":\"RUEL  N.  PENAZO\"\n}\n}"}]
@@ -148,59 +181,58 @@ if (!isset($_SESSION["username"])) {
 
 
 
-
           $("#change_support_staff2_photo").change(async ()=>{ 
             var fileInput = $("#change_support_staff2_photo")[0];
                 var file = fileInput.files[0];
                 const reader = new FileReader();
-                reader.readAsDataURL(file); 
+                reader.readAsDataURL(file);
                 reader.onload =async function(e) {
                     userPhoto = e.target.result;
-                    alert(e.target.result);
+                    bsp_officers_setting.support_staff2_photo = e.target.result;
                     $("#support_staff2_photo").attr("src",e.target.result);
                 };
-        });
-          $("#change_staff_manager_photo").change(async ()=>{ 
-            var fileInput = $("#change_staff_manager_photo")[0];
+            });
+            $("#change_staff_manager_photo").change(async ()=>{ 
+                var fileInput = $("#change_staff_manager_photo")[0];
                 var file = fileInput.files[0];
                 const reader = new FileReader();
                 reader.readAsDataURL(file); 
                 reader.onload =async function(e) {
                     userPhoto = e.target.result;
-                    alert(e.target.result);
+                    bsp_officers_setting.staff_manager_photo = e.target.result;
                     $("#staff_manager_photo").attr("src",e.target.result);
                 };
-        });
-          $("#change_support_staff1_photo").change(async ()=>{ 
+            });
+            $("#change_support_staff1_photo").change(async ()=>{ 
             var fileInput = $("#change_support_staff1_photo")[0];
-                var file = fileInput.files[0];
-                const reader = new FileReader();
-                reader.readAsDataURL(file); 
-                reader.onload =async function(e) {
+            var file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file); 
+            reader.onload =async function(e) {
                     userPhoto = e.target.result;
-                    alert(e.target.result);
+                    bsp_officers_setting.support_staff1_photo = e.target.result;
                     $("#support_staff1_photo").attr("src",e.target.result);
                 };
-        });
-          $("#change_it_officer_photo").change(async ()=>{ 
+            });
+            $("#change_it_officer_photo").change(async ()=>{ 
             var fileInput = $("#change_it_officer_photo")[0];
                 var file = fileInput.files[0];
                 const reader = new FileReader();
                 reader.readAsDataURL(file); 
                 reader.onload =async function(e) {
                     userPhoto = e.target.result;
-                    alert(e.target.result);
+                    bsp_officers_setting.it_officer_photo = e.target.result;
                     $("#it_officer_photo").attr("src",e.target.result);
                 };
-        });
-         $("#change_council_scout1_photo").change(async ()=>{ 
-            var fileInput = $("#change_council_scout1_photo")[0];
+            });
+            $("#change_council_scout1_photo").change(async ()=>{ 
+                var fileInput = $("#change_council_scout1_photo")[0];
                 var file = fileInput.files[0];
                 const reader = new FileReader();
                 reader.readAsDataURL(file); 
                 reader.onload =async function(e) {
                     userPhoto = e.target.result;
-                    alert(e.target.result);
+                    bsp_officers_setting.it_officer_photo = userPhoto;
                     $("#oic_photo").attr("src",e.target.result);
                 };
         });
