@@ -35,7 +35,7 @@ if (!isset($_SESSION["username"])) {
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="oic_name">MANNY C. ELLUNADO</h5>
                         <p><i>Council Scout  Executive/ OIC</i></p>
-                        <input type="text" class="title-input" id="council_scout1">
+                        <input type="text" class="title-input" value="MANNY C. ELLUNADO" id="council_scout1">
                     </div>
                 </div>
                 <div class="col-3 mx-3 template-card">
@@ -46,7 +46,7 @@ if (!isset($_SESSION["username"])) {
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="it_officer_name">ALEXE V. BELOY</h5>
                         <p><i>IT/Liason Officer </i></p>
-                        <input type="text" class="title-input" id="it_officer">
+                        <input type="text" class="title-input" value="ALEXE V. BELOY" id="it_officer">
                     </div>
                 </div>
                 <div class="col-3">
@@ -62,7 +62,7 @@ if (!isset($_SESSION["username"])) {
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="staff_manager_name">INN B. ELLUNADO</h5>
-                        <input type="text" class="title-input" id="staff_manager">
+                        <input type="text" class="title-input" id="staff_manager" value="INN B. ELLUNADO">
                         <p><i>Staff Manager</i></p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@ if (!isset($_SESSION["username"])) {
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="support_staff_1_name">SANIBOY D. CAIPILAN</h5>
-                        <input type="text" class="title-input" id="support_staff1">
+                        <input type="text" class="title-input" id="support_staff1" value="SANIBOY D. CAIPILAN">
                         <p><i>Support Staff</i></p>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ if (!isset($_SESSION["username"])) {
                     </div>
                     <div class="row  m-auto tag-text">
                         <h5 class="title" id="support_staff_2_name">RUEL N. PENAZO</h5>
-                        <input type="text" class="title-input" id="support_staff2">
+                        <input type="text" class="title-input" id="support_staff2" value="RUEL N. PENAZO">
                         <p><i>Support Staff</i></p>
                     </div>
                 </div>
@@ -127,11 +127,21 @@ if (!isset($_SESSION["username"])) {
             $("#support_staff_1_name").text(bsp_officers_setting.support_staff_1);
             $("#support_staff_2_name").text(bsp_officers_setting.support_staff_2);
             //Set the input text properties as well
-            $("#council_scout1").val(bsp_officers_setting.oic);
-            $("#it_officer").val(bsp_officers_setting.it_officer);
+            if (bsp_officers_setting.oic !== undefined) {
+                $("#council_scout1").val(bsp_officers_setting.oic);
+            }
+            if (bsp_officers_setting.it_officer !== undefined) {
+                $("#it_officer").val(bsp_officers_setting.it_officer);
+            }
+            if (bsp_officers_setting.staff_manager !== undefined) {
             $("#staff_manager").val(bsp_officers_setting.staff_manager);
+            }
+            if (bsp_officers_setting.support_staff_1 !== undefined) {
             $("#support_staff1").val(bsp_officers_setting.support_staff_1);
+            }
+            if (bsp_officers_setting.support_staff_2 !== undefined) {
             $("#support_staff2").val(bsp_officers_setting.support_staff_2);
+            }
             //Set the images
             if (bsp_officers_setting.oic_photo === undefined) {
                  $("#oic_photo").attr("src","../assets/img/oic.jpg");

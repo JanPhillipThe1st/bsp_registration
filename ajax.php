@@ -1074,7 +1074,6 @@ if($action == 'reset_password'){
     //Create an instance; passing `true` enables exceptions
 
     $recipient_email = filter_input(INPUT_POST,"recipient_email");
-
     $result=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON `account`.`userID` = `user`.`userID` 
     WHERE `account_email` = '".$recipient_email."' ;");
     $row = $result->fetch_assoc();
@@ -1087,11 +1086,12 @@ if($action == 'reset_password'){
     try {
         //Server settings
         $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'bspreg84@gmail.com';                     //SMTP username
-        $mail->Password   = 'vgvg lbso ojgq bcoi';                               //SMTP password
+        $mail->Username   = '_mainaccount@bsp-zds.com';                     //SMTP username
+        $mail->Password   = 'RainorShine2!';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
