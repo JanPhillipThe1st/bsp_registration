@@ -1080,7 +1080,6 @@ if($action == 'reset_password'){
     $i = 1;
     if($row > 0){
         while ($row = $result->fetch_assoc()) {
-         sleep(5);
         $username = $row["username"];
         $password = $row["password"];
     $mail = new PHPMailer(true);
