@@ -1096,9 +1096,9 @@ if($action == 'reset_password'){
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
         //Recipients
-        $mail->setFrom('bspreg84@gmail.com', 'Mailer');
+        $mail->setFrom('_mainaccount@bsp-zds.com', 'Mailer@BSP Registration');
         $mail->addAddress($recipient_email, );
-        $mail->addReplyTo('bspreg84@gmail.com', 'Information');
+        $mail->addReplyTo('_mainaccount@bsp-zds.com', 'BSP Registration Comms');
     
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
