@@ -1094,11 +1094,11 @@ if($action == 'reset_password'){
         $mail->Username   = '_mainaccount@bsp-zds.com';                     //SMTP username
         $mail->Password   = 'RainorShine2!';                               //SMTP password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
-        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
         //Recipients
         $mail->setFrom('_mainaccount@bsp-zds.com', 'Mailer@BSP Registration');
-        $mail->addAddress($recipient_email, );
+        $mail->addAddress("juntado38@gmail.com" );
         $mail->addReplyTo('_mainaccount@bsp-zds.com', 'BSP Registration Comms');
     
         //Content
