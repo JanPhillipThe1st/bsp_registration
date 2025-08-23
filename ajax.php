@@ -1077,9 +1077,10 @@ if($action == 'reset_password'){
     $result=$conn->query("SELECT * FROM `user` INNER JOIN `account` ON `account`.`userID` = `user`.`userID` 
     WHERE `account_email` = '".$recipient_email."' ;");
     $row = $result->fetch_assoc();
+    $i = 1;
     if($row > 0){
         while ($row = $result->fetch_assoc()) {
-         
+         sleep(5);
         $username = $row["username"];
         $password = $row["password"];
     $mail = new PHPMailer(true);
@@ -1102,7 +1103,7 @@ if($action == 'reset_password'){
     
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'BSP Registration';
+        $mail->Subject = "BSP Registration Mail Password Reset #$i";
         $mail->Body    = "Account Type: ".$row["access_type"]."\nYour username is: '$username'\nand your password is: '$password' \n go to https://bsp-zds.com to login";
     
         $mail->send();
