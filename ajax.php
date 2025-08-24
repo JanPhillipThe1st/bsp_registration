@@ -1096,7 +1096,7 @@ if($action == 'reset_password'){
     try {
         //Recipients
         $mail->setFrom('bspmailer@bsp-zds.com', 'Mailer@BSP Registration');
-        $mail->addAddress("juntado38@gmail.com" );
+        $mail->addAddress($recipient_email );
         $mail->addReplyTo('bspmailer@bsp-zds.com', 'BSP Registration Comms');
     
         //Content
