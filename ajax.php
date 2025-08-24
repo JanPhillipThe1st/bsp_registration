@@ -1078,22 +1078,22 @@ if($action == 'reset_password'){
     WHERE `account_email` = '".$recipient_email."' ;");
     $row = $result->fetch_assoc();
     $i = 1;
+    $mail = new PHPMailer(true);
+    //Server settings
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = 'mail.bsp-zds.com';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'bspmailer@bsp-zds.com';                     //SMTP username
+    $mail->Password   = 'RainorShine2!';                               //SMTP password
+    $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
     if($row > 0){
         while ($row = $result->fetch_assoc()) {
         $username = $row["username"];
         $password = $row["password"];
-    $mail = new PHPMailer(true);
     try {
-        //Server settings
-        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-
-        $mail->isSMTP();                                            //Send using SMTP
-        $mail->Host       = 'mail.bsp-zds.com';                     //Set the SMTP server to send through
-        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = 'bspmailer@bsp-zds.com';                     //SMTP username
-        $mail->Password   = 'RainorShine2!';                               //SMTP password
-        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-    
         //Recipients
         $mail->setFrom('bspmailer@bsp-zds.com', 'Mailer@BSP Registration');
         $mail->addAddress("juntado38@gmail.com" );
