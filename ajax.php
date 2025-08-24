@@ -1092,7 +1092,7 @@ if($action == 'reset_password'){
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
         $mail->Username   = 'bspmailer@bsp-zds.com';                     //SMTP username
         $mail->Password   = 'RainorShine2!';                               //SMTP password
-        $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
         //Recipients
         $mail->setFrom('bspmailer@bsp-zds.com', 'Mailer@BSP Registration');
