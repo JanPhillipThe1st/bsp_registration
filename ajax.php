@@ -1090,15 +1090,14 @@ if($action == 'reset_password'){
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = '_mainaccount@bsp-zds.com';                     //SMTP username
+        $mail->Username   = 'bspmailer@bsp-zds.com';                     //SMTP username
         $mail->Password   = 'RainorShine2!';                               //SMTP password
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;            //Enable implicit TLS encryption
         $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
     
         //Recipients
-        $mail->setFrom('_mainaccount@bsp-zds.com', 'Mailer@BSP Registration');
+        $mail->setFrom('bspmailer@bsp-zds.com', 'Mailer@BSP Registration');
         $mail->addAddress("juntado38@gmail.com" );
-        $mail->addReplyTo('_mainaccount@bsp-zds.com', 'BSP Registration Comms');
+        $mail->addReplyTo('bspmailer@bsp-zds.com', 'BSP Registration Comms');
     
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
