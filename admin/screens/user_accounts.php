@@ -580,7 +580,7 @@ if (!isset($_SESSION["username"])) {
             });
 
 
-                var table = $('#user_accounts_table').DataTable({dom: 'ltipr'});
+                var table = $('#user_accounts_table').DataTable({dom: 'tip'});
             
 
                 $.post("../ajax.php",{action:"get_schools"},(school_data)=>{
